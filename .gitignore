@@ -1,0 +1,32 @@
+# MATLAB
+*.asv
+*.m~
+*.mex*
+*.slxc
+matlab/data/*.mat
+matlab/data/*.csv
+*.autosave
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+python/plots/*.png
+python/plots/*.pdf
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/settings.json
+.vscode/launch.json
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Large reference files (store in NotebookLM instead)
+docs/references/*.pdf
