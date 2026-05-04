@@ -4,6 +4,8 @@ Reads phase1_swing.mat exported from vsg_swing_sim.m.
 """
 
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")  # non-interactive — saves PNG without opening a GUI window
 import matplotlib.pyplot as plt
 import scipy.io as sio
 from pathlib import Path
@@ -58,7 +60,6 @@ def plot_results(d: dict) -> None:
     out = PLOT_PATH / "phase1_swing.png"
     plt.savefig(out, dpi=150, bbox_inches="tight")
     print(f"Plot saved to {out}")
-    plt.show()
 
 
 if __name__ == "__main__":

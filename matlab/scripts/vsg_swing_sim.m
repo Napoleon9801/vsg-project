@@ -45,5 +45,9 @@ title('Virtual Rotor Angle \delta(t)');
 grid on;
 
 %% Save simulation data
-save('matlab/data/phase1_swing.mat', 't', 'omega', 'delta', 'freq', 'Pe');
-fprintf('Simulation complete. Data saved to matlab/data/phase1_swing.mat\n');
+script_dir = fileparts(mfilename('fullpath'));          % .../matlab/scripts
+data_dir   = fullfile(script_dir, '..', 'data');       % .../matlab/data
+if ~exist(data_dir, 'dir'); mkdir(data_dir); end
+save_path  = fullfile(data_dir, 'phase1_swing.mat');
+save(save_path, 't', 'omega', 'delta', 'freq', 'Pe');
+fprintf('Simulation complete. Data saved to %s\n', save_path);
