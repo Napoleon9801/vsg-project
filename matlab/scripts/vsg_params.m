@@ -18,7 +18,12 @@ omega_ref = omega_n;    % Reference angular frequency (rad/s)
 %% Reactive Power / Voltage Control
 Q_ref   = 0;     % Reference reactive power (VAR)
 E_ref   = V_n;   % Reference internal EMF magnitude (V)
-Kq      = 0.001; % Reactive power droop gain
+Kq      = 0.001; % Reactive power droop gain (V/VAR)
+
+%% Phase 2 — Secondary Frequency Restoration & Grid Model
+Ki_sec  = 5;     % Secondary frequency restoration integral gain (W·s/rad)
+X_g     = 10;    % Grid reactance (Ω) — determines P-δ and Q-V coupling
+V_g     = V_n;   % Grid terminal voltage magnitude (V)
 
 %% Simulation
 Ts  = 1e-5;      % Simulation time step (s)
