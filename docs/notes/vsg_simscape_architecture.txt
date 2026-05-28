@@ -1,0 +1,409 @@
+VSG 10 kVA / 400V / 50Hz — Simscape Electrical R2026a Architecture Reference
+Napoleon (Chinnawat Dumklang), SUT EE Year 3
+Date: 2026-05-13
+===============================================================================
+
+1. SYSTEM ARCHITECTURE — BLOCK DIAGRAM
+=======================================
+
+Physical power path (left to right):
+
+  [DC Bus 700V]
+       |
+       v
+  [Averaged 3-Phase VSI]   <-- v_abc* from control path
+  (3x Controlled Voltage Source, one per phase)
+       |
+       v
+  [Output LC Filter, per phase]
+  Rf(0.16Ω) + Lf(4.07mH) series, Cf(2.8µF) || Rdamp(6.9Ω) shunt to GND
+       |
+  [PCC — Point of Common Coupling]  <-- V/I sensors here
+       |
+       v
+  [Grid Impedance RL, per phase]
+  Rg(0.157Ω) + Lg(2.50mH) series
+       |
+       v
+  [Stiff 3-Phase Grid — Infinite Bus]
+  3x AC Voltage Source, 326.6V peak, 50Hz, 0°/-120°/+120°
+
+
+Control path (top to bottom, pure Simulink):
+
+  [Pm_ref STEP]         [Eref CONST]
+       |                      |
+       v                      |
+  +-----------+               |
+  | VSG_SwingEq |             |
+  |   J=0.2027 kg·m² |       |
+  |   D_p=3000 W/(rad/s) |   |
+  |   J·dω/dt = Pm-Pe-Dp(ω-ω0) |
+  |   outputs: ω, θ   |       |
+  +-----------+               |
+       | ω         θ          |
+       v           v          v
+  [Scope_omega] [VoltageRef subsystem]
+  [ToWS_omega]  |   E_peak·sin(θ)        |
+                |   E_peak·sin(θ-2π/3)   |
+                |   E_peak·sin(θ+2π/3)   |
+                +-----------+
+                      |
+                      v
+              [CurrentPI subsystem]
+              (Phase 1: pass-through
+               Phase 2: PI in dq frame)
+                      |
+              v_a*  v_b*  v_c*
+                      |
+                      v
+           [Simulink-PS Converters x3]
+                      |
+              (enters Simscape domain)
+                      v
+           [Controlled Voltage Sources — VSI]
+
+
+2. SIMSCAPE ELECTRICAL BLOCK LIST (R2026a)
+==========================================
+
+IMPORTANT: These are the CORRECT Simscape Electrical block paths.
+The old SimPowerSystems / Specialized Power Systems paths (e.g.,
+'powerlib/...', 'simpower/...') do NOT exist in R2026a.
+
+Block library prefix guide:
+  ee_lib          = Simscape Electrical (main library)
+  nesl_utility    = Simscape Utilities (Simulink-PS / PS-Simulink converters,
+                    Solver Configuration)
+  fl_lib          = Foundation Library (basic electrical reference)
+
+-----------------------------------------------------------------------
+SUBSYSTEM: Solver / Ground
+  Solver Configuration    nesl_utility/Solver Configuration
+                          (ONE per connected Simscape network — mandatory)
+                          Replaces old Powergui completely.
+
+  Electrical Reference    fl_lib/Electrical/Electrical Elements/Electrical Reference
+                          (circuit ground node)
+
+-----------------------------------------------------------------------
+SUBSYSTEM: Stiff Grid (Infinite Bus)
+  AC Voltage Source       ee_lib/Sources/AC Voltage Source
+                          Params: Peak Amplitude (V), Phase (deg), Frequency (Hz)
+                          Use 3x for 3-phase (A=0°, B=-120°, C=+120°)
+                          NOTE: "Three-Phase Source" SPS block DOES NOT EXIST
+                          in ee_lib — must use three separate single-phase sources.
+
+-----------------------------------------------------------------------
+SUBSYSTEM: Grid Impedance (per phase)
+  Resistor                ee_lib/Passive/Resistor
+                          Param: R (Ω)
+
+  Inductor                ee_lib/Passive/Inductor
+                          Param: L (H)
+                          NOTE: "Three-Phase Series RLC Branch" SPS block
+                          DOES NOT EXIST in ee_lib. Use per-phase R + L.
+
+-----------------------------------------------------------------------
+SUBSYSTEM: LC Output Filter (per phase)
+  Inductor                ee_lib/Passive/Inductor       (series, Lf)
+  Resistor                ee_lib/Passive/Resistor       (series, Rf — winding)
+  Capacitor               ee_lib/Passive/Capacitor      (shunt, Cf)
+  Resistor                ee_lib/Passive/Resistor       (parallel damping, Rdamp)
+
+-----------------------------------------------------------------------
+SUBSYSTEM: Averaged VSI
+  Controlled Voltage Source   ee_lib/Sources/Controlled Voltage Source
+                              Ports: LConn1 (+), RConn1 (-), LConn2 (PS signal in)
+                              Use 3x (one per phase).
+                              The PS input receives the instantaneous voltage
+                              reference from the control path.
+                              NOTE: For switched VSI (future), use:
+                              ee_lib/Power Electronics/IGBT or
+                              ee_lib/Power Electronics/Ideal Switching Device
+
+  DC Voltage Source           ee_lib/Sources/DC Voltage Source
+                              Param: v (V)
+
+-----------------------------------------------------------------------
+SUBSYSTEM: Measurements
+  Current Sensor          ee_lib/Sensors/Current Sensor
+                          Series element. Ports: LConn1, RConn1 (electrical),
+                          RConn2 (PS signal output — instantaneous current)
+
+  Voltage Sensor          ee_lib/Sensors/Voltage Sensor
+                          Parallel element. Ports: LConn1 (+), LConn2 (-),
+                          RConn1 (PS signal output — instantaneous voltage)
+
+-----------------------------------------------------------------------
+SUBSYSTEM: Domain Bridge (Simscape ↔ Simulink)
+  PS-Simulink Converter   nesl_utility/PS-Simulink Converter
+                          Converts Physical Signal → Simulink signal
+                          Use: sensor output → control path
+
+  Simulink-PS Converter   nesl_utility/Simulink-PS Converter
+                          Converts Simulink signal → Physical Signal
+                          Use: control output → Controlled Voltage Source input
+
+-----------------------------------------------------------------------
+SUBSYSTEM: Control Path (pure Simulink — NOT Simscape)
+  Gain                    simulink/Math Operations/Gain
+  Sum                     simulink/Math Operations/Sum
+  Integrator              simulink/Continuous/Integrator
+  Transfer Fcn            simulink/Continuous/Transfer Fcn   (for PI if preferred)
+  Constant                simulink/Sources/Constant
+  Step                    simulink/Sources/Step
+  Trigonometric Function  simulink/Math Operations/Trigonometric Function
+  Product                 simulink/Math Operations/Product
+  Mux / Demux             simulink/Signal Routing/Mux, Demux
+  Scope                   simulink/Sinks/Scope
+  To Workspace            simulink/Sinks/To Workspace
+
+-----------------------------------------------------------------------
+BLOCKS THAT REQUIRE FILE EXCHANGE / SPS SUPPORT PACKAGE:
+  The following SPS block equivalents are NOT natively in ee_lib R2026a.
+  If you need them, check MathWorks File Exchange for the
+  "Simscape Electrical Specialized Power Systems Support Package":
+
+  - Powergui               → REPLACED by Solver Configuration (no package needed)
+  - Three-Phase Source     → Use 3x AC Voltage Source (no package needed)
+  - Three-Phase Series RLC → Use per-phase R+L+C blocks (no package needed)
+  - abc-dq0 Transform      → Implement manually with sin/cos/matrix, OR
+                             use "abc to dq0" from Simscape Electrical
+                             Power Electronics Control library if available:
+                             ee_lib/Control/abc-dq Conversion
+                             (verify presence — may require PE Control add-on)
+  - PLL (Phase-Locked Loop) → Implement manually (see Phase 2 notes) OR
+                              use DSP System Toolbox PLL block
+  - Three-Phase V/I Measurement → Use 3x individual Voltage Sensor + Current Sensor
+
+
+3. PARAMETER VALUES (10 kVA, 400V L-L, 50Hz)
+=============================================
+
+System base:
+  S_base   = 10,000 VA
+  V_base   = 400 V (line-to-line RMS)
+  f_0      = 50 Hz
+  omega_0  = 314.159 rad/s
+  Z_base   = V_base²/S_base = 16 Ω
+
+DC bus:
+  V_dc     = 700 V
+  (Rule: V_dc >= sqrt(2) * 400 * 1.15 = 651V → rounded to 700V)
+
+Virtual inertia:
+  H_vsg    = 4 s         (target inertia constant, typical SG range: 2-10s)
+  J        = 2·H·S_base/omega_0² = 0.2027 kg·m²
+  D_p      = 3000 W/(rad/s)
+  (Droop: 3000 W per 1 rad/s freq deviation ≈ 477 W per 0.1 Hz)
+
+LC filter (switching frequency f_sw = 10 kHz):
+  L_f      = 0.08 pu * Z_base / omega_0 = 4.07 mH   (≈ 0.08 pu)
+  C_f      = 2.82 µF    (corner freq f_c = 1500 Hz, well below 10 kHz)
+  R_f      = 0.16 Ω     (filter winding resistance, 0.01 pu)
+  R_damp   = 6.9 Ω      (parallel damping resistor across Cf, 0.3*sqrt(Lf/Cf))
+
+Grid impedance (LV lab, X/R = 5):
+  Z_g      = 0.05 pu = 0.8 Ω
+  R_g      = 0.157 Ω
+  L_g      = 2.50 mH
+
+Inner current PI (dq frame, bandwidth 1000 Hz):
+  Kp_i     = L_total * omega_cc = (L_f + L_g) * 2π*1000 = 41.6 V/A
+  Ki_i     = R_total * omega_cc = (R_f + R_g) * 2π*1000 = 1980 V/(A·s)
+  Decoupling: ±omega*L_total*i_dq fed forward in each axis
+
+Reactive power droop:
+  K_q      = 1.2e-3 V/VAR  (~5% voltage change at rated reactive power)
+  Q_ref    = 0 VAR (unity PF at nominal)
+
+Solver:
+  Solver   = ode23t  (stiff, trapezoidal, handles LC resonance)
+  MaxStep  = 10 µs   (global Simulink step)
+  Ts_sim   = 1 µs    (Simscape local if enabled)
+  RelTol   = 1e-4
+
+
+4. SWING EQUATION IMPLEMENTATION
+=================================
+
+Equation:
+  J * dω/dt = P_m - P_e - D_p * (ω - ω_0)
+  dθ/dt     = ω - ω_0   (or dθ/dt = ω if using absolute angle)
+
+Simulink block diagram (inside VSG_SwingEq subsystem):
+
+  P_m ──┐
+        ├──► [Sum_net: +−] ──► [Sum_swing: +−] ──► [Gain: 1/J] ──► [Int_omega (IC=ω_0)]
+  P_e ──┘         ▲                                                       |
+                  |                                                       v
+                  └─[Gain_D: D_p]◄──[Sum_dev: +−]◄─────────────── ω output
+                                            ▲
+                                       ω_0 constant
+
+  ω ──► [Sum_dev: +−] ──► [Int_theta (IC=0)] ──► θ output
+              ▲
+         ω_0 constant
+
+Key parameter mapping (compared to Phase 1 H-constant formulation):
+  Phase 1 used:  (2H/omega_s) * dω/dt = Pm - Pe - D*(ω - ω_s)   [pu]
+  Phase 2 uses:  J * dω/dt = Pm - Pe - D_p*(ω - ω_0)             [SI]
+  Relationship:  J_eq = 2*H*S_base/omega_0²  (converting H → J)
+                 D_p = D * S_base / omega_0   (converting D_pu → D_SI)
+
+
+5. CONTROL LOOP STRUCTURE
+==========================
+
+OUTER LOOP — Power/Frequency Control (Swing Equation):
+  Bandwidth: ~10-20 rad/s (limited by virtual inertia J)
+  Input:  P_m (mechanical power setpoint)
+  Output: ω (VSG angular frequency), θ (virtual rotor angle)
+  Tuning: J sets inertia response speed; D_p sets damping of freq oscillation
+
+OUTER LOOP — Reactive Power / Voltage Control (Q droop):
+  Bandwidth: ~10-50 rad/s (slower than current loop)
+  Equation:  E_ref = E_0 - K_q * (Q_meas - Q_ref)
+  Input:  Q_meas (measured reactive power at PCC)
+  Output: E_ref (internal EMF magnitude, feeds VoltageRef subsystem)
+
+INNER LOOP — Current Control (PI in dq frame):
+  Bandwidth: omega_cc = 2π*1000 = 6283 rad/s (~1 kHz)
+  Must be >> outer loop bandwidth (~10x rule satisfied: 1000 >> 20 rad/s)
+  Input:  i_d_ref, i_q_ref (from power controller via P/Q decomposition)
+          i_d, i_q (measured, from Park transform of PCC currents)
+  Output: v_d*, v_q* (duty cycle references)
+  Feed-forward decoupling: v_d* -= omega*L_total*i_q
+                           v_q* += omega*L_total*i_d
+
+MODULATION:
+  Averaged model (Phase 1-2): v_abc* → Controlled Voltage Source directly
+  Switched model (Phase 3): v_abc* → SPWM comparator → IGBT gate signals
+
+LOOP BANDWIDTH HIERARCHY (outer to inner):
+  Q droop:  ~15 rad/s
+  P/freq:   ~20 rad/s  (swing eq. natural freq: sqrt(D_p/J) ≈ 122 rad/s)
+  Voltage:  ~200 rad/s (if separate voltage loop added between swing eq. and current)
+  Current:  6283 rad/s (PI, 1 kHz)
+  Switching: 62832 rad/s (10 kHz)
+  Nyquist of solver: >> 628320 rad/s (>>100 kHz = 1/Ts_sim)
+
+
+6. SOLVER CONFIGURATION (replaces Powergui)
+=============================================
+
+In Simscape Electrical R2026a, the Solver Configuration block from
+nesl_utility/Solver Configuration serves the role of Powergui.
+
+MANDATORY requirements:
+  - One Solver Configuration block must exist per isolated Simscape network
+  - It must be connected to at least one node in the Simscape network
+    (connect its port to Electrical Reference or any circuit node)
+  - Without this block, simulation will error: "Network has no Solver Configuration"
+
+Recommended settings for power electronics VSG:
+  Solver:          ode23t (global Simulink solver, set in Model Configuration)
+  MaxStep:         10e-6 s (10 µs global; adequate for 10 kHz switching)
+  Simscape solver: Equation-based (default; suitable for average model)
+  UseLocalSolver:  off (let Simulink global solver handle stepping)
+  ZeroCrossControl: UseLocalSettings
+
+For switched VSI (Phase 3):
+  Consider switching to ode15s or ode23s for stiff switching transients.
+  MaxStep may need reduction to 1e-6 s when IGBTs are modelled.
+
+COMPARISON WITH OLD POWERGUI:
+  Powergui (SPS):                    Solver Configuration (Simscape):
+  Set simulation type (discrete/cont) → Handled by Simulink solver choice
+  Set sample time for discrete mode  → Set Ts in Model Config
+  Set frequency for harmonics        → Not needed (Simscape is time-domain)
+  Compute initial conditions         → Simscape handles automatically
+
+
+7. STEP-BY-STEP BUILD ORDER
+============================
+
+Build and test incrementally. Never try to debug the full model at once.
+
+STEP 1 — Electrical backbone test (verify physical network)
+  Build:  DC bus + Controlled Voltage Source (one phase, open-loop sine)
+          + Lf + Cf + Rg + Lg + Grid source + Gnd + Solver Configuration
+  Drive:  SL2PS_A with a Sine Wave block (326.6V peak, 50Hz)
+          independent of the control path
+  Test:   Run 0.1s, check Scope shows 400V/50Hz at PCC
+  Goal:   Confirm Simscape network is wired correctly, solver works
+
+STEP 2 — Extend to 3-phase, verify phase balance
+  Build:  Repeat Step 1 for phases B and C with -120°/+120° offsets
+  Test:   Verify 3-phase balanced voltages, no DC offset
+
+STEP 3 — Connect swing equation (open-loop angle)
+  Build:  VSG_SwingEq subsystem (J, D_p, integrators)
+          VoltageRef subsystem (E_ref * sin(theta + offset))
+  Replace the Sine Wave from Step 1 with VoltageRef outputs
+  Constant Pe_meas = Pm_ref (so initial dω/dt = 0)
+  Test:   Run 0.5s, verify ω stays at 314.16 rad/s
+
+STEP 4 — Power step test (inertia response)
+  Change: Step Pm_ref from 5kW to 7kW at t=1s
+  Test:   Observe ω deviation and recovery in Scope_omega
+          Compute ROCOF = dω/dt at t=1s+ (should be ≈ ΔP/(J*ω_0))
+          Expected: ROCOF ≈ 2000/(0.2027*314.16) ≈ 31.4 rad/s²
+
+STEP 5 — Add current measurement and Pe computation
+  Build:  PS2SL converters for Isens and Vsens
+          Compute Pe = (v_a*i_a + v_b*i_b + v_c*i_c) / ... block
+          Feed Pe_meas back into VSG_SwingEq port 2
+  Test:   Verify Pe_meas converges to Pm_ref at steady state
+
+STEP 6 — Replace CurrentPI pass-through with PI controller
+  Build:  Park transform (abc→dq using theta from swing eq.)
+          PI controllers for d and q axes (Kp_i, Ki_i)
+          Decoupling feed-forward (+/- omega*L_total*i_dq)
+          Inverse Park transform (dq→abc for VSI reference)
+  Test:   Step i_d_ref, verify current tracks with ~1ms settling time
+
+STEP 7 — Q droop and voltage control
+  Build:  Compute Q_meas = (v_q*i_d - v_d*i_q) * 1.5 (dq power formula)
+          E_ref = E_0 - K_q*(Q_meas - Q_ref)
+  Test:   Step Q_ref, verify E adjusts and Q tracks
+
+STEP 8 — Grid fault / synchronisation test
+  Build:  Add a load switch (ideal switch block) at PCC
+          Step load from 0 to 8 kW at t=2s
+  Test:   Observe inertia response (ω deviation), damping, re-synchronisation
+          This is the primary validation of VSG behaviour vs. a plain inverter
+
+
+8. KNOWN R2026a COMPATIBILITY NOTES
+=====================================
+
+1. Powergui is fully removed. "Solver Configuration" is the replacement.
+   Any model copied from pre-R2026a tutorials that uses Powergui will
+   need the Powergui block deleted and a Solver Configuration block added.
+
+2. The SimPowerSystems / Specialized Power Systems library (simpower / powerlib)
+   no longer ships with MATLAB. Any block starting with "powergui", "power_",
+   or in the "simpower" namespace is invalid in R2026a.
+
+3. "Three-Phase Source" → use 3x "AC Voltage Source" (ee_lib)
+   "Three-Phase Series RLC Branch" → use per-phase R+L+C (ee_lib/Passive)
+   "Three-Phase V-I Measurement" → use 3x Voltage Sensor + Current Sensor
+   "abc_to_dq0 Transformation" → check ee_lib/Control or implement manually
+
+4. The "Controlled Voltage Source" in ee_lib uses a Physical Signal (PS) input,
+   NOT a Simulink signal directly. Always bridge with a Simulink-PS Converter.
+
+5. Simscape port naming uses "LConn" and "RConn" (not "+" and "-" as labels).
+   Check exact port indices with:
+     get_param('model/block', 'PortHandles')
+   before wiring physical connections in scripts.
+
+6. ee_lib/Control sub-library (PID, dq transforms) availability depends on
+   whether "Simscape Electrical Power Electronics Control" add-on is installed.
+   Run "ver" in MATLAB Command Window to check installed toolboxes.
+   If unavailable, implement all control blocks from standard Simulink library.
+
+===============================================================================
+End of VSG Simscape Architecture Reference
