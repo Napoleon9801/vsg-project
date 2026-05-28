@@ -10,6 +10,10 @@ matlab/*.slx
 matlab/*.mat
 matlab/data/*.mat
 matlab/data/*.csv
+matlab/data/*.log
+
+# Stray dir from a path bug in early script runs (already cleaned once)
+matlab/scripts/matlab/
 
 # External MATLAB-File-Exchange downloads (reference only, not source)
 Virtual_synchronous_generator_control2016*/
@@ -24,6 +28,7 @@ dist/
 build/
 python/plots/*.png
 python/plots/*.pdf
+python/plots/*.csv
 .ipynb_checkpoints/
 
 # VS Code
@@ -37,3 +42,15 @@ desktop.ini
 
 # Large reference files (store in NotebookLM instead)
 docs/references/*.pdf
+
+# Bloated proposal artifacts at docs/ root — slide decks and PDF/DOCX
+# exports are regenerated from the .py builders (or via NotebookLM).
+docs/*.pptx
+docs/*.pdf
+docs/*.docx
+docs/notes/*.pdf
+
+# Private chat exports (e.g. LINE chat history with advisor)
+# Brackets must be escaped in gitignore — unescaped [LINE] reads as
+# a character class matching any of L,I,N,E.
+\[LINE\]*.txt
