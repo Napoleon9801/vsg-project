@@ -25,6 +25,10 @@ Ki_sec  = 5;     % Secondary frequency restoration integral gain (W·s/rad)
 X_g     = 10;    % Grid reactance (Ω) — determines P-δ and Q-V coupling
 V_g     = V_n;   % Grid terminal voltage magnitude (V)
 
+%% Phase 3 — Inverter L-Filter & Grid Interface (averaged model, SRF)
+L_f     = 2e-3;  % Total filter + grid inductance (H)
+R_f     = 0.1;   % Total filter + grid resistance (Ω)
+
 %% Simulation
 Ts  = 1e-5;      % Simulation time step (s)
 T_end = 5;       % Simulation duration (s)
