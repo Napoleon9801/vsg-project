@@ -37,8 +37,18 @@ DATA_DIR = HERE.parents[1] / "matlab"
 PLOT_DIR = HERE.parent / "plots"
 PLOT_DIR.mkdir(exist_ok=True)
 
-PATH_5A = DATA_DIR / "vsg_stage5a_out.mat"
-PATH_5C = DATA_DIR / "vsg_stage5c_out.mat"
+PATH_5A_ORIG    = DATA_DIR / "vsg_stage5a_out.mat"
+PATH_5A_MATCHED = DATA_DIR / "vsg_stage5a_matched_out.mat"
+PATH_5C         = DATA_DIR / "vsg_stage5c_out.mat"
+
+# Prefer the matched-operating-point baseline if available — it isolates
+# the R_d + FF effect from the H/D effect by sharing the 5c op-point.
+if PATH_5A_MATCHED.exists():
+    PATH_5A = PATH_5A_MATCHED
+    BASELINE_TAG = "5a matched (H=5, D=0.5)"
+else:
+    PATH_5A = PATH_5A_ORIG
+    BASELINE_TAG = "5a original (H=5, D=0)"
 
 
 def _flat(arr) -> np.ndarray:
@@ -168,13 +178,16 @@ def plot_f_P_compare(d5a: dict, d5c: dict, out_path: Path) -> None:
     """f(t) and P(t) around disturbance — outer-loop sanity check."""
     fig, axes = plt.subplots(2, 1, figsize=(11, 7), sharex=True)
 
-    for d, label, color in [(d5a, "5a (D=0)",   "tab:red"),
-                              (d5c, "5c (D=0.5)", "tab:blue")]:
+    pairs = [
+        (d5a, f"5a (D={d5a['D']:.1f}, no FF, R_d=0)", "tab:red"),
+        (d5c, f"5c (D={d5c['D']:.1f}, FF on, R_d={d5c['R_d']:.1f})", "tab:blue"),
+    ]
+    for d, label, color in pairs:
         t_rel = d["t"] - d["R_load_t"]
         axes[0].plot(t_rel, d["freq"],   color=color, linewidth=1.4,
-                     label=f"f  ({label}, H={d['H']:.0f})")
+                     label=f"f  {label}")
         axes[1].plot(t_rel, d["P_meas"], color=color, linewidth=1.4,
-                     label=f"P  ({label})")
+                     label=f"P  {label}")
 
     axes[0].axhline(d5a["f_base"], color="k", linestyle=":",
                     linewidth=0.8, alpha=0.6, label=f"f_n = {d5a['f_base']:.0f} Hz")
@@ -226,8 +239,8 @@ def main() -> None:
         return
 
     print(f"Stage 5c comparison plots")
-    print(f"  5a source: {PATH_5A.name}")
-    print(f"  5c source: {PATH_5C.name}")
+    print(f"  baseline   : {PATH_5A.name}  [{BASELINE_TAG}]")
+    print(f"  tuned      : {PATH_5C.name}")
 
     d5a = load_run(PATH_5A)
     d5c = load_run(PATH_5C)
