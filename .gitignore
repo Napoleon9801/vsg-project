@@ -54,3 +54,16 @@ docs/notes/*.pdf
 # Brackets must be escaped in gitignore — unescaped [LINE] reads as
 # a character class matching any of L,I,N,E.
 \[LINE\]*.txt
+
+# Word/Office lock and recovery files (created while a doc is open)
+~$*.docx
+~$*.pptx
+*.tmp
+
+# Dated backup snapshots — keep the live deliverable, not the backups
+*.backup-*.docx
+
+# docs/notes is scratch: slide decks (regenerated from the .py builders)
+# and superseded proposal docx drafts. Markdown/txt notes ARE tracked.
+docs/notes/*.pptx
+docs/notes/*.docx
