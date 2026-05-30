@@ -6,10 +6,13 @@
  *   DESIGN POINT: **Option A (sim-faithful)** — locked 2026-05-30
  *   Verified end-to-end against MATLAB/Simulink Stage 5c (phase5c_tuned.m).
  *
- *   Target Hardware (Path 1 — DRV8302 shield @ 40 V):
- *     - ESP32-WROOM-32D  + TI DRV8302 3-phase MOSFET shield (3-PWM mode)
+ *   Target Hardware (budget discrete build @ 40 V):
+ *     - ESP32-WROOM-32D
+ *     - Power stage: 6× IRF540N (100 V) + 3× IR2104 half-bridge gate drivers
+ *       (bootstrap, non-isolated, internal ~520 ns dead-time) + LM393 OCP
  *     - AD7606 external 16-bit simultaneous-sampling ADC (SPI)
  *     - ACS712-20A current sensors (±20 A, 100 mV/A)  [NOT -05B: peak ~6.5 A]
+ *     - (Alternative: TI DRV8302 shield — integrated protection, see Ch.3 §3.5)
  *
  *   ELECTRICAL DESIGN POINT (identical to verified sim):
  *     - DC bus            Vdc    = 40 V   (DRV8302 60 V max → 67 % derating, safe)
@@ -41,10 +44,12 @@
  *     5. Multi-layer protection: HW nFAULT (DRV8302) + SW instantaneous OC trip
  *        + I²t thermal accumulator.
  *
- *   POWER STAGE NOTE (DRV8302, 3-PWM mode):
- *     Drive 3 MCPWM A-channels only. The DRV8302 generates the complementary
- *     low-side gate and the dead-time internally (set DTC pin resistor = 100 kΩ
- *     → ~350 ns dead-time, per Chapter 5 §5.6.1). Do NOT add MCPWM dead-time.
+ *   POWER STAGE NOTE (3× IR2104, one per half-bridge leg):
+ *     Drive 3 MCPWM A-channels only — one PWM into each IR2104 IN pin. Each
+ *     IR2104 generates the complementary HO/LO pair with a fixed internal
+ *     dead-time (~520 ns), so NO MCPWM dead-time is needed. IR2104 is a
+ *     bootstrap (non-isolated) driver — acceptable at 40 V benchtop, but keep
+ *     hands off live conductors. A common GATE_EN line ties the three SD pins.
  *
  *   FIRMWARE-vs-SIM VALIDATION:
  *     Control gains below are computed from the SAME formulas as phase5c_tuned.m.
@@ -73,11 +78,11 @@
 #define SPI_MISO_PIN       12
 #define SPI_MOSI_PIN       13
 
-// DRV8302 Gate Driver control / status
-// EN_GATE remapped to 22 (avoids GPIO 12 HSPI-MISO conflict)
-#define EN_GATE_PIN        22
-#define DRV_nFAULT_PIN     34   // input-only GPIO, active LOW
-#define DRV_nOCTW_PIN      39   // input-only GPIO, overcurrent/temp warning
+// Gate driver control / status — discrete 3× IR2104 (bootstrap, non-isolated)
+// GATE_EN drives the common SD/enable line of all three IR2104 drivers.
+// NOTE: verify IR2104 SD polarity against datasheet (enable vs shutdown level).
+#define EN_GATE_PIN        22   // common IR2104 SD / enable (remapped off GPIO12-MISO)
+#define OCP_FAULT_PIN      34   // input-only GPIO, active LOW — from LM393 OCP comparator
 
 // 3-Phase PWM (MCPWM0, A-channels only → DRV8302 3-PWM mode)
 #define PWM_A_PIN          25
@@ -255,8 +260,8 @@ void IRAM_ATTR onTimerInterrupt() {
     uint32_t start_time = esp_cpu_get_cycle_count();
     isr_counter++;
 
-    // Hardware fault: DRV8302 nFAULT is active LOW → shut down instantly
-    if (digitalRead(DRV_nFAULT_PIN) == LOW) {
+    // Hardware fault: LM393 OCP comparator output active LOW → shut down instantly
+    if (digitalRead(OCP_FAULT_PIN) == LOW) {
         current_state = STATE_FAULT;
         trigger_hardware_trip();
         return;
@@ -419,7 +424,7 @@ void trigger_hardware_trip() {
     mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A);
     mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_OPR_A);
     mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_2, MCPWM_OPR_A);
-    // 2. Physically disable DRV8302 gate drivers
+    // 2. Physically disable all IR2104 gate drivers (common SD/enable line)
     digitalWrite(EN_GATE_PIN, LOW);
     // 3. Latch fault
     current_state = STATE_FAULT;
@@ -434,13 +439,12 @@ void trigger_hardware_trip() {
 // =================================================================================
 void init_gpio() {
     pinMode(EN_GATE_PIN, OUTPUT);
-    digitalWrite(EN_GATE_PIN, LOW);          // safe-disabled on boot
-    pinMode(DRV_nFAULT_PIN, INPUT_PULLUP);
-    pinMode(DRV_nOCTW_PIN, INPUT_PULLUP);
+    digitalWrite(EN_GATE_PIN, LOW);          // gate drivers disabled on boot (verify SD polarity)
+    pinMode(OCP_FAULT_PIN, INPUT_PULLUP);    // LM393 OCP comparator, active LOW
 }
 
 void init_pwm() {
-    // MCPWM0 A-channels only → DRV8302 3-PWM mode (chip makes complement + dead-time)
+    // MCPWM0 A-channels only → one PWM per IR2104 (each makes complement + ~520ns dead-time)
     mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM0A, PWM_A_PIN);
     mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM1A, PWM_B_PIN);
     mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM2A, PWM_C_PIN);
@@ -560,9 +564,9 @@ void setup() {
     Serial.println("STANDBY — settling power rails before black-start...");
     delay(2000);
 
-    // Enable DRV8302 gate drivers
+    // Enable IR2104 gate drivers (common SD/enable; verify polarity)
     digitalWrite(EN_GATE_PIN, HIGH);
-    delay(10);   // let charge pumps settle
+    delay(10);   // let bootstrap caps charge
 
     current_state = STATE_SOFT_START;
     Serial.println("BLACK-START: 2-second soft EMF ramp (0 -> 14 V) at 50 Hz...");
