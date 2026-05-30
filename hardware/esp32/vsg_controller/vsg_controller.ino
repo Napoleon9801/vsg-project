@@ -6,13 +6,13 @@
  *   DESIGN POINT: **Option A (sim-faithful)** — locked 2026-05-30
  *   Verified end-to-end against MATLAB/Simulink Stage 5c (phase5c_tuned.m).
  *
- *   Target Hardware (budget discrete build @ 40 V):
- *     - ESP32-WROOM-32D
- *     - Power stage: 6× IRF540N (100 V) + 3× IR2104 half-bridge gate drivers
- *       (bootstrap, non-isolated, internal ~520 ns dead-time) + LM393 OCP
- *     - AD7606 external 16-bit simultaneous-sampling ADC (SPI)
- *     - ACS712-20A current sensors (±20 A, 100 mV/A)  [NOT -05B: peak ~6.5 A]
- *     - (Alternative: TI DRV8302 shield — integrated protection, see Ch.3 §3.5)
+ *   Target Hardware @ 40 V — supports TWO power stages via POWER_STAGE #define:
+ *     A) discrete 6× IRF540N (100 V) + 3× IR2104 (bootstrap, ~520 ns dead-time)
+ *        + LM393 OCP comparator                              [budget default]
+ *     B) TI DRV8302 shield (integrated buck / current-sense / OCP / UVLO / dead-time)
+ *     Common to both: ESP32-WROOM-32D, AD7606 16-bit ADC (SPI),
+ *        ACS712-20A current sensors (±20 A)   [NOT -05B: peak ~6.5 A]
+ *     Full comparison: docs/notes/power_stage_options.md
  *
  *   ELECTRICAL DESIGN POINT (identical to verified sim):
  *     - DC bus            Vdc    = 40 V   (DRV8302 60 V max → 67 % derating, safe)
@@ -68,7 +68,17 @@
 #include <driver/mcpwm.h>
 
 // =================================================================================
-//  PIN ASSIGNMENTS  (proposed — verify against DRV8302 shield + AD7606 wiring)
+//  POWER STAGE SELECTION
+//  The control core is IDENTICAL for both stages — only the gate-driver semantics
+//  differ. Both drive 3 MCPWM A-channels + 1 enable line + 1 fault input.
+//  Full comparison: docs/notes/power_stage_options.md
+// =================================================================================
+#define POWER_STAGE_IR2104   1   // A: discrete 6x IRF540N + 3x IR2104 (budget)
+#define POWER_STAGE_DRV8302  2   // B: TI DRV8302 shield (integrated protection)
+#define POWER_STAGE  POWER_STAGE_IR2104     // <-- SELECT HERE (A or B)
+
+// =================================================================================
+//  PIN ASSIGNMENTS  (proposed — verify against your wiring / shield)
 // =================================================================================
 // AD7606 External ADC (HSPI Interface)
 #define AD7606_CS_PIN      15
@@ -78,11 +88,15 @@
 #define SPI_MISO_PIN       12
 #define SPI_MOSI_PIN       13
 
-// Gate driver control / status — discrete 3× IR2104 (bootstrap, non-isolated)
-// GATE_EN drives the common SD/enable line of all three IR2104 drivers.
-// NOTE: verify IR2104 SD polarity against datasheet (enable vs shutdown level).
-#define EN_GATE_PIN        22   // common IR2104 SD / enable (remapped off GPIO12-MISO)
-#define OCP_FAULT_PIN      34   // input-only GPIO, active LOW — from LM393 OCP comparator
+// Gate driver control / status — works for BOTH power stages:
+//   A (IR2104) : EN_GATE = common SD/enable of the 3 drivers; OCP_FAULT = LM393 output
+//   B (DRV8302): EN_GATE = chip EN_GATE (active HIGH);        OCP_FAULT = chip nFAULT
+// NOTE (A): verify IR2104 SD polarity vs datasheet (enable vs shutdown level).
+#define EN_GATE_PIN        22   // gate-driver enable (remapped off GPIO12-MISO)
+#define OCP_FAULT_PIN      34   // input-only, active LOW (IR2104: LM393 / DRV8302: nFAULT)
+#if POWER_STAGE == POWER_STAGE_DRV8302
+#define DRV_nOCTW_PIN      39   // DRV8302 overcurrent/temp warning (optional monitor)
+#endif
 
 // 3-Phase PWM (MCPWM0, A-channels only → DRV8302 3-PWM mode)
 #define PWM_A_PIN          25
@@ -439,8 +453,11 @@ void trigger_hardware_trip() {
 // =================================================================================
 void init_gpio() {
     pinMode(EN_GATE_PIN, OUTPUT);
-    digitalWrite(EN_GATE_PIN, LOW);          // gate drivers disabled on boot (verify SD polarity)
-    pinMode(OCP_FAULT_PIN, INPUT_PULLUP);    // LM393 OCP comparator, active LOW
+    digitalWrite(EN_GATE_PIN, LOW);          // gate drivers disabled on boot (verify SD polarity for IR2104)
+    pinMode(OCP_FAULT_PIN, INPUT_PULLUP);    // active LOW (IR2104: LM393 / DRV8302: nFAULT)
+#if POWER_STAGE == POWER_STAGE_DRV8302
+    pinMode(DRV_nOCTW_PIN, INPUT_PULLUP);    // DRV8302 OC/temp warning
+#endif
 }
 
 void init_pwm() {
