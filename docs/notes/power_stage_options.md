@@ -60,7 +60,8 @@
 | bootstrap cap 1 µF 50 V | film/ceramic | 3 | 20 |
 | gate resistor 22 Ω | | 6 | 10 |
 | LM393 + shunt + passives (OCP) | comparator | 1 ชุด | 80 |
-| **รวม** | | | **~540** |
+| pull-up 10 kΩ → 3.3 V (สาย OCP_FAULT) | **บังคับ** — GPIO34 ไม่มี internal pull-up และ LM393 เป็น open-collector | 1 | 5 |
+| **รวม** | | | **~545** |
 
 ### A.3 การป้องกัน
 - **Dead-time:** IR2104 ภายใน ~520 ns (ไม่พึ่งซอฟต์แวร์)
@@ -73,7 +74,7 @@
 |---|---|---|
 | PWM_A/B/C | 25/26/27 | → IN ของ IR2104 แต่ละตัว |
 | GATE_EN | 22 | → SD ร่วมของ IR2104 ทั้ง 3 (**verify polarity**) |
-| OCP_FAULT | 34 | ← LM393 (active LOW) |
+| OCP_FAULT | 34 | ← LM393 (active LOW) — **ต้องมี external pull-up 10 kΩ → 3.3 V**: GPIO34–39 เป็น input-only ไม่มี internal pull-up และ LM393 เป็น open-collector; firmware ผูกขานี้เข้า MCPWM hardware fault F0 (one-shot force-low, <1 µs, latch ในชิป) + software poll สำรอง |
 
 ### A.5 ข้อควรระวัง
 - เดินสาย **gate loop ให้สั้น** (พื้นที่ลูปเล็ก) ลด ringing/EMI ที่ 10 kHz

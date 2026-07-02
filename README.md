@@ -59,7 +59,7 @@ And the full 3-phase switching model (SPWM, 10 kHz) confirms it works at the con
 | Simulation (Stage 1 → 5c) | ✅ **Complete & analytically verified** (<10 % error every stage) |
 | H–D sensitivity sweep (30 cases) | ✅ Operating point **H = 5, D = 0.5** |
 | Thesis Ch.2 / Ch.3 / Ch.4 / Ch.5 | ✅ Drafted (`docs/thesis/`) |
-| ESP32 firmware | ✅ Drafted (`vsg_controller.ino`) — not yet compiled/bench-tested |
+| ESP32 firmware | ✅ Refactored 2026-07-02 (task-based FPU-safe control, HW MCPWM fault, ACS712 auto-zero) — **compiles clean on core 2.0.17**, not yet bench-tested |
 | Hardware build | ⏳ Design locked, parts list ready (budget 7,200 THB) |
 | Ch.6 — real-vs-sim results | ⬜ After bench bring-up |
 

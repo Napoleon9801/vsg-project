@@ -6,6 +6,40 @@
  *   DESIGN POINT: **Option A (sim-faithful)** — locked 2026-05-30
  *   Verified end-to-end against MATLAB/Simulink Stage 5c (phase5c_tuned.m).
  *
+ *   ------------------------------------------------------------------------------
+ *   REFACTOR 2026-07-02 — ISR-safety + protection hardening (pre-bench review):
+ *     1. FPU-SAFE ARCHITECTURE: all float control math moved out of the timer ISR
+ *        into a max-priority task pinned to Core 1 (ESP32 FPU is NOT usable in
+ *        ISR context — the old design would panic with a Coprocessor exception).
+ *        The ISR now only does vTaskNotifyGiveFromISR(); jitter cost is a few µs.
+ *     2. IRAM-SAFETY: mcpwm_set_duty() / SPI transfers now run in task context.
+ *     3. GPIO34 PULL-UP FIX: GPIO 34–39 are input-only with NO internal pull-up.
+ *        pinMode(34, INPUT_PULLUP) silently does nothing. The LM393 output is
+ *        open-collector → an EXTERNAL 10 kΩ pull-up to 3.3 V is REQUIRED on the
+ *        board. (Added to wiring requirements; firmware uses plain INPUT.)
+ *     4. HARDWARE OCP PATH: LM393 (active-LOW) now drives the MCPWM hardware
+ *        fault input (one-shot, forces all PWM low in <1 µs, latched in silicon)
+ *        — matching the <1 µs claim in power_stage_options.md. The software
+ *        GPIO poll is kept as a backup layer.
+ *     5. ACS712 AUTO-ZERO: per-channel current-sensor offsets are measured at
+ *        boot (500 samples, gates disabled) instead of assuming exactly 2.5 V.
+ *        Boot halts in FAULT if any offset deviates > ±0.3 V from nominal.
+ *     6. SPI CLOCK: 20 MHz → 15 MHz. AD7606 max SCLK is specified lower at
+ *        V_DRIVE = 3.3 V (ESP32 logic) than at 5 V — VERIFY against the AD7606
+ *        datasheet timing table for your V_DRIVE; drop further if reads glitch.
+ *     7. TOOLCHAIN PIN: compile-time guard requires arduino-esp32 core 2.x
+ *        (legacy driver/mcpwm.h + old hw_timer API are removed in core 3.x).
+ *        Tested against core 2.0.17.
+ *
+ *   DRY-RUN MODE (first flash on a bare ESP32, no power stage attached):
+ *     Set DRY_RUN_NO_POWER_STAGE to 1. This (a) skips ACS712 calibration,
+ *     (b) skips the MCPWM hardware-fault hookup (GPIO34 floats on a bare board
+ *     and would instantly latch), (c) zeroes the measured i/v so the control
+ *     math runs on clean inputs, and (d) KEEPS EN_GATE LOW at all times.
+ *     Use it to verify loop timing (execution_time_us) and scope the PWM pins.
+ *     >>> SET BACK TO 0 BEFORE CONNECTING THE POWER STAGE. <<<
+ *   ------------------------------------------------------------------------------
+ *
  *   Target Hardware @ 40 V — supports TWO power stages via POWER_STAGE #define:
  *     A) discrete 6× IRF540N (100 V) + 3× IR2104 (bootstrap, ~520 ns dead-time)
  *        + LM393 OCP comparator                              [budget default]
@@ -22,11 +56,11 @@
  *     - Filter            Lf = 1.2 mH, Rf = 0.05 Ω, Cf = 10 µF  → f_res ≈ 1453 Hz
  *     - Damping resistor  Rd = 1 Ω (PHYSICAL, series with Cf — not in code)
  *     - Switching freq    f_sw   = 10 kHz  (carrier = control rate = 10 kHz)
- *     - Control rate      Ts     = 100 µs  (10 kHz ISR, pinned Core 1)
+ *     - Control rate      Ts     = 100 µs  (10 kHz task, pinned Core 1)
  *
  *   OUTER VSG LOOP (winner of Stage 5b H-D sweep):
  *     - H = 5 s, D = 0.5, R_p = 0.05 (P-f droop), R_q = 0.05 (Q-V droop)
- *     - Swing law (reverse-engineered + CSV-verified, see derivation below):
+ *     - Swing law (reverse-engineered + CSV-verified):
  *         inertia_coeff · dω/dt = [P_set_pu + (1 − ω/ω_s)/R_p] − P_e_pu − D·(ω − ω_s)
  *         inertia_coeff = 2H/ω_s = 0.0318310
  *       SS check (ΔP_pu=0.36): Δω_pu = −ΔP_pu/(1/R_p + D·ω_s) = −0.00203
@@ -39,10 +73,12 @@
  *     3. Cascaded dq control (matches Stage 5c):
  *        - Outer voltage PI (100 Hz BW) + cap-current decoupling → i_dq*
  *        - Inner current PI (1 kHz BW) + dq decoupling FF (∓ωLf·i) + load-V FF
- *     4. SPWM (sinusoidal) — matches the verified sim. (SVPWM min-max injection
- *        is a future optimisation; not needed since m = 0.70 has margin.)
- *     5. Multi-layer protection: HW nFAULT (DRV8302) + SW instantaneous OC trip
- *        + I²t thermal accumulator.
+ *     4. SPWM (sinusoidal) — matches the verified sim.
+ *     5. Multi-layer protection:
+ *          L0: MCPWM hardware fault (LM393 → F0, one-shot force-low, <1 µs)
+ *          L1: software GPIO poll of the same line (backup, ≤100 µs)
+ *          L2: software instantaneous OC trip
+ *          L3: I²t thermal accumulator
  *
  *   POWER STAGE NOTE (3× IR2104, one per half-bridge leg):
  *     Drive 3 MCPWM A-channels only — one PWM into each IR2104 IN pin. Each
@@ -64,8 +100,20 @@
 
 #include <Arduino.h>
 #include <SPI.h>
-#include <esp_intr_alloc.h>
+#include <esp_arduino_version.h>
 #include <driver/mcpwm.h>
+
+// ---- Toolchain guard: legacy MCPWM + hw_timer APIs used below exist only in 2.x
+#if ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(2, 0, 0) || \
+    ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(3, 0, 0)
+#error "This firmware requires arduino-esp32 core 2.x (tested on 2.0.17). Core 3.x removed driver/mcpwm.h and changed the hw_timer API."
+#endif
+
+// =================================================================================
+//  BUILD MODE — see DRY-RUN note in the header
+// =================================================================================
+#define DRY_RUN_NO_POWER_STAGE  1   // 1 = bare-ESP32 timing test (gates NEVER enabled)
+                                    // 0 = real power stage (calibration + HW fault armed)
 
 // =================================================================================
 //  POWER STAGE SELECTION
@@ -92,6 +140,8 @@
 //   A (IR2104) : EN_GATE = common SD/enable of the 3 drivers; OCP_FAULT = LM393 output
 //   B (DRV8302): EN_GATE = chip EN_GATE (active HIGH);        OCP_FAULT = chip nFAULT
 // NOTE (A): verify IR2104 SD polarity vs datasheet (enable vs shutdown level).
+// !! GPIO34 is input-only and has NO internal pull-up. LM393 output is
+// !! open-collector → EXTERNAL 10 kΩ pull-up to 3.3 V is REQUIRED on the board.
 #define EN_GATE_PIN        22   // gate-driver enable (remapped off GPIO12-MISO)
 #define OCP_FAULT_PIN      34   // input-only, active LOW (IR2104: LM393 / DRV8302: nFAULT)
 #if POWER_STAGE == POWER_STAGE_DRV8302
@@ -162,9 +212,16 @@ const float ONE_THIRD  = 0.33333333f;
 // --- ADC calibration scales ---
 // Voltage divider attenuates ×4 (R1=15k, R2=5k). AD7606 ±10 V range, 16-bit signed.
 // actual_volt = raw · (10/32768) · 4 = raw · (40/32768)
-const float VOLTAGE_SCALE = 40.0f / 32768.0f;
-// ACS712-20A: 100 mV/A, biased at 2.5 V (5 V VCC). [-05B was 185 mV/A — too small]
-const float ACS712_SENSITIVITY = 0.100f;
+const float ADC_LSB_VOLTS   = 10.0f / 32768.0f;   // AD7606 ±10 V range → volts at ADC pin
+const float V_DIVIDER_GAIN  = 4.0f;               // precision divider on voltage channels
+// ACS712-20A: 100 mV/A, biased at ~2.5 V (5 V VCC). [-05B was 185 mV/A — too small]
+const float ACS712_SENSITIVITY   = 0.100f;        // V/A
+const float ACS712_NOMINAL_BIAS  = 2.5f;          // V — replaced by boot auto-zero
+const float ACS712_BIAS_TOLERANCE = 0.3f;         // V — halt if measured offset outside
+
+// --- SPI clock: AD7606 max SCLK is lower at V_DRIVE = 3.3 V than at 5 V.
+//     15 MHz is a margin pick — VERIFY against the datasheet timing table.
+const uint32_t AD7606_SPI_HZ = 15000000;
 
 // =================================================================================
 //  SHARED INTER-CORE TELEMETRY
@@ -177,11 +234,12 @@ struct TelemetryData {
     float theta;
     float E;
     uint32_t execution_time_us;
+    uint32_t overrun_count;
     bool fault_state;
     const char* state_str;
 };
 
-volatile TelemetryData shared_telemetry;
+TelemetryData shared_telemetry;     // guarded by spinlock (critical sections imply barriers)
 portMUX_TYPE spinlock = portMUX_INITIALIZER_UNLOCKED;
 
 // --- System state machine ---
@@ -195,7 +253,7 @@ enum SystemState {
 volatile SystemState current_state = STATE_INIT;
 
 // =================================================================================
-//  CONTROLLER STATE (persistent in RAM)
+//  CONTROLLER STATE (persistent in RAM — touched ONLY by the control task)
 // =================================================================================
 float vsg_omega = 314.159265f;      // Virtual rotor speed (rad/s), init at ω_s
 float vsg_theta = 0.0f;             // Virtual rotor angle (rad)
@@ -212,18 +270,27 @@ float vq_integrator = 0.0f;
 // Protection
 float thermal_accumulator = 0.0f;
 
-// Telemetry downsample counter
-uint32_t isr_counter = 0;
+// ACS712 per-channel bias, measured at boot (auto-zero); nominal until calibrated
+float i_bias_v[3] = { ACS712_NOMINAL_BIAS, ACS712_NOMINAL_BIAS, ACS712_NOMINAL_BIAS };
+
+// Loop bookkeeping
+uint32_t loop_counter = 0;
+uint32_t overrun_count = 0;         // timer ticks missed while control step was late
 
 // Hardware SPI instance
 SPIClass* hspi = nullptr;
+
+// Control task handle — the timer ISR notifies this task every 100 µs
+TaskHandle_t control_task_handle = nullptr;
 
 // --- Forward declarations ---
 void trigger_hardware_trip();
 void init_pwm();
 void init_external_adc();
 void init_gpio();
-inline void read_external_adc(float &ia, float &ib, float &ic, float &va, float &vb, float &vc);
+bool calibrate_current_offsets();
+inline void read_ad7606_volts(float ch_volts[6]);
+inline void read_measurements(float &ia, float &ib, float &ic, float &va, float &vb, float &vc);
 
 // =================================================================================
 //  CLARKE / PARK TRANSFORMS (amplitude-invariant)
@@ -268,18 +335,30 @@ inline void spwm(float v_alpha, float v_beta, float vdc, float &da, float &db, f
 }
 
 // =================================================================================
-//  10 kHz CONTROL ISR (Core 1)
+//  10 kHz TIMER ISR — notify-only (FPU-safe: NO float math, NO flash calls here)
 // =================================================================================
-void IRAM_ATTR onTimerInterrupt() {
-    uint32_t start_time = esp_cpu_get_cycle_count();
-    isr_counter++;
+void IRAM_ATTR onControlTimer() {
+    BaseType_t hp_task_woken = pdFALSE;
+    vTaskNotifyGiveFromISR(control_task_handle, &hp_task_woken);
+    if (hp_task_woken == pdTRUE) portYIELD_FROM_ISR();
+}
 
-    // Hardware fault: LM393 OCP comparator output active LOW → shut down instantly
+// =================================================================================
+//  CONTROL STEP — runs in the max-priority Core-1 task, once per timer tick
+// =================================================================================
+void control_step() {
+    uint32_t start_cycles = ESP.getCycleCount();
+    loop_counter++;
+
+    // L1 backup poll of the OCP line (L0 = MCPWM hardware fault, already armed).
+    // Active LOW: LM393 (A) / nFAULT (B). Requires the external pull-up (GPIO34!).
+#if !DRY_RUN_NO_POWER_STAGE
     if (digitalRead(OCP_FAULT_PIN) == LOW) {
         current_state = STATE_FAULT;
         trigger_hardware_trip();
         return;
     }
+#endif
     if (current_state == STATE_FAULT) {
         trigger_hardware_trip();
         return;
@@ -288,15 +367,15 @@ void IRAM_ATTR onTimerInterrupt() {
     // 1. Simultaneous AD7606 sample
     float ia, ib, ic;
     float va, vb, vc;
-    read_external_adc(ia, ib, ic, va, vb, vc);
+    read_measurements(ia, ib, ic, va, vb, vc);
 
-    // 2. Protection — Layer 1: instantaneous overcurrent
-    if (fabs(ia) > I_TRIP_LIMIT || fabs(ib) > I_TRIP_LIMIT || fabs(ic) > I_TRIP_LIMIT) {
+    // 2. Protection — L2: instantaneous overcurrent
+    if (fabsf(ia) > I_TRIP_LIMIT || fabsf(ib) > I_TRIP_LIMIT || fabsf(ic) > I_TRIP_LIMIT) {
         current_state = STATE_FAULT;
         trigger_hardware_trip();
         return;
     }
-    // Protection — Layer 2: I²t thermal accumulator
+    // Protection — L3: I²t thermal accumulator
     float i_sq_avg = ONE_THIRD * (ia*ia + ib*ib + ic*ic);
     thermal_accumulator += Ts * (i_sq_avg - (thermal_accumulator / THERMAL_TAU));
     if (thermal_accumulator > THERMAL_TRIP) {
@@ -327,7 +406,7 @@ void IRAM_ATTR onTimerInterrupt() {
 
         // C. State machine: soft-start ramp vs running VSG dynamics
         if (current_state == STATE_SOFT_START) {
-            // Ramp E from 0 → V_SET over 2.0 s (20,000 ISR steps) at constant 50 Hz
+            // Ramp E from 0 → V_SET over 2.0 s (20,000 steps) at constant 50 Hz
             E_ramp += (V_SET / 20000.0f);
             if (E_ramp >= V_SET) {
                 E_ramp = V_SET;
@@ -411,10 +490,10 @@ void IRAM_ATTR onTimerInterrupt() {
         mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_OPR_A, duty_b * 100.0f);
         mcpwm_set_duty(MCPWM_UNIT_0, MCPWM_TIMER_2, MCPWM_OPR_A, duty_c * 100.0f);
 
-        // I. Telemetry to Core 0 (~100 Hz: every 100th ISR)
-        if (isr_counter % 100 == 0) {
+        // I. Publish telemetry snapshot (~100 Hz: every 100th step)
+        if (loop_counter % 100 == 0) {
             const char* state_name = (current_state == STATE_SOFT_START) ? "SOFT_START" : "RUNNING";
-            portENTER_CRITICAL_ISR(&spinlock);
+            portENTER_CRITICAL(&spinlock);
             shared_telemetry.ia = ia; shared_telemetry.ib = ib; shared_telemetry.ic = ic;
             shared_telemetry.va = va; shared_telemetry.vb = vb; shared_telemetry.vc = vc;
             shared_telemetry.P = vsg_P_filt;
@@ -422,18 +501,32 @@ void IRAM_ATTR onTimerInterrupt() {
             shared_telemetry.omega = omega;
             shared_telemetry.theta = vsg_theta;
             shared_telemetry.E = E;
-            shared_telemetry.execution_time_us = (esp_cpu_get_cycle_count() - start_time) / 240;
+            shared_telemetry.execution_time_us = (ESP.getCycleCount() - start_cycles) / 240;
+            shared_telemetry.overrun_count = overrun_count;
             shared_telemetry.fault_state = false;
             shared_telemetry.state_str = state_name;
-            portEXIT_CRITICAL_ISR(&spinlock);
+            portEXIT_CRITICAL(&spinlock);
         }
     }
 }
 
 // =================================================================================
-//  EMERGENCY SAFE SHUTDOWN
+//  CONTROL TASK — Core 1, max priority; woken by the 10 kHz timer ISR
+// =================================================================================
+void controlTask(void* parameter) {
+    while (true) {
+        // Blocks until the ISR notifies. A count > 1 means we missed tick(s).
+        uint32_t notif_count = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+        if (notif_count > 1) overrun_count += (notif_count - 1);
+        control_step();
+    }
+}
+
+// =================================================================================
+//  EMERGENCY SAFE SHUTDOWN  (task context)
 // =================================================================================
 void trigger_hardware_trip() {
+    // 0. (already done in silicon if L0 tripped: MCPWM one-shot fault latched low)
     // 1. Force all MCPWM outputs low
     mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A);
     mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_OPR_A);
@@ -442,10 +535,10 @@ void trigger_hardware_trip() {
     digitalWrite(EN_GATE_PIN, LOW);
     // 3. Latch fault
     current_state = STATE_FAULT;
-    portENTER_CRITICAL_ISR(&spinlock);
+    portENTER_CRITICAL(&spinlock);
     shared_telemetry.fault_state = true;
     shared_telemetry.state_str = "FAULT";
-    portEXIT_CRITICAL_ISR(&spinlock);
+    portEXIT_CRITICAL(&spinlock);
 }
 
 // =================================================================================
@@ -454,9 +547,11 @@ void trigger_hardware_trip() {
 void init_gpio() {
     pinMode(EN_GATE_PIN, OUTPUT);
     digitalWrite(EN_GATE_PIN, LOW);          // gate drivers disabled on boot (verify SD polarity for IR2104)
-    pinMode(OCP_FAULT_PIN, INPUT_PULLUP);    // active LOW (IR2104: LM393 / DRV8302: nFAULT)
+    // GPIO34 is input-only, NO internal pull-up exists — plain INPUT.
+    // The required 10 kΩ pull-up to 3.3 V must be ON THE BOARD (LM393 is open-collector).
+    pinMode(OCP_FAULT_PIN, INPUT);
 #if POWER_STAGE == POWER_STAGE_DRV8302
-    pinMode(DRV_nOCTW_PIN, INPUT_PULLUP);    // DRV8302 OC/temp warning
+    pinMode(DRV_nOCTW_PIN, INPUT_PULLUP);    // GPIO39 also has no internal pull-up — external required too
 #endif
 }
 
@@ -468,6 +563,9 @@ void init_pwm() {
 
     mcpwm_config_t pwm_config;
     pwm_config.frequency    = 10000;                  // 10 kHz switching (matches sim)
+    // NOTE: verify actual frequency on a scope — some IDF releases halve the
+    // output frequency in up-down (center-aligned) mode. If you measure 5 kHz,
+    // set frequency = 20000.
     pwm_config.cmpr_a       = 50.0;                   // 50 % initial duty
     pwm_config.cmpr_b       = 50.0;
     pwm_config.counter_mode = MCPWM_UP_DOWN_COUNTER;  // center-aligned (symmetric)
@@ -476,6 +574,21 @@ void init_pwm() {
     mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);
     mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_1, &pwm_config);
     mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_2, &pwm_config);
+
+#if !DRY_RUN_NO_POWER_STAGE
+    // L0 HARDWARE FAULT: LM393/nFAULT (active LOW) → MCPWM fault F0.
+    // One-shot mode: on trigger, silicon forces all outputs LOW and LATCHES
+    // until reboot (mcpwm_fault_deinit would clear it — we deliberately don't).
+    // Latency <1 µs, no CPU involvement — matches power_stage_options.md.
+    mcpwm_gpio_init(MCPWM_UNIT_0, MCPWM_FAULT_0, OCP_FAULT_PIN);
+    mcpwm_fault_init(MCPWM_UNIT_0, MCPWM_LOW_LEVEL_TGR, MCPWM_SELECT_F0);
+    mcpwm_fault_set_oneshot_mode(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_SELECT_F0,
+                                 MCPWM_ACTION_FORCE_LOW, MCPWM_ACTION_FORCE_LOW);
+    mcpwm_fault_set_oneshot_mode(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_SELECT_F0,
+                                 MCPWM_ACTION_FORCE_LOW, MCPWM_ACTION_FORCE_LOW);
+    mcpwm_fault_set_oneshot_mode(MCPWM_UNIT_0, MCPWM_TIMER_2, MCPWM_SELECT_F0,
+                                 MCPWM_ACTION_FORCE_LOW, MCPWM_ACTION_FORCE_LOW);
+#endif
 }
 
 void init_external_adc() {
@@ -487,11 +600,13 @@ void init_external_adc() {
 
     hspi = new SPIClass(HSPI);
     hspi->begin(SPI_SCK_PIN, SPI_MISO_PIN, SPI_MOSI_PIN, AD7606_CS_PIN);
-    hspi->beginTransaction(SPISettings(20000000, MSBFIRST, SPI_MODE0)); // 20 MHz
+    // Bus is exclusive to the AD7606 → hold the transaction open permanently.
+    hspi->beginTransaction(SPISettings(AD7606_SPI_HZ, MSBFIRST, SPI_MODE0));
 }
 
-// AD7606 simultaneous conversion + SPI read (channels 1-3 = i_abc, 4-6 = v_abc)
-inline void read_external_adc(float &ia, float &ib, float &ic, float &va, float &vb, float &vc) {
+// AD7606 simultaneous conversion + SPI read → volts AT THE ADC PIN for ch 1-6
+// (channels 1-3 = ACS712 outputs, channels 4-6 = divided phase voltages)
+inline void read_ad7606_volts(float ch_volts[6]) {
     // 1. Trigger conversion on all 8 channels (CONVST low pulse)
     digitalWrite(AD7606_CONVST_PIN, LOW);
     asm volatile("nop; nop; nop;");
@@ -507,29 +622,66 @@ inline void read_external_adc(float &ia, float &ib, float &ic, float &va, float 
     hspi->transferBytes(nullptr, raw_bytes, 12);
     digitalWrite(AD7606_CS_PIN, HIGH);
 
-    int16_t raw_ch1 = (int16_t)((raw_bytes[0]  << 8) | raw_bytes[1]);
-    int16_t raw_ch2 = (int16_t)((raw_bytes[2]  << 8) | raw_bytes[3]);
-    int16_t raw_ch3 = (int16_t)((raw_bytes[4]  << 8) | raw_bytes[5]);
-    int16_t raw_ch4 = (int16_t)((raw_bytes[6]  << 8) | raw_bytes[7]);
-    int16_t raw_ch5 = (int16_t)((raw_bytes[8]  << 8) | raw_bytes[9]);
-    int16_t raw_ch6 = (int16_t)((raw_bytes[10] << 8) | raw_bytes[11]);
+    for (int ch = 0; ch < 6; ch++) {
+        int16_t raw = (int16_t)((raw_bytes[2*ch] << 8) | raw_bytes[2*ch + 1]);
+        ch_volts[ch] = (float)raw * ADC_LSB_VOLTS;
+    }
+}
 
-    // Phase currents — ACS712-20A: V_adc = raw·(10/32768); I = (V_adc − 2.5)/0.100
-    float v_ch1 = (float)raw_ch1 * (10.0f / 32768.0f);
-    float v_ch2 = (float)raw_ch2 * (10.0f / 32768.0f);
-    float v_ch3 = (float)raw_ch3 * (10.0f / 32768.0f);
-    ia = (v_ch1 - 2.5f) / ACS712_SENSITIVITY;
-    ib = (v_ch2 - 2.5f) / ACS712_SENSITIVITY;
-    ic = (v_ch3 - 2.5f) / ACS712_SENSITIVITY;
+// Scaled measurements: phase currents (A) with per-channel auto-zeroed bias,
+// phase voltages (V) through the ×4 divider.
+inline void read_measurements(float &ia, float &ib, float &ic, float &va, float &vb, float &vc) {
+    float v[6];
+    read_ad7606_volts(v);
 
-    // Phase voltages — ×4 precision divider
-    va = (float)raw_ch4 * VOLTAGE_SCALE;
-    vb = (float)raw_ch5 * VOLTAGE_SCALE;
-    vc = (float)raw_ch6 * VOLTAGE_SCALE;
+    ia = (v[0] - i_bias_v[0]) / ACS712_SENSITIVITY;
+    ib = (v[1] - i_bias_v[1]) / ACS712_SENSITIVITY;
+    ic = (v[2] - i_bias_v[2]) / ACS712_SENSITIVITY;
+
+    va = v[3] * V_DIVIDER_GAIN;
+    vb = v[4] * V_DIVIDER_GAIN;
+    vc = v[5] * V_DIVIDER_GAIN;
+
+#if DRY_RUN_NO_POWER_STAGE
+    // Bare-board timing test: SPI read above keeps the timing realistic,
+    // but feed the control math clean zeros instead of floating-pin garbage.
+    ia = ib = ic = 0.0f;
+    va = vb = vc = 0.0f;
+#endif
 }
 
 // =================================================================================
-//  CORE 0 TELEMETRY TASK (10 Hz)
+//  ACS712 AUTO-ZERO — measure per-channel bias at boot (gates disabled, I = 0)
+// =================================================================================
+bool calibrate_current_offsets() {
+    const int N_SAMPLES = 500;
+    float sum[3] = { 0.0f, 0.0f, 0.0f };
+
+    for (int k = 0; k < N_SAMPLES; k++) {
+        float v[6];
+        read_ad7606_volts(v);
+        sum[0] += v[0];
+        sum[1] += v[1];
+        sum[2] += v[2];
+        delayMicroseconds(200);     // ~5 kHz sampling → 100 ms total
+    }
+
+    bool ok = true;
+    for (int ch = 0; ch < 3; ch++) {
+        i_bias_v[ch] = sum[ch] / (float)N_SAMPLES;
+        Serial.printf("  ACS712 ch%d bias = %.4f V (nominal %.1f V)\n",
+                      ch + 1, i_bias_v[ch], ACS712_NOMINAL_BIAS);
+        if (fabsf(i_bias_v[ch] - ACS712_NOMINAL_BIAS) > ACS712_BIAS_TOLERANCE) {
+            Serial.printf("  !! ch%d bias out of range (±%.1f V) — sensor missing/miswired?\n",
+                          ch + 1, ACS712_BIAS_TOLERANCE);
+            ok = false;
+        }
+    }
+    return ok;
+}
+
+// =================================================================================
+//  CORE 0 TELEMETRY TASK (10 Hz print rate; snapshot updated at 100 Hz)
 // =================================================================================
 void telemetryTask(void* parameter) {
     while (true) {
@@ -538,64 +690,85 @@ void telemetryTask(void* parameter) {
         local_data = shared_telemetry;
         portEXIT_CRITICAL(&spinlock);
 
+#if DRY_RUN_NO_POWER_STAGE
+        Serial.println("[DRY-RUN] Gates disabled, protection bypassed — DO NOT connect a power stage.");
+#endif
         if (local_data.fault_state) {
             Serial.println("!!! [EMERGENCY TRIP] OVERCURRENT / HARDWARE FAULT LATCHED !!!");
             Serial.println("Action: power down DC bus, check load + star grounding, then reset.");
         } else {
             Serial.printf("State: %s | P: %.2f W | Q: %.2f VAR | Freq: %.3f Hz | E: %.2f V\n",
-                          local_data.state_str, local_data.P, local_data.Q,
+                          local_data.state_str ? local_data.state_str : "INIT",
+                          local_data.P, local_data.Q,
                           local_data.omega / (2.0f * M_PI), local_data.E);
-            Serial.printf("  V_abc: [%.2f, %.2f, %.2f] V | I_abc: [%.3f, %.3f, %.3f] A | ISR: %u us\n",
+            Serial.printf("  V_abc: [%.2f, %.2f, %.2f] V | I_abc: [%.3f, %.3f, %.3f] A | step: %u us | overruns: %u\n",
                           local_data.va, local_data.vb, local_data.vc,
                           local_data.ia, local_data.ib, local_data.ic,
-                          local_data.execution_time_us);
+                          local_data.execution_time_us, local_data.overrun_count);
         }
         vTaskDelay(pdMS_TO_TICKS(100));   // 10 Hz
     }
 }
 
 // =================================================================================
-//  TIMER ISR WRAPPER
-// =================================================================================
-hw_timer_t* ctrl_timer = nullptr;
-void IRAM_ATTR onTimerWrapper() { onTimerInterrupt(); }
-
-// =================================================================================
 //  SETUP
 // =================================================================================
+hw_timer_t* ctrl_timer = nullptr;
+
 void setup() {
     Serial.begin(115200);
     delay(1000);
     Serial.println("==========================================================");
     Serial.println("  ESP32 Grid-Forming VSG — Option A (40V / 14V / 1.2mH-10uF)");
+    Serial.println("  Refactor 2026-07-02: task-based control, HW MCPWM fault");
+#if DRY_RUN_NO_POWER_STAGE
+    Serial.println("  *** DRY-RUN BUILD — gates disabled, no protection armed ***");
+#endif
     Serial.println("==========================================================");
 
     init_gpio();
     init_pwm();
     init_external_adc();
 
+    current_state = STATE_STANDBY;
+    Serial.println("STANDBY — settling power rails...");
+    delay(2000);
+
+#if !DRY_RUN_NO_POWER_STAGE
+    // Auto-zero the current sensors while the gates are still disabled (I = 0)
+    Serial.println("Calibrating ACS712 offsets (gates disabled)...");
+    if (!calibrate_current_offsets()) {
+        current_state = STATE_FAULT;
+        Serial.println("CALIBRATION FAILED — halting in FAULT. Fix sensing, then reset.");
+        while (true) vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+#endif
+
     // Telemetry task → Core 0
     xTaskCreatePinnedToCore(telemetryTask, "TelemetryTask", 4096, NULL, 1, NULL, 0);
 
-    current_state = STATE_STANDBY;
-    Serial.println("STANDBY — settling power rails before black-start...");
-    delay(2000);
+    // Control task → Core 1, max priority. MUST exist before the timer starts.
+    xTaskCreatePinnedToCore(controlTask, "VSGControl", 8192, NULL,
+                            configMAX_PRIORITIES - 1, &control_task_handle, 1);
 
+#if !DRY_RUN_NO_POWER_STAGE
     // Enable IR2104 gate drivers (common SD/enable; verify polarity)
     digitalWrite(EN_GATE_PIN, HIGH);
     delay(10);   // let bootstrap caps charge
+#endif
 
     current_state = STATE_SOFT_START;
     Serial.println("BLACK-START: 2-second soft EMF ramp (0 -> 14 V) at 50 Hz...");
 
-    // 10 kHz hardware timer on Core 1 (1 MHz tick, alarm every 100 ticks = 100 µs)
+    // 10 kHz hardware timer (1 MHz tick, alarm every 100 ticks = 100 µs).
+    // setup() runs on Core 1 → the timer ISR is allocated on Core 1.
     ctrl_timer = timerBegin(0, 80, true);
-    timerAttachInterrupt(ctrl_timer, &onTimerWrapper, true);
+    timerAttachInterrupt(ctrl_timer, &onControlTimer, true);
     timerAlarmWrite(ctrl_timer, 100, true);
     timerAlarmEnable(ctrl_timer);
 }
 
 void loop() {
-    // Core 1 runs the 10 kHz ISR; Core 0 runs FreeRTOS telemetry. Main loop idles.
+    // Core 1: timer ISR → VSGControl task (prio 24). Core 0: telemetry. Idle here.
     vTaskDelay(portMAX_DELAY);
 }
