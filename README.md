@@ -72,7 +72,7 @@ Same ESP32 control core, firmware, filter and sensing for both — picked in fir
 
 | | **A — discrete IRF540N + IR2104** *(default)* | **B — TI DRV8302 shield** |
 |---|---|---|
-| Cost | ~540 THB | ~1,000–1,500 THB |
+| Cost | ~585 THB | ~1,000–1,500 THB |
 | Blow-up recovery | ~20 THB / MOSFET | whole board |
 | Protection | LM393 OCP + IR2104 dead-time (~520 ns) | integrated (OCP / UVLO / dead-time) |
 | Best for | tight budget, self-funded repairs | speed, lower build risk |

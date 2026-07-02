@@ -61,7 +61,8 @@
 | gate resistor 22 Ω | | 6 | 10 |
 | LM393 + shunt + passives (OCP) | comparator | 1 ชุด | 80 |
 | pull-up 10 kΩ → 3.3 V (สาย OCP_FAULT) | **บังคับ** — GPIO34 ไม่มี internal pull-up และ LM393 เป็น open-collector | 1 | 5 |
-| **รวม** | | | **~545** |
+| buck LM2596 (40 → 12 V) | ราง VCC ของ IR2104 ×3 + LM393 (ไม่มีรางนี้ = ไดรเวอร์ไม่ทำงาน) | 1 | 40 |
+| **รวม** | | | **~585** |
 
 ### A.3 การป้องกัน
 - **Dead-time:** IR2104 ภายใน ~520 ns (ไม่พึ่งซอฟต์แวร์)
