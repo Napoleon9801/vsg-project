@@ -67,3 +67,4 @@ docs/notes/*.pdf
 # and superseded proposal docx drafts. Markdown/txt notes ARE tracked.
 docs/notes/*.pptx
 docs/notes/*.docx
+matlab/*.log
