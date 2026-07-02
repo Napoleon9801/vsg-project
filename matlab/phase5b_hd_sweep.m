@@ -293,7 +293,10 @@ meta = struct();
 meta.timestamp    = datestr(now, 'yyyy-mm-dd HH:MM:SS');
 meta.T_sim        = T_sim_sweep;
 meta.R_load_t     = R_load_t_sweep;
-meta.V_dc         = 48;
+meta.V_dc         = 40;  % metadata only — actual value baked into vsg_stage5a.slx
+                         % (rebuild via phase5a_switching_abc.m at 40 V first).
+                         % Per-unit sweep metrics are V_dc-invariant (duty =
+                         % 0.5 + v/V_dc cancels in the fundamental).
 meta.R_p          = 0.05;
 meta.f_base       = f_base;
 meta.P_base       = P_base;

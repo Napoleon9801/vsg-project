@@ -61,20 +61,25 @@
 %                         electrically decoupled at the AC side, so all
 %                         3-phase blocks vectorise cleanly.
 %
-%  ELECTRICAL DESIGN POINT  (same as Stage 4):
-%    V_dc      = 24 V
+%  ELECTRICAL DESIGN POINT  (locked hardware design, 2026-05-30):
+%    V_dc      = 40 V         (m = 14/20 = 0.70, linear SPWM)
 %    V_ac_peak = 14 V         (d-axis voltage setpoint)
 %    L_f       = 1.2 mH      C_f = 10 µF     →  f_res ≈ 1.45 kHz
-%    R_load    = 1.91 Ω      L_load = 1 mH   →  P ≈ 100 W, Q ≈ 16 VAR
+%    R_load    = 2.94 Ω      L_load = 1 mH   →  P ≈ 100 W (3-phase)
 %    f_sw      = 10 kHz       carrier period = 100 µs
 %
 %  DISTURBANCE: at t = 0.2 s, R_load drops to 0.7 × R_load
-%               (load impedance step ≈ +43 % current → ~+30 W active power)
+%               (load impedance step ≈ +43 % current → ~+40 W active power)
 %
-%  EXPECTED SS (post-disturb):
-%    P_meas ≈ 130 W   (Δ ≈ +30 W = +0.30 pu)
-%    Δf_droop = -R_p · ΔP · f_base = -0.05 · 0.30 · 50 = -0.75 Hz
-%    f_ss ≈ 49.25 Hz
+%  EXPECTED SS (post-disturb) — this baseline runs D = 0, so the pure
+%  droop relation applies (with D > 0 the D·ω_s term must be added,
+%  see phase5c_tuned.m):
+%    ΔP_pu ≈ +0.41 → Δf = -R_p · ΔP_pu · f_base ≈ -1.02 Hz
+%    f_ss ≈ 48.98 Hz
+%  CAVEAT: with D = 0 the droop-only swing settles much slower than
+%  T_sim = 1.5 s, so the final printed f (~49.23 Hz at t = 1.5 s) is a
+%  MID-TRANSIENT snapshot, not the SS value above. Use the matched rerun
+%  (phase5a_rerun_matched.m, T_sim = 3 s, D = 0.5) for SS comparisons.
 %
 %  Outputs:
 %      vsg_stage5a.slx
@@ -90,13 +95,14 @@
 
 % Electrical base
 %
-% V_dc changed from 24 V to 48 V on 2026-05-27 after Stage 5a discovered
-% that V_set = 14 V (peak) exceeded the linear SPWM range V_dc/2 = 12 V
-% of the 24 V design, causing overmodulation. With V_dc = 48 V the
-% modulation index drops to 14/24 = 0.58 — comfortable linear range,
-% no clamping, clean fundamental. 48 V matches the contingency BoM
-% option in proposal 66AOS02 and stays within the ≤60 V scope envelope.
-V_dc           = 48;             % DC bus (V)
+% V_dc history: 24 V → 48 V on 2026-05-27 (V_set = 14 V exceeded the
+% 24 V design's linear SPWM range V_dc/2 = 12 V, causing overmodulation).
+% 48 V → 40 V on 2026-05-30 when the hardware design point was locked
+% (design_point_reconciliation.md): m = 14/20 = 0.70, matches firmware.
+% NOTE: V_dc/2 is BAKED into the bridge gain + carrier amplitude of the
+% built .slx — phase5b_hd_sweep.m and phase5a_rerun_matched.m reuse that
+% model, so they inherit whatever V_dc this script was last built with.
+V_dc           = 40;             % DC bus (V) — locked hardware design point
 P_base         = 100;            % rated 3-phase active power (W)
 Q_base         = 100;            % rated 3-phase reactive power (VAR)
 f_base         = 50;             % Hz

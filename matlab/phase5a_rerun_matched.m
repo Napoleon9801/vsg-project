@@ -97,7 +97,8 @@ R_f          = 0.05;
 zeta_filter  = R_f/2 * sqrt(C_f/L_f);
 f_res        = 1/(2*pi*sqrt(L_f*C_f));
 f_sw         = 10e3;
-V_dc         = 48;
+V_dc         = 40;   % metadata only — actual value is baked into vsg_stage5a.slx;
+                     % valid only if phase5a_switching_abc.m was rebuilt at 40 V first
 V_set        = 14;
 P_base       = 100;
 Q_base       = 100;
