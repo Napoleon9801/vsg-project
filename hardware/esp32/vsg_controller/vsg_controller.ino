@@ -31,6 +31,37 @@
  *        (legacy driver/mcpwm.h + old hw_timer API are removed in core 3.x).
  *        Tested against core 2.0.17.
  *
+ *   ------------------------------------------------------------------------------
+ *   REVIEW 2026-07-02 -> FIXES 2026-07-26 (cross-model review: gpt-5.5 + Gemini):
+ *     A. L3 THERMAL LIMIT WAS A GUARANTEED NUISANCE TRIP. The old accumulator
+ *        integrated i_sq_avg itself with a TAU decay, settling at
+ *        i_sq_avg*TAU = 11.34*10 ~ 113 A^2*s at RATED load, against a 30 A^2*s
+ *        limit -> a healthy prototype tripped ~3.1 s after entering RUNNING.
+ *        Now an OVERLOAD integral: only current squared IN EXCESS of rated
+ *        accumulates, floored at zero, so rated load never accumulates.
+ *     B. ADC BUSY TIMEOUT WAS IGNORED. read_ad7606_volts() spun up to ~200 µs
+ *        (2 control periods) on an iteration counter and then read the SPI bus
+ *        anyway, feeding garbage into the control math with no trip. Now a
+ *        wall-clock timeout that returns false and forces FAULT.
+ *     C. GATE-ENABLE SEQUENCING. EN_GATE went HIGH (+10 ms) BEFORE the control
+ *        loop existed, with the generators still at the cmpr_a = 50 % init
+ *        value -> open-loop switching on a live bus. Outputs are now parked LOW
+ *        in init_pwm(), the control loop starts first (STANDBY writes no duty),
+ *        the fault line is checked, and only then are the drivers enabled.
+ *     D. SUB-100 µs FAULTS WERE INVISIBLE TO SOFTWARE. The silicon latches in
+ *        <1 µs, but a comparator pulse shorter than one control period is gone
+ *        by the next digitalRead() -> gates dead while the firmware still
+ *        reported RUNNING and kept winding up its integrators. The one-shot
+ *        latch is now read directly (operators[op].fh_status.fh_ost_on).
+ *        The public legacy API has no status call; clearing that latch needs a
+ *        posedge on fh_clr_ost, so mcpwm_set_duty() CANNOT clear it (verified
+ *        against hal/esp32/mcpwm_ll.h in core 2.0.17).
+ *     E. GPIO39 repeated the GPIO34 mistake: INPUT_PULLUP is a silent no-op on
+ *        34-39. Now plain INPUT (DRV8302 branch only).
+ *     F. Control-task creation is now checked; a failure halts with gates LOW
+ *        instead of letting the ISR notify a null task handle.
+ *   ------------------------------------------------------------------------------
+ *
  *   DRY-RUN MODE (first flash on a bare ESP32, no power stage attached):
  *     Set DRY_RUN_NO_POWER_STAGE to 1. This (a) skips ACS712 calibration,
  *     (b) skips the MCPWM hardware-fault hookup (GPIO34 floats on a bare board
@@ -102,6 +133,7 @@
 #include <SPI.h>
 #include <esp_arduino_version.h>
 #include <driver/mcpwm.h>
+#include <soc/mcpwm_struct.h>   // MCPWM0 register block — used to read the one-shot fault latch
 
 // ---- Toolchain guard: legacy MCPWM + hw_timer APIs used below exist only in 2.x
 #if ESP_ARDUINO_VERSION < ESP_ARDUINO_VERSION_VAL(2, 0, 0) || \
@@ -199,8 +231,17 @@ const float Iref_max = 10.0f;       // Max current reference amplitude (A)
 //  SOFTWARE PROTECTION  (Option A current levels: I_d ≈ 4.76 A nom, ~6.5 A on step)
 // =================================================================================
 const float I_TRIP_LIMIT = 10.0f;   // Instantaneous OC limit (A) — below ±20 A sensor
-const float THERMAL_TAU  = 10.0f;   // I²t integration time constant (s)
-const float THERMAL_TRIP = 30.0f;   // I²t thermal limit (A²·s) — tune on bench
+// L3 is an OVERLOAD integral, not an absolute I²t. It accumulates only the current
+// squared IN EXCESS of rated, so a healthy machine never accumulates at all.
+//   rated per-phase peak  I_pk = P_BASE/(1.5·V_SET) = 100/(1.5·14) = 4.762 A
+//   mean of squares at rated   = I_pk²/2            = 11.34 A²
+// The previous form integrated i_sq_avg itself with a TAU decay and settled at
+// i_sq_avg·TAU ≈ 113 A²·s at rated, tripping a 30 A²·s limit ~3.1 s into RUNNING.
+const float I_SQ_RATED   = 11.34f;  // A² — mean of squares of the 3 phases at rated load
+const float THERMAL_TRIP = 20.0f;   // A²·s of EXCESS energy above rated — tune on bench
+                                    //   1.5× rated current → trip in ~1.4 s
+                                    //   2.0× rated current → trip in ~0.6 s
+                                    // (L2 catches anything above 10 A instantly)
 const float LPF_CUTOFF_HZ = 5.0f;   // Power-measurement LPF cutoff (Hz)
 
 // --- Math constants ---
@@ -222,6 +263,11 @@ const float ACS712_BIAS_TOLERANCE = 0.3f;         // V — halt if measured offs
 // --- SPI clock: AD7606 max SCLK is lower at V_DRIVE = 3.3 V than at 5 V.
 //     15 MHz is a margin pick — VERIFY against the datasheet timing table.
 const uint32_t AD7606_SPI_HZ = 15000000;
+
+// BUSY-wait ceiling for one conversion. The AD7606 finishes in a few µs — VERIFY
+// t_CONV in the datasheet for your oversampling setting. 50 µs is half the 100 µs
+// control period, so hitting it means the ADC is absent or wedged, not merely slow.
+const uint32_t ADC_BUSY_TIMEOUT_US = 50;
 
 // =================================================================================
 //  SHARED INTER-CORE TELEMETRY
@@ -289,8 +335,22 @@ void init_pwm();
 void init_external_adc();
 void init_gpio();
 bool calibrate_current_offsets();
-inline void read_ad7606_volts(float ch_volts[6]);
-inline void read_measurements(float &ia, float &ib, float &ic, float &va, float &vb, float &vc);
+inline bool read_ad7606_volts(float ch_volts[6]);
+inline bool read_measurements(float &ia, float &ib, float &ic, float &va, float &vb, float &vc);
+
+// =================================================================================
+//  L0 STATUS READ — is the MCPWM one-shot fault latch currently asserted?
+//  The public legacy API (mcpwm_fault_init / _set_oneshot_mode / _set_cyc_mode /
+//  _deinit) has NO status call, but the latch is just a register bit. Clearing it
+//  requires a posedge on fh_clr_ost (see mcpwm_ll_fault_clear_ost in
+//  hal/esp32/mcpwm_ll.h), so mcpwm_set_duty() cannot clear it — checked against
+//  core 2.0.17. Operators 0-2 correspond to MCPWM_TIMER_0-2.
+// =================================================================================
+inline bool mcpwm_ost_latched() {
+    return MCPWM0.operators[0].fh_status.fh_ost_on ||
+           MCPWM0.operators[1].fh_status.fh_ost_on ||
+           MCPWM0.operators[2].fh_status.fh_ost_on;
+}
 
 // =================================================================================
 //  CLARKE / PARK TRANSFORMS (amplitude-invariant)
@@ -353,7 +413,11 @@ void control_step() {
     // L1 backup poll of the OCP line (L0 = MCPWM hardware fault, already armed).
     // Active LOW: LM393 (A) / nFAULT (B). Requires the external pull-up (GPIO34!).
 #if !DRY_RUN_NO_POWER_STAGE
-    if (digitalRead(OCP_FAULT_PIN) == LOW) {
+    // The level poll ALONE misses any fault shorter than one control period: the
+    // silicon latches in <1 µs, but a 5 µs comparator pulse is already gone by the
+    // next digitalRead() — gates dead, firmware still in RUNNING, no alert. Reading
+    // the one-shot latch closes that window; the poll stays as the backup layer.
+    if (mcpwm_ost_latched() || digitalRead(OCP_FAULT_PIN) == LOW) {
         current_state = STATE_FAULT;
         trigger_hardware_trip();
         return;
@@ -367,7 +431,13 @@ void control_step() {
     // 1. Simultaneous AD7606 sample
     float ia, ib, ic;
     float va, vb, vc;
-    read_measurements(ia, ib, ic, va, vb, vc);
+    if (!read_measurements(ia, ib, ic, va, vb, vc)) {
+        // Conversion never completed → feedback is unknown. Never keep switching
+        // on stale/garbage measurements.
+        current_state = STATE_FAULT;
+        trigger_hardware_trip();
+        return;
+    }
 
     // 2. Protection — L2: instantaneous overcurrent
     if (fabsf(ia) > I_TRIP_LIMIT || fabsf(ib) > I_TRIP_LIMIT || fabsf(ic) > I_TRIP_LIMIT) {
@@ -375,9 +445,12 @@ void control_step() {
         trigger_hardware_trip();
         return;
     }
-    // Protection — L3: I²t thermal accumulator
+    // Protection — L3: overload integral. Only current in EXCESS of rated
+    // accumulates; a negative excess cools it back down, floored at zero so it
+    // cannot bank credit during light load.
     float i_sq_avg = ONE_THIRD * (ia*ia + ib*ib + ic*ic);
-    thermal_accumulator += Ts * (i_sq_avg - (thermal_accumulator / THERMAL_TAU));
+    thermal_accumulator += Ts * (i_sq_avg - I_SQ_RATED);
+    if (thermal_accumulator < 0.0f) thermal_accumulator = 0.0f;
     if (thermal_accumulator > THERMAL_TRIP) {
         current_state = STATE_FAULT;
         trigger_hardware_trip();
@@ -551,7 +624,10 @@ void init_gpio() {
     // The required 10 kΩ pull-up to 3.3 V must be ON THE BOARD (LM393 is open-collector).
     pinMode(OCP_FAULT_PIN, INPUT);
 #if POWER_STAGE == POWER_STAGE_DRV8302
-    pinMode(DRV_nOCTW_PIN, INPUT_PULLUP);    // GPIO39 also has no internal pull-up — external required too
+    // GPIO39, like GPIO34, is input-only with NO internal pull-up: INPUT_PULLUP is
+    // a silent no-op here (the exact trap fix #3 above was about). The pull-up for
+    // nOCTW must be on the board.
+    pinMode(DRV_nOCTW_PIN, INPUT);
 #endif
 }
 
@@ -574,6 +650,17 @@ void init_pwm() {
     mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_0, &pwm_config);
     mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_1, &pwm_config);
     mcpwm_init(MCPWM_UNIT_0, MCPWM_TIMER_2, &pwm_config);
+
+    // Park the outputs LOW until the control loop owns them. Without this the
+    // generators sit at the cmpr_a = 50 % init value, so enabling the gate drivers
+    // before the first mcpwm_set_duty() switches the bridge open-loop on a live bus.
+    // Parked LOW also means all three IR2104 low-side devices are on, which is the
+    // state that charges their bootstrap capacitors — exactly what the delay(10)
+    // after EN_GATE is for. A later mcpwm_set_duty() clears this force, which is
+    // precisely the hand-over we want when SOFT_START begins.
+    mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_0, MCPWM_OPR_A);
+    mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_1, MCPWM_OPR_A);
+    mcpwm_set_signal_low(MCPWM_UNIT_0, MCPWM_TIMER_2, MCPWM_OPR_A);
 
 #if !DRY_RUN_NO_POWER_STAGE
     // L0 HARDWARE FAULT: LM393/nFAULT (active LOW) → MCPWM fault F0.
@@ -606,15 +693,21 @@ void init_external_adc() {
 
 // AD7606 simultaneous conversion + SPI read → volts AT THE ADC PIN for ch 1-6
 // (channels 1-3 = ACS712 outputs, channels 4-6 = divided phase voltages)
-inline void read_ad7606_volts(float ch_volts[6]) {
+// Returns false if the conversion never completed — the caller MUST treat that as
+// a fault instead of using the buffer.
+inline bool read_ad7606_volts(float ch_volts[6]) {
     // 1. Trigger conversion on all 8 channels (CONVST low pulse)
     digitalWrite(AD7606_CONVST_PIN, LOW);
     asm volatile("nop; nop; nop;");
     digitalWrite(AD7606_CONVST_PIN, HIGH);
 
-    // 2. Wait for BUSY low (with timeout)
-    int timeout = 1000;
-    while (digitalRead(AD7606_BUSY_PIN) == HIGH && timeout > 0) timeout--;
+    // 2. Wait for BUSY low — wall-clock bounded, and the result is now ACTED ON.
+    //    (The old `int timeout = 1000` spin was worth ~200 µs = 2 control periods
+    //     and its expiry was silently ignored.)
+    uint32_t t_start = micros();
+    while (digitalRead(AD7606_BUSY_PIN) == HIGH) {
+        if ((micros() - t_start) > ADC_BUSY_TIMEOUT_US) return false;
+    }
 
     // 3. Read 6 channels (12 bytes, MSB-first)
     uint8_t raw_bytes[12] = {0};
@@ -626,13 +719,27 @@ inline void read_ad7606_volts(float ch_volts[6]) {
         int16_t raw = (int16_t)((raw_bytes[2*ch] << 8) | raw_bytes[2*ch + 1]);
         ch_volts[ch] = (float)raw * ADC_LSB_VOLTS;
     }
+    return true;
 }
 
 // Scaled measurements: phase currents (A) with per-channel auto-zeroed bias,
 // phase voltages (V) through the ×4 divider.
-inline void read_measurements(float &ia, float &ib, float &ic, float &va, float &vb, float &vc) {
+// Returns false only when the ADC failed to convert (never in DRY-RUN — see below).
+inline bool read_measurements(float &ia, float &ib, float &ic, float &va, float &vb, float &vc) {
     float v[6];
-    read_ad7606_volts(v);
+    bool adc_ok = read_ad7606_volts(v);
+
+#if DRY_RUN_NO_POWER_STAGE
+    // Bare board: no AD7606 is attached, so BUSY floats and a timeout is EXPECTED.
+    // It must not trip, or the timing test could never run. The SPI transfer above
+    // still executes so loop timing stays realistic; the control math gets clean
+    // zeros instead of floating-pin garbage.
+    (void)adc_ok;
+    ia = ib = ic = 0.0f;
+    va = vb = vc = 0.0f;
+    return true;
+#else
+    if (!adc_ok) return false;
 
     ia = (v[0] - i_bias_v[0]) / ACS712_SENSITIVITY;
     ib = (v[1] - i_bias_v[1]) / ACS712_SENSITIVITY;
@@ -641,12 +748,7 @@ inline void read_measurements(float &ia, float &ib, float &ic, float &va, float 
     va = v[3] * V_DIVIDER_GAIN;
     vb = v[4] * V_DIVIDER_GAIN;
     vc = v[5] * V_DIVIDER_GAIN;
-
-#if DRY_RUN_NO_POWER_STAGE
-    // Bare-board timing test: SPI read above keeps the timing realistic,
-    // but feed the control math clean zeros instead of floating-pin garbage.
-    ia = ib = ic = 0.0f;
-    va = vb = vc = 0.0f;
+    return true;
 #endif
 }
 
@@ -659,7 +761,10 @@ bool calibrate_current_offsets() {
 
     for (int k = 0; k < N_SAMPLES; k++) {
         float v[6];
-        read_ad7606_volts(v);
+        if (!read_ad7606_volts(v)) {
+            Serial.println("  !! AD7606 BUSY timeout during calibration — ADC missing or miswired.");
+            return false;
+        }
         sum[0] += v[0];
         sum[1] += v[1];
         sum[2] += v[2];
@@ -747,25 +852,51 @@ void setup() {
     // Telemetry task → Core 0
     xTaskCreatePinnedToCore(telemetryTask, "TelemetryTask", 4096, NULL, 1, NULL, 0);
 
-    // Control task → Core 1, max priority. MUST exist before the timer starts.
-    xTaskCreatePinnedToCore(controlTask, "VSGControl", 8192, NULL,
-                            configMAX_PRIORITIES - 1, &control_task_handle, 1);
+    // Control task → Core 1, max priority. MUST exist before the timer starts, or
+    // the ISR notifies a null handle and panics — so the result is checked.
+    BaseType_t ctrl_created = xTaskCreatePinnedToCore(controlTask, "VSGControl", 8192, NULL,
+                                                      configMAX_PRIORITIES - 1,
+                                                      &control_task_handle, 1);
+    if (ctrl_created != pdPASS || control_task_handle == nullptr) {
+        digitalWrite(EN_GATE_PIN, LOW);
+        current_state = STATE_FAULT;
+        Serial.println("FATAL: control task creation failed — halted with gates disabled.");
+        while (true) vTaskDelay(pdMS_TO_TICKS(1000));
+    }
 
-#if !DRY_RUN_NO_POWER_STAGE
-    // Enable IR2104 gate drivers (common SD/enable; verify polarity)
-    digitalWrite(EN_GATE_PIN, HIGH);
-    delay(10);   // let bootstrap caps charge
-#endif
-
-    current_state = STATE_SOFT_START;
-    Serial.println("BLACK-START: 2-second soft EMF ramp (0 -> 14 V) at 50 Hz...");
-
+    // --- ORDER MATTERS BELOW (fix C, 2026-07-26) ---------------------------------
+    // Start the control loop FIRST, while the state is still STANDBY: control_step()
+    // then runs all protection layers every 100 µs but takes the SOFT_START/RUNNING
+    // branch — and therefore writes no duty — so the outputs stay parked LOW from
+    // init_pwm(). Only after protection is live do we energize the drivers.
     // 10 kHz hardware timer (1 MHz tick, alarm every 100 ticks = 100 µs).
     // setup() runs on Core 1 → the timer ISR is allocated on Core 1.
     ctrl_timer = timerBegin(0, 80, true);
     timerAttachInterrupt(ctrl_timer, &onControlTimer, true);
     timerAlarmWrite(ctrl_timer, 100, true);
     timerAlarmEnable(ctrl_timer);
+
+#if !DRY_RUN_NO_POWER_STAGE
+    // The fault line must be idle-HIGH before anything is energized. A LOW here
+    // means the comparator is already tripped, the external pull-up is missing, or
+    // the latch is set — never enable the drivers into that.
+    if (mcpwm_ost_latched() || digitalRead(OCP_FAULT_PIN) == LOW) {
+        digitalWrite(EN_GATE_PIN, LOW);
+        current_state = STATE_FAULT;
+        Serial.println("FAULT LINE ACTIVE AT BOOT — gates stay disabled.");
+        Serial.println("Check the LM393 / nFAULT line and the 10 kOhm pull-up on GPIO34, then reset.");
+        while (true) vTaskDelay(pdMS_TO_TICKS(1000));
+    }
+
+    // Enable IR2104 gate drivers (common SD/enable; verify polarity). Outputs are
+    // still parked LOW, so this is a known safe state, and it is the state that
+    // charges the bootstrap capacitors.
+    digitalWrite(EN_GATE_PIN, HIGH);
+    delay(10);   // let bootstrap caps charge
+#endif
+
+    Serial.println("BLACK-START: 2-second soft EMF ramp (0 -> 14 V) at 50 Hz...");
+    current_state = STATE_SOFT_START;   // hands the outputs over to the controller
 }
 
 void loop() {
