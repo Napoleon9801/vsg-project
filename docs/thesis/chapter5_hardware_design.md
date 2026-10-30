@@ -2,313 +2,165 @@
 # (Hardware Prototype Design)
 
 > **ผู้เขียน:** ชินวัตร ดุมกลาง (Napoleon)
-> **โครงงาน:** Virtual Synchronous Generator (VSG) for Inverter Control
-> **สถานะ:** **Draft v1 — ร่างอัตโนมัติ (autonomous draft) 2026-05-30** เรียบเรียงจากเอกสารวิจัยฮาร์ดแวร์ที่มีอยู่ (`hardware_safety_handbook.md`, `hw_prototype_research_01.md`, `vsg_esp32_implementation_guide.md`) และเฟิร์มแวร์ `vsg_controller.ino`
-> **⚠ ต้องตรวจทาน:** หัวข้อ 5.10 รวบรวม **ประเด็นความไม่สอดคล้องของการออกแบบ** ที่ต้องให้ Napoleon ตัดสินใจก่อนสั่งซื้อ/สร้างจริง — โดยเฉพาะจุดออกแบบ 24 V vs 48 V ที่ยังไม่ลงตัวระหว่างแบบจำลองกับฮาร์ดแวร์
+> **สถานะ:** ฉบับทบทวน 2026-10-20 — จุดออกแบบ 40 V / 100 W; hardware qualification PENDING
 
----
+บทนี้แปลงโครงสร้างควบคุมที่ศึกษาใน simulation เป็นข้อกำหนดฮาร์ดแวร์สำหรับ islanded VSG การ compile หรือผลจำลองเฉพาะกรณีไม่ใช่การรับรองวงจรจริง เอกสารนี้ไม่ใช่ approved assembly drawing และไม่รายงาน bench/HIL ที่ยังไม่ได้ทำ
 
-บทที่ 4 ได้ยืนยันความถูกต้องของสถาปัตยกรรมควบคุม VSG บนแบบจำลอง MATLAB/Simulink ทุกระยะ (Stage 1–5c) บทนี้นำเสนอการแปลงผลการออกแบบเชิงควบคุมที่ตรวจสอบแล้วนั้นไปสู่ **ต้นแบบฮาร์ดแวร์ระดับแรงดันต่ำที่ปลอดภัย** ซึ่งควบคุมด้วยไมโครคอนโทรลเลอร์ ESP32 ในโหมดสร้างกริด (grid-forming / islanded) ล้วน โดยครอบคลุม (1) หลักการปรับสเกลพารามิเตอร์ต่อหน่วย (2) ภาคกำลังและเกตไดรเวอร์ (3) ระบบวัดและรับสัญญาณ (4) วงจรกรองและบัสกระแสตรง (5) ระบบป้องกัน (6) เฟิร์มแวร์ ESP32 และ (7) ลำดับการเริ่มระบบและความปลอดภัย
+เอกสารอ้างอิงจุดออกแบบปัจจุบัน: `D:\workspace\engineering\vsg-project\docs\notes\design_baseline.md`
 
----
+ข้อกำหนด shutdown และหลักฐานตรวจรับ: `D:\workspace\engineering\vsg-project\docs\notes\hardware_shutdown_and_bench_plan.md`
 
-## 5.1 ภาพรวมสถาปัตยกรรมฮาร์ดแวร์
-### (Hardware Architecture Overview)
+## 5.1 ภาพรวมสถาปัตยกรรม
 
-ระบบต้นแบบทำงานในโหมดสร้างกริดล้วน กล่าวคืออินเวอร์เตอร์ทำหน้าที่เป็นแหล่งจ่ายแรงดันที่กำหนดความถี่ ($\omega$) และแอมพลิจูดแรงดัน ($E$) ให้แก่โหลดสามเฟสแบบสแตนด์อะโลน โดยไม่เชื่อมต่อกับกริดสาธารณูปโภค จึงไม่ต้องใช้ Phase-Locked Loop (PLL) หรือรีเลย์ซิงโครไนซ์ ลดทั้งต้นทุน ความซับซ้อน และอันตรายลงอย่างมีนัยสำคัญ
+แหล่งจ่าย DC ที่ปรับค่าและจำกัดกระแสได้จ่ายผ่าน pre-charge/bypass และ DC-link ไปยังสะพานสามเฟส ตัวเหนี่ยวนำ Lf ต่ออนุกรมแต่ละเฟส; แขนง Cf อนุกรม Rd ต่อจากจุดเอาต์พุตไปยัง neutral ของฟิลเตอร์ตามแบบจำลอง โหลดต่อที่จุดเอาต์พุต ไม่ได้ต่ออนุกรมผ่าน Cf/Rd ระบบ AD7606 วัดสัญญาณที่ผ่าน conditioning แล้วส่งให้ ESP32
 
-โครงสร้างฮาร์ดแวร์แบ่งเป็น 5 ส่วนหลัก:
+BESS เป็นแหล่งพลังงานตามขอบเขตโครงงาน แต่ interface ยังต้องออกแบบ/qualify จึงไม่แสดง battery direct-parallel เป็นวงจรพร้อมสร้าง ใช้ auxiliary supply ที่ควบคุมแรงดันแยกสำหรับการทดสอบแรก
 
-1. **บัสกระแสตรง (DC Bus)** — แหล่งจ่าย DC + แบตเตอรี่ LiFePO4 บัฟเฟอร์ + ตัวเก็บประจุบัส + วงจร pre-charge
-2. **ภาคกำลัง (Power Stage)** — เกตไดรเวอร์ + สะพาน MOSFET สามเฟส 2 ระดับ
-3. **ภาคควบคุม (Controller)** — ESP32 (MCPWM 10 kHz) + ADC ภายนอก AD7606
-4. **วงจรกรอง (AC Filter)** — ฟิลเตอร์ LC สามเฟส + ตัวต้านทานหน่วง $R_d$
-5. **โหลด (Load)** — รีโอสแตตสามเฟสต่อแบบสตาร์สมดุล
+## 5.2 ฐาน per-unit และขอบเขตการเทียบระบบ
 
-```
-[DC PSU]──┐
-          ├─[Pre-charge R + bypass SW]─[C_bus]─┬─[3φ MOSFET Bridge]─[L_f]─┬─[C_f+R_d]─[3φ Load Y]
-[LiFePO4]─┘                                    │         ▲                └── feedback ──┐
-                                          [TVS P6KE60A]   │ gate (3-PWM)                 │
-                                                    [Gate Driver]                        │
-                                                          ▲ PWM / EN / nFAULT            │
-                                                       [ESP32 MCPWM]◀── SPI ──[AD7606]◀──┘
-                                                                         (V_abc, I_abc, V_dc)
-```
+**ตารางที่ 5.1** ค่าฐานของต้นแบบ 100 VA, 50 Hz
 
----
-
-## 5.2 หลักการปรับสเกลพารามิเตอร์ต่อหน่วย
-### (Per-Unit Parameter Scaling — Core Design Principle)
-
-หัวใจของการออกแบบคือการรักษาให้**พลวัตต่อหน่วย (pu) ของต้นแบบ 100 VA เหมือนกับระบบกำลังจริงระดับ 10 kVA ทุกประการ** เพื่อให้ผลการทดลองบนโต๊ะปฏิบัติการสามารถอ้างอิงกลับสู่ระบบจริงได้ กำหนดดัชนี $H$ = ระบบกำลังสูง (10 kVA, 400 V) และ $L$ = ต้นแบบ (100 VA, 24 V)
-
-**ตารางที่ 5.1** ค่าฐาน (base values) ของสองระบบ (จาก `hardware_safety_handbook.md` §2.1)
-
-| พารามิเตอร์ | ระบบสูง (H) | ต้นแบบ (L) | อัตราส่วน L/H |
-|---|---|---|---|
-| กำลังปรากฏ $S_{base}$ | 10,000 VA | 100 VA | 0.01 |
-| แรงดันสาย $V_{base}$ | 400 V | 24 V | 0.06 |
-| กระแสฐาน $I_{base}$ | 14.43 A | 2.41 A | 0.167 |
-| อิมพีแดนซ์ฐาน $Z_{base}$ | 16 Ω | 5.76 Ω | 0.36 |
-| เหนี่ยวนำฐาน $L_{base}$ | 50.93 mH | 18.34 mH | 0.36 |
-| ความจุฐาน $C_{base}$ | 198.94 µF | 552.62 µF | 2.778 |
-
-### 5.2.1 การพิสูจน์สมมูลพลวัต (Dynamic Equivalence Proof)
-
-สมการสวิงเชิงกายภาพ $J\omega_0\,d\omega/dt = P_m - P_e - D_p(\omega-\omega_0)$ เมื่อหารด้วย $S_{base}$ และแปลงเป็นต่อหน่วย ให้:
-
-$$2H\frac{d\omega_{pu}}{dt} = P_{m,pu} - P_{e,pu} - D_{pu}(\omega_{pu}-1), \qquad 2H = \frac{J\omega_0^2}{S_{base}},\quad D_{pu}=\frac{D_p\omega_0}{S_{base}}$$
-
-เพื่อให้ $H_L = H_H$ และ $D_{pu,L}=D_{pu,H}$ ต้องสเกลพารามิเตอร์เชิงกายภาพ:
-
-$$J_L = J_H\frac{S_{base,L}}{S_{base,H}} = 0.01\,J_H, \qquad D_{p,L} = 0.01\,D_{p,H}$$
-
-เมื่อแทนกลับเข้าสมการกายภาพของระบบ L จะได้สมการต่อหน่วยที่**เหมือนกับระบบ H ทุกประการ** ดังนั้น ผลตอบสนองชั่วครู่ของความถี่ RoCoF และเวลาเข้าที่ในหน่วยต่อหน่วยจึงเท่ากัน นี่คือเหตุผลเชิงทฤษฎีที่ทำให้ต้นแบบ 100 VA เป็นเครื่องมือพิสูจน์ที่ถูกต้องสำหรับพฤติกรรม VSG ระดับ MW
-
-### 5.2.2 การสเกลพารามิเตอร์ควบคุมและฟิลเตอร์
-
-**ตารางที่ 5.2** สรุปกฎการสเกลพารามิเตอร์ (จาก handbook §2.3–2.5)
-
-| พารามิเตอร์ | กฎการสเกล (L เทียบ H) | ตัวคูณ |
+| ปริมาณ | นิยาม | ค่า |
 |---|---|---|
-| ความเฉื่อยกายภาพ $J$ | $\times (S_L/S_H)$ | 0.01 |
-| การหน่วง $D_p$ | $\times (S_L/S_H)$ | 0.01 |
-| ดรูปแรงดัน $K_q$ | $\times (V_L/V_H)(S_H/S_L)$ | **6** |
-| PI ลูปกระแส $K_{p,i}, K_{i,i}$ | $\times (Z_L/Z_H)$ | 0.36 |
-| PI ลูปแรงดัน $K_{p,v}, K_{i,v}$ | $\times (Z_H/Z_L)$ | 2.778 |
-| ฟิลเตอร์ $L_f$ (ที่ 0.08 pu) | $L_{f,pu}\times L_{base,L}$ | ≈ 1.47 mH |
-| ฟิลเตอร์ $C_f$ (ที่ 0.05 pu) | $C_{f,pu}\times C_{base,L}$ | ≈ 27.6 µF |
+| Vphase_peak | ค่าอ้างอิง dq | 14 V |
+| Vphase_RMS | 14/sqrt(2) | 9.8995 V |
+| Vbase_LL | sqrt(3/2)*14 | 17.1464 V RMS |
+| Ibase | 100/(sqrt(3)*Vbase_LL) | 3.3672 A RMS |
+| Zbase | Vbase_LL²/100 | 2.94 Ω |
+| Lbase | Zbase/(2*pi*50) | 9.3583 mH |
+| Cbase | 1/(2*pi*50*Zbase) | 1082.69 µF |
 
-> **ข้อสังเกตสำคัญ:** ค่าดรูปแรงดัน $K_q$ ต้องสเกล **ขึ้น 6 เท่า** เพราะแรงดันสเกลลงช้ากว่ากำลัง (0.06 เทียบ 0.01) — เป็นกับดักที่พบบ่อยในการออกแบบต้นแบบแรงดันต่ำ
+**ตารางที่ 5.2** ค่าออกแบบที่ใช้กับฐานนี้
 
----
+| พารามิเตอร์ | ค่า |
+|---|---|
+| Vdc / Pnom / f | 40 V / 100 W / 50 Hz |
+| Lf / Rf | 1.2 mH (0.1282 pu) / 0.05 Ω |
+| Cf / Rd | 10 µF (0.009236 pu) / 1 Ω อนุกรม Cf |
+| H / D / Rp / Rq | 5 s / 0.5 / 0.05 / 0.05 |
+| PWM/control target | 10 kHz |
 
-## 5.3 ภาคกำลังและเกตไดรเวอร์
-### (Power Stage & Gate Driver)
+แบบจำลองใช้กำลัง pu แต่ omega เป็น rad/s:
 
-> **หมายเหตุงบประมาณ (2026-05-30):** ภายใต้งบ 7,200 ฿ ระบบหลักเลือก**ภาคกำลังดิสครีต IRF540N + IR2104** (Ch.3 §3.2) เพราะฟื้นจากความเสียหายได้ถูก บอร์ด DRV8302 ในหัวข้อนี้จึงเป็น**ทางเลือกเมื่อมีงบเพิ่ม** (ความสะดวก/ป้องกันในตัว) ส่วน IR2104 ให้ dead-time ฮาร์ดแวร์ ~520 ns กัน shoot-through เช่นเดียวกัน
+$$\frac{2H}{\omega_s}\dot\omega=P_{set,pu}+\frac{1-\omega/\omega_s}{R_p}-P_{e,pu}-D(\omega-\omega_s)$$
 
-### 5.3.1 ทางเลือก B (เมื่อมีงบเพิ่ม): โมดูลสำเร็จรูป DRV8302
+แปลงเป็น normalized frequency แล้ว damping เท่ากับ D*omega_s ทำให้ $R_{eff}=1/(1/R_p+D\omega_s)=0.005647$ pu/pu หรือประมาณ 0.565% Rp = 0.05 เป็น governor parameter เท่านั้น ฐาน AC นี้ไม่เท่ากับ DC bus และไม่ใช่ฐาน AC 24 V ของร่างเดิม
 
-เพื่อหลีกเลี่ยงการออกแบบวงจรขับเกตและสะพาน MOSFET จากศูนย์ ใช้บอร์ดสำเร็จ **TI DRV8302 3-phase MOSFET shield** ซึ่งรวมคุณสมบัติ:
-- ขับ MOSFET N-channel ภายนอกได้ถึง 60 V, กระแสเกต 1.7 A source / 2.3 A sink
-- Buck regulator ในตัว (ลด 24–48 V → 5 V จ่าย ESP32)
-- Current-shunt amplifier 2 ช่อง (เกน 10/20/40/80 V/V)
-- ชุดป้องกันฮาร์ดแวร์: OCP (ตรวจ $V_{DS}$), OTP (>150°C), UVLO, dead-time อัตโนมัติ (ตั้งผ่านพิน DTC)
-- รองรับโหมด 3-PWM (แนะนำ — ให้ชิปสร้าง dead-time เอง เป็น fail-safe ฮาร์ดแวร์)
+การใช้ H, normalized damping และ disturbances เดียวกันทำให้สมการลูปนอกบางส่วนเทียบกันได้ แต่ไม่ได้พิสูจน์ว่า switching dynamics, losses, thermal limits, source dynamics หรือ protection เหมือนระบบ 10 kVA/MW ทุกประการ ต้องกำหนด similarity ของส่วนที่ต้องการศึกษาแยกกัน
 
-### 5.3.2 ⚠ ข้อจำกัดแรงดันที่ 48 V และทางเลือกดิสครีต
+## 5.3 ภาคกำลังและ gate driver
 
-จากรายงานวิจัย `hw_prototype_research_01.md` §3.2 กฎ derating 80% (Vishay AN861) กำหนดว่า:
+แนวทางหลัก A ใช้ IRF540N หกตัวกับ IR2104 สามตัว IR2104 เป็น bootstrap non-isolated มี UVLO และ internally set dead-time; ค่า typical ประมาณ 520 ns จาก datasheet ไม่ใช่ measured dead-time ของวงจรนี้ ตรวจ gate charge, bootstrap voltage, gate resistance, parasitics, overshoot และความร้อนจริงก่อนกำหนด operating envelope
 
-$$V_{DS,rated} \ge V_{bus,max}/0.8$$
+SD LOW ปิด HO และ LO; SD HIGH อนุญาตให้ขับ complementary outputs ส่วน IN LOW อย่างเดียวอาจเปิด LO ได้ ตรวจ polarity และอุปกรณ์จริงตาม [Infineon IR2104 datasheet](https://www.infineon.com/assets/row/public/documents/24/49/infineon-ir2104-ds-en.pdf)
 
-**ตารางที่ 5.3** การเลือกพิกัดแรงดัน MOSFET
-
-| บัส DC | $V_{bus,max}$ (รวมทรานเซียนต์) | $V_{DS}$ ขั้นต่ำ | คลาสแนะนำ |
-|---|---|---|---|
-| 24 V | ~30 V | 37.5 V | 60 V หรือ 80 V |
-| 48 V | ~60 V | 75 V | **100 V** |
-
-**ประเด็นสำคัญ:** หากใช้จุดออกแบบ 48 V (ตามที่แบบจำลอง Stage 5a–5c ใช้) ค่าพิกัดสูงสุด 60 V ของ DRV8302 **คับขันเกินไป** เพราะทรานเซียนต์สวิตชิ่งบวกแรงดันบัสอาจเกิน 60 V รายงานวิจัยจึงแนะนำทางเลือก: MOSFET คลาส 100 V (เช่น **IRF540N**: 100 V, 33 A, 44 mΩ) + เกตไดรเวอร์แยกแบบแยกกราวด์ **TI UCC21520** (5.7 kV_RMS, dead-time ตั้งได้) + คอมพาเรเตอร์ LM393 ป้อนเข้าพิน FAULT สำหรับ OCP ฮาร์ดแวร์ ดูการตัดสินใจที่ค้างในหัวข้อ 5.10
-
-### 5.3.3 เทคโนโลยีสวิตช์
-
-ที่ระดับ 24–48 V, 100–500 W, 10–20 kHz — **Si MOSFET N-channel เป็นตัวเลือกที่ถูกต้อง** (IGBT มี $V_{CE,sat}$ คงที่ครอบงำที่แรงดันต่ำ; SiC/GaN เกินความจำเป็นและแพง ข้อได้เปรียบปรากฏที่ >600 V)
-
----
+ทางเลือก B คือ DRV8302 module ต้องตรวจ exact module schematic, MOSFET/capacitor ratings, buck, 3-PWM mode, fault/enable logic และ cooling ก่อนใช้งาน ไม่ใช้พิกัดชิปแทนพิกัดบอร์ด ไม่ถือว่า changing POWER_STAGE ทำให้ฮาร์ดแวร์ใหม่ผ่านการตรวจรับ
 
 ## 5.4 ระบบวัดและรับสัญญาณ
-### (Measurement & Acquisition System)
 
-ADC ภายในของ ESP32 (12-bit SAR) **ไม่เหมาะกับการควบคุมอิเล็กทรอนิกส์กำลัง** เนื่องจาก (1) ความไม่เป็นเชิงเส้นรุนแรง <0.1 V และ >3.1 V (2) สุ่มทีละช่อง (sequential) ทำให้เกิด phase skew ระหว่างแรงดัน-กระแส (3) วัดได้เฉพาะ 0–3.3 V (unipolar)
+AD7606 + ACS712-20A เป็น baseline ตรวจ module RESET/power-up pulse, RANGE, OS straps, serial mode, VDRIVE, channel order, signed scale และ input conditioning จากบอร์ดจริง ค่าพิน ESP32 ใน source ไม่ใช่ header pinout ของโมดูล ADC
 
-**ตารางที่ 5.4** อุปกรณ์รับสัญญาณ
+**ตารางที่ 5.3** หลักฐานการวัดที่ต้องมี
 
-| อุปกรณ์ | พาร์ท | คุณสมบัติ | บทบาท |
-|---|---|---|---|
-| ADC ภายนอก | AD7606 (16-bit) | 8 ช่อง สุ่มพร้อมกัน 200 kSPS, ±5/±10 V bipolar, SPI | ขจัด phase skew |
-| เซนเซอร์กระแส | ACS712-20A ×3 | Hall ±20 A, 100 mV/A, แยกกราวด์ 2.1 kV_RMS (พีคโหลดสเต็ป ~6.5 A — รุ่น ±5 A ไม่พอ) | ป้อนกลับกระแสรายเฟส |
-| วัดแรงดัน | ตัวแบ่งแรงดัน 0.1% | $R_1=15k, R_2=5k$ (อัตราส่วน 4), + $C=2.2$ nF anti-alias ($f_c\approx19.3$ kHz) | ลดทอนแรงดัน AC ก่อนเข้า ADC |
+| รายการ | หลักฐาน |
+|---|---|
+| Zero-current offset / current gain | Raw ADC และ reference current รายช่อง |
+| Voltage gain/common mode | Reference voltage และ divider/conditioning จริง |
+| Conversion handshake | CONVST → BUSY assert → BUSY complete |
+| Fault injection | BUSY stuck HIGH และ stuck LOW ทำให้ fault |
+| Timing | ADC/control execution time และ missed-tick record |
 
----
+ระบบวัดต้องไม่ saturate ในช่วง fault ที่ต้องตรวจ และต้องบันทึก noise/bandwidth การตั้ง software scale อย่างเดียวไม่ยืนยันความแม่นยำ
 
-## 5.5 วงจรกรองและบัสกระแสตรง
-### (AC Filter & DC Bus)
+## 5.5 ฟิลเตอร์และบัส DC
 
-### 5.5.1 ฟิลเตอร์ LC + ตัวต้านทานหน่วง
-- **$L_f$:** ตัวเหนี่ยวนำทอรอยด์ ทนกระแส ≥5 A แกน **Sendust หรือ Iron Powder** — **ห้ามใช้แกนเฟอร์ไรต์** (อิ่มตัวฉับพลัน กระแสพุ่งทำลาย MOSFET)
-- **$C_f$:** ตัวเก็บประจุ **โพลิโพรพิลีนฟิล์ม** 100 V AC — **ห้ามใช้เซรามิก (MLCC) หรืออิเล็กโทรไลต์** (MLCC สูญเสียความจุภายใต้ไบแอส; อิเล็กโทรไลต์ทน AC ไม่ได้)
-- **$R_d$:** 1 Ω 25 W อนุกรมกับ $C_f$ เพื่อหน่วงเรโซแนนซ์ความถี่สูง (ตรงกับ Stage 5c ในแบบจำลอง)
+**ตารางที่ 5.4** องค์ประกอบและสิ่งที่ต้อง qualify
 
-### 5.5.2 บัฟเฟอร์บัสกระแสตรง (จำเป็นยิ่งยวด)
+| ส่วน | Baseline / requirement |
+|---|---|
+| LC + damping | 1.2 mH, 10 µF, 1 Ω; resonance ประมาณ 1453 Hz |
+| Inductor | วัด saturation, ripple current, copper/core loss และอุณหภูมิ |
+| Capacitor / Rd | ตรวจ ripple/pulse/continuous rating และ cooling |
+| DC-link | เลือก capacitance/ripple/voltage จาก bus energy และ transient จริง |
+| Pre-charge/discharge | คำนวณ pulse energy, time constant, switch/fuse และวัด residual voltage |
+| Energy sink | Qualify ก่อน load rejection; source-only supply อาจรับกำลังย้อนกลับไม่ได้ |
 
-สมการสวิงของ VSG จำลองพลวัตโรเตอร์ที่ทำให้เกิด **กำลังไหลย้อนกลับ (regenerative)** ชั่วครู่เมื่อโหลดเปลี่ยนฉับพลัน แหล่งจ่าย DC ในห้องปฏิบัติการเป็นแบบทางเดียว (non-regenerative) พลังงานย้อนกลับจะทำให้แรงดันบัสพุ่งทันทีจนทริปการป้องกันหรือทำลาย MOSFET
+ไม่ใช้ generic LM2596 module ต่อจาก nominal 40 V bus โดยตรง เพราะ recommended input ceiling ไม่เหลือ upward margin ([TI LM2596 datasheet](https://www.ti.com/lit/ds/symlink/lm2596.pdf)) เริ่มด้วย regulated auxiliary rails แยก หากใช้ bus-fed converter ต้องตรวจ input/transient rating ของโมดูลทั้งชุด
 
-**วิธีแก้:** ต่อ **แบตเตอรี่ LiFePO4 24 V (10–20 Ah)** ขนานคร่อมบัส DC ทำหน้าที่เป็นบัฟเฟอร์พลังงานทางกายภาพ ดูดซับกำลังย้อนกลับ — เปรียบได้กับพลังงานจลน์การหมุนของกังหันไอน้ำจริง (คือ "ความเฉื่อยทางกายภาพ")
+BESS ยังไม่กำหนด chemistry/cell count/BMS/charger/interface ห้ามต่อ battery 24 V ขนานกับ supply 40 V; nominal 36/48 V pack ไม่ใช่ regulated 40 V source ต้อง qualify interface หรือช่วง bus ใหม่ TVS เป็น transient clamp ไม่ใช่ sustained energy sink และต้องเลือกจาก clamp voltage/energy จริง ไม่ใช่ชื่อพาร์ท
 
-### 5.5.3 วงจร Pre-charge
-ต่อตัวต้านทาน 10–47 Ω อนุกรมกับสวิตช์บัส รอจน $V_{bus}\ge 0.9\,V_{supply}$ จึงปิดสวิตช์ bypass — ป้องกันกระแสกระชาก (inrush) เข้าตัวเก็บประจุบัสตอนต่อไฟ
+## 5.6 Independent hardware shutdown
 
----
+**ตารางที่ 5.5** ระบบป้องกันและขอบเขตหน้าที่
 
-## 5.6 การออกแบบระบบป้องกัน
-### (Protection System Design)
+| ระบบ | หน้าที่ |
+|---|---|
+| Comparator + independent latch | Clear permit โดยไม่พึ่ง CPU และค้าง disabled หลัง fault หาย |
+| AND permit logic | SD_PERMIT = MCU_REQUEST AND HARDWARE_PERMIT |
+| External default-LOW / supervisor | ปิด gate เมื่อ MCU reset/unpowered หรือ logic rail ผิดปกติ |
+| MCPWM fault / software FAULT | ชั้นเสริม; force PWM LOW ไม่แทนการปิดทั้ง HO/LO |
+| Driver UVLO / dead-time | ตรวจวงจรจริง; ไม่แทน OCP และ thermal qualification |
+| Current limit / fuse / pre-charge | ลดพลังงาน/ป้องกันตามขอบเขต ไม่แทน gate shutdown |
 
-**ตารางที่ 5.5** ระบบป้องกัน 6 ชั้นที่ต้องมีก่อนจ่ายไฟครั้งแรก (จาก research §2.1)
+GPIO22 เป็น MCU_REQUEST เข้าวงจร permit ไม่ต่อ SD โดยตรง Comparator fault เข้า asynchronous CLEAR ของ latch และไป GPIO34/MCPWM F0 ผ่าน interface ที่ตรวจแล้ว; GPIO34 ต้องมี external pull-up 3.3 V สำหรับ open-collector branch ห้ามชอร์ต comparator กับ GPIO push-pull
 
-| # | การป้องกัน | การนำไปใช้ | เหตุผล |
-|---|---|---|---|
-| 1 | OCP ฮาร์ดแวร์ | shunt → LM393 → พิน FAULT ของ MCPWM | ซอฟต์แวร์ช้าเกิน; shoot-through ทำลาย MOSFET ใน <1 µs |
-| 2 | Dead-time ฮาร์ดแวร์ | บล็อก dead-time ของ MCPWM, เริ่มที่ 2 µs | MCU ค้าง = dead-time ศูนย์ = shoot-through ทันที |
-| 3 | เกตไดรเวอร์แยกกราวด์ | IC แยกกราวด์ (UCC21520) | กันทรานเซียนต์ HV เข้า ESP32; ความปลอดภัยบุคคล |
-| 4 | จำกัด inrush (pre-charge) | R 10–47 Ω + รีเลย์ bypass | ตัวเก็บประจุดึงกระแสหลายร้อยแอมป์ตอนต่อเย็น |
-| 5 | TVS คร่อมบัส | P6KE60A (60 V) | ทรานเซียนต์สวิตชิ่ง + เหนี่ยวนำบัสเกินแรงดันบัส |
-| 6 | UVLO ในเกตไดรเวอร์ | มีในทุก IC ที่แนะนำ | เกตขับไม่เต็ม → MOSFET ในย่านเชิงเส้น → thermal runaway |
-
-### 5.6.1 การคำนวณ Dead-Time
-
-$$t_{dead} \ge (t_{d,off}+t_f) - (t_{d,on}+t_r) + \Delta t_{skew}$$
-
-สำหรับ MOSFET มาตรฐาน (IRFB7437): $t_{d,off}=88, t_f=76, t_{d,on}=22, t_r=55$ ns, $\Delta t_{skew}\approx50$ ns:
-
-$$t_{dead,min} \ge (88+76)-(22+55)+50 = 137\text{ ns}$$
-
-ใส่ตัวประกอบความปลอดภัย ×2.5 → $t_{dead,design} \approx 343$ ns ⟹ ตั้ง **350 ns** ผ่านตัวต้านทาน $R_{DTC}=100\,\text{k}\Omega$ ที่พิน DTC ของ DRV8302
-
-> **หมายเหตุ:** เฟิร์มแวร์ปัจจุบันเริ่มที่ dead-time 2 µs (ระมัดระวัง) แล้วค่อยลดลงหลังตรวจรูปคลื่นบนออสซิลโลสโคป
-
----
+Latch ต้องเริ่ม cleared และต้อง deliberate ARM ใหม่เมื่อ inputs healthy โดย MCU_REQUEST LOW; ปุ่ม ARM ที่ค้างหรือ fault ที่หายเองต้องไม่ทำให้ restart ตรวจ logic HIGH margin, power sequencing, propagation และกรณี driver supply อยู่แต่ logic supply หาย Threshold, sensing coverage, blanking และ total trip delay ยังต้อง qualify ไม่อ้าง end-to-end OCP <1 µs
 
 ## 5.7 เฟิร์มแวร์ ESP32
-### (ESP32 Firmware)
 
-### 5.7.1 ความเป็นไปได้เชิงเทคนิค (จาก research §1)
+Source: `D:\workspace\engineering\vsg-project\hardware\esp32\vsg_controller\vsg_controller.ino`
 
-- **MCPWM:** ESP32 มี 2 หน่วย MCPWM (คล็อกฐาน 160 MHz) ที่ 10 kHz center-aligned ให้ความละเอียดดิวตี้ ~9.6 บิต — เพียงพอ
-- **Dead-time ฮาร์ดแวร์:** รองรับในตัว ไม่ขึ้นกับ jitter ของซอฟต์แวร์
-- **Fault trip ฮาร์ดแวร์:** พิน FAULT ทริปเอาต์พุตทั้งหมดสู่สถานะปลอดภัยใน <1 µs
-- **ADC:** ใช้ **ADC1 เท่านั้น** และ **ปิด WiFi** (ADC2 ใช้ร่วมกับวิทยุ WiFi) ที่ WiFi ปิด ได้ ~100 kSPS → ISR 10 kHz มี margin 10×
+ใช้ Arduino-ESP32 2.0.17 legacy APIs; การย้าย major version ต้อง port และตรวจใหม่ Timer ISR ส่ง task notification ส่วน high-priority control task ทำ ADC/SPI, floating-point control, PWM และ runtime state transitions
 
-> **ข้อจำกัดที่ทราบ:** ISR 20 kHz กับ ADC ภายในจะคับขัน — เฟิร์มแวร์เลือก 10 kHz และใช้ AD7606 ภายนอกเพื่อความแม่นยำและไร้ phase skew
+**ตารางที่ 5.6** การเชื่อมแบบจำลองกับ implementation
 
-### 5.7.2 การจับคู่แบบจำลอง → เฟิร์มแวร์ (Sim-to-Firmware Mapping)
-
-โครงสร้างควบคุมของ `phase5c_tuned.m` แปลงเป็นโค้ด C ได้โดยตรง:
-
-**ตารางที่ 5.6** การจับคู่บล็อกแบบจำลองกับเฟิร์มแวร์
-
-| บล็อกแบบจำลอง (Stage 5c) | การนำไปใช้ใน ESP32 |
+| ส่วน | การตรวจความสอดคล้อง |
 |---|---|
-| สมการสวิง (อินทิเกรเตอร์ $2H/\omega_s$) | Tustin discretization ใน ISR 10 kHz |
-| มุมเสมือน $\theta = \int\omega\,dt$ | สะสมมุมตรง (PLL-free) |
-| Inverse/forward Park (ใช้ $\delta$) | ฟังก์ชัน sin/cos (LUT หรือ FPU) |
-| ลูป V-I PI (dq) | PI ดิสครีต + decoupling FF ($\pm\omega L_f i$) |
-| ตัวหน่วง $R_d$ | ตัวต้านทานกายภาพ 1 Ω 25 W (ไม่ใช่โค้ด) |
-| SPWM (เทียบคลื่นสามเหลี่ยม 10 kHz) | MCPWM comparator duty |
-| ดรูป P-f / Q-V | เลขคณิตในลูปนอก |
+| Swing/droop | หน่วย omega, power และ integration method |
+| dq V-I cascade | Gains, decoupling, current/voltage limits และ anti-windup |
+| PWM | เป้าหมาย 10 kHz, duty convention, phase alignment และ measured dead-time |
+| Startup/fault | เจ้าของ state เพียง task เดียว; FAULT ไม่ถูก startup เขียนทับ |
+| ADC/timing | Fresh conversion, calibrated scale, worst-case <100 µs และ missed ticks |
 
-### 5.7.3 สถานะเฟิร์มแวร์ปัจจุบัน
+DRY_RUN_NO_POWER_STAGE = 1 เป็น default และ gate request ต้อง LOW การเริ่ม PWM หลัง force-low ต้อง initialize valid duties แล้ว restore generator actions อย่าง explicit; duty update เพียงอย่างเดียวไม่พอสำหรับ pinned driver Readiness flags ต้องอ้างหลักฐาน physical ที่ทำแล้ว ไม่ใช่ทดแทนการทดสอบ
 
-ไฟล์ `hardware/esp32/vsg_controller/vsg_controller.ino` (~600 บรรทัด) มีโครงสร้าง: การกำหนดพิน (PWM A/B/C = GPIO 25/26/27; AD7606 CS/CONVST/BUSY = 15/2/4; SPI 14/12/13; EN_GATE = 22; nFAULT = 34; nOCTW = 39), black-start ramp 2 วินาที, swing eq แบบ Tustin, ลูป PI cascade, การป้องกันซอฟต์แวร์ (overcurrent trip 5.1 A, I²t accumulator)
+## 5.8 ลำดับตรวจรับและเริ่มระบบ
 
-> **⚠ หมายเหตุความสอดคล้อง:** เฟิร์มแวร์ปัจจุบันตั้งค่า $V_{base}=24$ V, $V_{dc}=40$ V, $L_f=1.47$ mH, $C_f=27.63$ µF (อิงการสเกล 24 V) ซึ่ง**ไม่ตรง**กับจุดออกแบบ 48 V / $L_f=1.2$ mH / $C_f=10$ µF ของแบบจำลอง Stage 5c — ดูหัวข้อ 5.10
+1. ตรวจ continuity, polarity, discharge, grounding และ default-off เมื่อไม่มีไฟ MCU
+2. Auxiliary-only: วัด SD, HO/LO และ independent latch เมื่อ fault/reset/logic power loss; ต้องไม่ restart เอง
+3. Dry-run: วัด PWM, ADC, control timing และ fault ระหว่าง standby/bootstrap/soft-start
+4. เมื่อมีหลักฐานผ่าน จึง pre-charge และเพิ่มระดับ DC energy แบบ current-limited ตาม test plan พร้อม load/thermal limits
+5. ทดสอบ load rejection และ overload เมื่อ energy sink กับ operating envelope ผ่าน qualification แล้ว
 
----
+Normal stop และ emergency trip เป็นคนละเส้นทาง: emergency fault ต้อง shutdown ทันทีผ่าน hardware path ไม่รอ software ramp ตรวจ bus residual voltage ด้วยมิเตอร์ก่อนทำงานต่อ วัด HO-to-VS ด้วย differential/isolated equipment ที่เหมาะสม ห้ามต่อ earth-referenced scope ground เข้าสวิตชิ่งโหนด
 
-## 5.8 ลำดับการเริ่มระบบและความปลอดภัย
-### (Black-Start Sequence & Safety Protocols)
+## 5.9 วัสดุ งบประมาณ และหลักฐาน
 
-### 5.8.1 ลำดับ Black-Start (Soft-Start)
-เนื่องจากไม่มีแรงดันกริดอ้างอิง การจ่ายไฟเข้าตัวเก็บประจุฟิลเตอร์เปล่าจะเกิดกระแสกระชากเชิงประจุมหาศาล ต้องใช้รูทีนซอฟต์แวร์ ramp แรงดัน EMF อ้างอิง $E$ จาก 0 → 1.0 pu ภายใน 2 วินาที ที่ความถี่คงที่ 50 Hz:
+**ตารางที่ 5.7** สถานะรายการวัสดุ
 
-1. ปิดสวิตช์ pre-charge → ประจุบัสผ่าน R 10 Ω
-2. รอ $V_{bus} \ge 90\%$ → ปิดสวิตช์บัสหลัก (bypass)
-3. จ่ายไฟ ESP32 (5 V ผ่าน buck)
-4. ดึง EN_GATE สูง → ยืนยัน nFAULT สูง (ไม่มี fault)
-5. ตั้ง $E=0$ → เริ่ม PWM ที่ 50 Hz → ramp $E$ ขึ้น 1.0 pu ใน 2 วินาที
+| รายการ | แหล่งข้อมูล/สถานะ |
+|---|---|
+| Primary BoM | ตาราง 3.2 ใน `D:\workspace\engineering\vsg-project\docs\thesis\chapter3_methodology.md` |
+| ราคาเดิม | Historical estimates วันที่ 2026-05-30; ไม่ใช่ current quotations |
+| Shutdown/auxiliary/BESS | ต้อง finalize วงจรและเสนอราคาใหม่ |
+| Hardware evidence | PENDING: waveform, calibration, thermal และ fault records |
 
-### 5.8.2 ลำดับปิดระบบปลอดภัย
-ramp $E$ ลง 0 ใน 2 วินาที → หยุด PWM + ดึง EN_GATE ต่ำ → เปิดสวิตช์บัส → ตัวต้านทาน bleed (1 kΩ) คายประจุ <5 V ใน 10 วินาที
+เก็บ source revision, build flags, toolchain, wiring revision, instruments และ raw data ในแต่ละ run ผล load step เดิมประมาณ 136 W เป็น overload เทียบ nominal 100 W ไม่ใช่คำอนุญาตให้ใช้งานต่อเนื่องระดับนั้น
 
-### 5.8.3 กฎการต่อกราวด์ (Star/Single-Point Grounding)
-แยก **PGND** (กระแสสูงจาก MOSFET/buck/บัส) ออกจาก **AGND** (สัญญาณ ESP32/ADC/เซนเซอร์) และเชื่อมที่ **จุดเดียว** (ขั้วลบของตัวเก็บประจุบัส) ป้องกันกระแสคืนความถี่สูงไหลผ่านกราวด์อ้างอิงอนาล็อก พร้อมสาย SPI ไป AD7606 <10 ซม. แบบ ribbon สลับกราวด์ และสายเซนเซอร์แบบ shielded twisted-pair (ต่อชีลด์ที่ฝั่ง ADC เท่านั้น)
+## 5.10 สถานะความสอดคล้องและงานที่เหลือ
 
----
+**ตารางที่ 5.8** ประเด็นที่ตัดสินแล้วและที่ยังเปิด
 
-## 5.9 รายการวัสดุ (Bill of Materials)
+| ประเด็น | สถานะ |
+|---|---|
+| 40 V / 14 V peak phase / 100 W | Current design baseline |
+| Lf/Cf/Rd = 1.2 mH/10 µF/1 Ω | Current baseline; physical component qualification ยังต้องทำ |
+| Stage 5d | Discrete-controller model; active damping เป็นงานต่อยอดต่างหาก |
+| Stage 5e | Robustness extension; ระบุ fidelity/cases ใน validation report ไม่ใช้ averaged result เป็น switching proof |
+| BESS/interface/energy sink | ยังไม่ qualify |
+| HIL/bench/Chapter 6 results | ยังไม่มีหลักฐาน physical completion |
 
-**ตารางที่ 5.7** BoM ต้นแบบ VSG islanded แรงดันต่ำ — จุดออกแบบที่ล็อก (Option A: ดิสครีต, 40 V / 100 W) ราคาตลาดไทย สอดคล้องกับตารางที่ 3.2
+ร่าง DOCX เดิมเป็น historical drafts; review copies ที่สร้างใหม่ต้องมีวันที่/ที่มา ผลจำลองและข้อจำกัดในบทที่ 4 เป็นฐานออกแบบ ไม่ใช่ผลตรวจรับฮาร์ดแวร์
 
-| รายการ | พาร์ท | คุณสมบัติ | จำนวน | ราคา (฿) |
-|---|---|---|---|---|
-| ESP32 Dev Board (+สำรอง 1) | ESP32-WROOM-32 | dual-core 240 MHz, MCPWM | 2 | 300 |
-| MOSFET (+สำรอง 6) | IRF540N | 100 V, 33 A, 44 mΩ — สะพาน 3 เฟส 2-ระดับ | 12 | 250 |
-| เกตไดรเวอร์ (+สำรอง 1) | IR2104 | half-bridge, dead-time ~520 ns ในตัว | 4 | 150 |
-| วงจรขับเกต | UF4007 + cap 1 µF + gate R 22 Ω | bootstrap high-side | 1 ชุด | 100 |
-| ADC 16-bit | AD7606 module | 8-ch simultaneous 200 kSPS, ±10 V, V_DRIVE ตั้ง 3.3 V | 1 | 1,500 |
-| เซนเซอร์กระแส | ACS712-20A | ±20 A, 100 mV/A (พีคโหลดสเต็ป ~6.5 A) | 3 | 180 |
-| ตัวเหนี่ยวนำฟิลเตอร์ | Sendust toroid | **1.2 mH**, ≥10 A (ห้ามเฟอร์ไรต์) | 3 | 450 |
-| ตัวเก็บประจุฟิลเตอร์ (+สำรอง 1) | film CBB/MKP | **10 µF**, 100 VAC (ห้ามเซรามิก/อิเล็กโทรไลต์) | 4 | 250 |
-| ตัวต้านทานหน่วง $R_d$ | aluminium housed | 1 Ω, 25 W | 3 | 100 |
-| OCP ฮาร์ดแวร์ | LM393 + shunt + passives + pull-up 10 kΩ | → MCPWM hardware fault F0 (GPIO34 ต้องมี external pull-up) | 1 ชุด | 85 |
-| ตัวต้านทานแบ่งแรงดัน | 0.1% 15 kΩ / 5 kΩ + 2.2 nF | ลดทอน ×4 + anti-alias ก่อนเข้า AD7606 | 1 ชุด | 120 |
-| ตัวเก็บประจุ DC-link | electrolytic 1,000 µF 63 V ×2 + film 1 µF ×3 | bulk + decoupling บัส 40 V | 1 ชุด | 150 |
-| ราง 12 V เกตไดรเวอร์ | buck LM2596 (40 → 12 V) | VCC ของ IR2104 ×3 + LM393 | 1 | 40 |
-| ราง 5 V เซนเซอร์ | buck/LDO 5.0 V | ACS712 (ratiometric) + AD7606 AVCC | 1 | 40 |
-| ป้องกันบัส DC | TVS P6KE60A + pre-charge 10 Ω 50 W + สวิตช์ DC + fuse 10 A | clamp transient / จำกัด inrush / ตัดวงจร | 1 ชุด | 190 |
-| ฉนวน TO-220 | mica/sil-pad + shoulder washer | MOSFET 6 ตัว (tab = drain) บน heatsink ร่วม | 6 ชุด | 50 |
-| โหลดทดสอบ | rheostat 0–100 Ω 200 W | ต่อสตาร์สมดุล | 3 | 400 |
-| ประกอบวงจร | PCB/protoboard + heatsink + คอนเนกเตอร์ + สาย | | 1 ชุด | 500 |
-| มัลติมิเตอร์ (ถ้ายังไม่มี) | | วัดทั่วไป | 1 | 200 |
-| **รวมเฟส 1 (เริ่มทดสอบได้)** | | | | **≈ 5,055** |
-| แบต buffer (เฟส 2) | 3× SLA 12 V 7 Ah อนุกรม ≈ 40 V | ดูดซับกำลังไหลย้อน (regen) | 3 | 750 |
-| **รวมทั้งหมด** | | | | **≈ 5,805** |
-
-**อุปกรณ์ยืมจากแล็บ SUT (ไม่นับงบ):** DC power supply 0–60 V (มี current limit), ออสซิลโลสโคป, หัวแร้ง + เครื่องมือช่าง — งบโครงงาน 7,200 ฿ เหลือกันชนความเสียหาย ≈ 1,395 ฿
-
-*(โหมด islanded ตัด Variac + isolation transformer ออก)*
-
-> **⚠ หมายเหตุ BoM:** ภาคกำลังดิสครีตคลาส 100 V (IRF540N) รองรับการอัปเกรดเป็นจุดออกแบบ 48 V ในอนาคตอยู่แล้ว (derating 80% ผ่าน: 60 V transient < 75 V ขั้นต่ำ) สิ่งที่ต้องแก้เพิ่มหากไป 48 V: เกตไดรเวอร์แยกกราวด์ (UCC21520), แบตเตอรี่ 4×12 V, TVS ปรับพิกัด — เก็บเป็นงานต่อยอด (Ch.3 §3.5.1)
-
----
-
-## 5.10 ประเด็นความสอดคล้องของการออกแบบ (ตัดสินใจแล้ว)
-### (Design Coherence — RESOLVED)
-
-> **✅ ตัดสินใจแล้ว 2026-05-30:** เลือก **Option A (sim-faithful) @ 40 V** — ภาคกำลังหลักคือ**ดิสครีต IRF540N + IR2104** (ตามงบ 7,200 ฿ ฟื้นจากความเสียหายถูก) โดย **DRV8302 shield** เป็นทางเลือก B เมื่อมีงบเพิ่ม (เฟิร์มแวร์รองรับทั้งคู่ผ่าน `#define POWER_STAGE`)
-> จุดออกแบบล็อกเป็น: $V_{dc}=40$ V, $V_{set}=14$ V peak, $L_f=1.2$ mH, $C_f=10$ µF, $R_d=1$ Ω, $H=5$, $D=0.5$
-> เอกสารทุกฉบับ (Ch.3 BoM, `vsg_controller.ino`, บทนี้) ได้อัปเดตให้ตรงกันแล้ว ภาคกำลังดิสครีต + UCC21520 @ 48 V เก็บไว้เป็น**งานต่อยอด** (Ch.3 §3.5.1)
->
-> หมายเหตุ: $V_{dc}$ ปรับจาก 48 V (ในแบบจำลอง) เป็น 40 V เพื่อขอบเขตความปลอดภัย (และคงความเข้ากันได้กับ DRV8302 60 V max ของทางเลือก B) — พลวัตที่ตรวจสอบแล้ว**ไม่เปลี่ยน** เพราะเอาต์พุต fundamental $= m\cdot V_{dc}/2 = V_{set}$ คงที่ตราบใดที่ $m<1$ (ที่ 40 V: $m=0.70$)
-
-ตารางด้านล่างเก็บไว้เป็นบันทึกประวัติของความไม่สอดคล้องที่เคยพบและได้แก้ไปแล้ว:
-
-**ตารางที่ 5.8** ความไม่สอดคล้องของพารามิเตอร์ (จุดที่ต้องตัดสินใจ)
-
-| พารามิเตอร์ | แบบจำลอง Stage 5c | Safety Handbook | Ch.3 BoM | เฟิร์มแวร์ .ino |
-|---|---|---|---|---|
-| บัส DC | **48 V** | 24 V | 24 V (สำรอง 48 V) | $V_{dc}=40$ V |
-| $V_{base}$ สาย | (14 V peak/phase) | 24 V | 24 V | 24 V |
-| $L_f$ | **1.2 mH** | 1.47 mH | 1.5 mH | 1.47 mH |
-| $C_f$ | **10 µF** | 27.63 µF | 30 µF (15×2) | 27.63 µF |
-| MOSFET/ไดรเวอร์ | (อุดมคติ) | DRV8302 (60 V) | DRV8302 | DRV8302 |
-
-**ผลกระทบและคำแนะนำ:**
-
-1. **24 V vs 48 V (สำคัญที่สุด):** แบบจำลอง pivot เป็น 48 V หลังพบ overmodulation (บทที่ 4 §4.6) แต่ handbook/firmware/pu-scaling ยังอิง 24 V การตัดสินใจนี้กระทบทุกอย่างปลายน้ำ (คลาส MOSFET, TVS, แบตเตอรี่, ค่าฟิลเตอร์)
-   - **แนะนำ:** ยึด **48 V** (ตรงกับแบบจำลองที่ตรวจสอบแล้ว + อยู่ในขอบเขต ≤60 V) แล้ว**สเกล pu ใหม่ที่ฐาน 48 V** และอัปเดต handbook + firmware ให้ตรง
-2. **ความไม่ตรงของ $L_f$ (1.2 vs 1.47 vs 1.5 mH) และ $C_f$ (10 vs 27.6 vs 30 µF):** ค่า $C_f$ ต่างกันเกือบ 3 เท่า กระทบความถี่เรโซแนนซ์ฟิลเตอร์และการออกแบบ $R_d$ โดยตรง
-   - **แนะนำ:** เลือกค่าฟิลเตอร์ชุดเดียว แล้ว**รัน Stage 5a/5c ซ้ำ**ด้วยค่านั้น เพื่อให้แบบจำลองกับฮาร์ดแวร์ตรงกัน 100% ก่อนสั่งซื้อ
-3. **DRV8302 60 V ที่บัส 48 V คับขัน:** ทรานเซียนต์อาจเกิน 60 V abs max
-   - **แนะนำ:** หากยึด 48 V พิจารณา MOSFET คลาส 100 V (IRF540N) + เกตไดรเวอร์แยก UCC21520 ตาม research §2.2–3.3 แทนการพึ่ง DRV8302 อย่างเดียว
-4. **เฟิร์มแวร์ใช้ $V_{dc}=40$ V** (ไม่ใช่ทั้ง 24 หรือ 48) — ต้องตั้งให้ตรงจุดออกแบบสุดท้าย
-
-> **สรุปการตัดสินใจที่ต้องการจาก Napoleon:** (ก) ยืนยันบัส DC = 48 V หรือ 24 V (ข) เลือกชุด $L_f/C_f$ เดียวแล้วรันแบบจำลองซ้ำ (ค) ตัดสินใจ DRV8302 vs ดิสครีต 100 V + UCC21520 เมื่อได้คำตอบ ผมสามารถอัปเดต handbook, firmware, Ch.3 BoM และรันแบบจำลองยืนยันให้ทั้งหมดสอดคล้องกัน
-
----
-
-## สรุปท้ายบท
-
-บทที่ 5 ได้นำเสนอการออกแบบฮาร์ดแวร์ต้นแบบ VSG ระดับแรงดันต่ำที่ปลอดภัย ครอบคลุมหลักการสเกลพารามิเตอร์ต่อหน่วย (ที่ทำให้ต้นแบบ 100 VA สมมูลพลวัตกับระบบ 10 kVA) ภาคกำลัง เกตไดรเวอร์ ระบบวัด วงจรกรอง บัฟเฟอร์บัส ระบบป้องกัน 6 ชั้น เฟิร์มแวร์ ESP32 และลำดับการเริ่มระบบที่ปลอดภัย โดยโครงสร้างควบคุมที่ตรวจสอบแล้วใน Stage 5c สามารถจับคู่กับเฟิร์มแวร์ได้โดยตรง อย่างไรก็ตาม หัวข้อ 5.10 ได้ระบุประเด็นความไม่สอดคล้องของจุดออกแบบ (24 V vs 48 V และค่าฟิลเตอร์) ที่ต้อง reconcile ก่อนการสร้างจริง การทดสอบฮาร์ดแวร์จริงและการเปรียบเทียบกับผลแบบจำลองจะนำเสนอในบทถัดไป
+รายงาน simulation validation และขอบเขตผล Stage 5d/5e: `D:\workspace\engineering\vsg-project\docs\notes\simulation_validation_2026-10-13.md`.
+รายงานระบุช่องว่าง DC-bus protection: source-current limiting อาจทำให้ bus sag โดยไม่เกิด overcurrent/thermal trip ต้อง qualify undervoltage/overvoltage interlock หรือออกแบบ sensing/protection เพิ่มก่อนใช้งานจริง โดยไม่เดา threshold หรือ ADC scale จาก study assumptions

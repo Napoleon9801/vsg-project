@@ -1,0 +1,5131 @@
+[
+  {
+    "scope": "",
+    "blocks": [
+      {
+        "sid": "1",
+        "name": "P_set",
+        "position": [
+          50,
+          300,
+          160,
+          332
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "8",
+        "name": "From_omega_outer",
+        "position": [
+          50,
+          200,
+          160,
+          232
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "9",
+        "name": "omega_s_outer",
+        "position": [
+          50,
+          240,
+          160,
+          272
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "10",
+        "name": "Sum_dev_outer",
+        "position": [
+          230,
+          220,
+          340,
+          252
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "11",
+        "name": "Gain_droop_pf",
+        "position": [
+          390,
+          220,
+          500,
+          252
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "12",
+        "name": "Sum_Pm",
+        "position": [
+          550,
+          300,
+          660,
+          332
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "6",
+        "name": "From_Pmeas_outer",
+        "position": [
+          230,
+          400,
+          340,
+          432
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "7",
+        "name": "P_to_pu",
+        "position": [
+          390,
+          400,
+          500,
+          432
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "13",
+        "name": "Sum_PmPe",
+        "position": [
+          710,
+          315,
+          820,
+          347
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "14",
+        "name": "Gain_D",
+        "position": [
+          710,
+          220,
+          820,
+          252
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "15",
+        "name": "Sum_swing",
+        "position": [
+          870,
+          315,
+          980,
+          347
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "16",
+        "name": "Gain_inv_2Hws",
+        "position": [
+          1030,
+          315,
+          1140,
+          347
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "175",
+        "name": "Int_omega",
+        "position": [
+          1190,
+          315,
+          1300,
+          347
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "18",
+        "name": "Goto_omega",
+        "position": [
+          1370,
+          315,
+          1480,
+          347
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "19",
+        "name": "From_omega_d",
+        "position": [
+          1030,
+          420,
+          1140,
+          452
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "20",
+        "name": "omega_s_d",
+        "position": [
+          1030,
+          500,
+          1140,
+          532
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "21",
+        "name": "Sum_dom",
+        "position": [
+          1190,
+          470,
+          1300,
+          502
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "177",
+        "name": "Int_delta",
+        "position": [
+          1370,
+          470,
+          1480,
+          502
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "25",
+        "name": "Goto_delta",
+        "position": [
+          1530,
+          470,
+          1640,
+          502
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "176",
+        "name": "Int_theta",
+        "position": [
+          1370,
+          390,
+          1480,
+          422
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "23",
+        "name": "Goto_theta",
+        "position": [
+          1530,
+          390,
+          1640,
+          422
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "2",
+        "name": "omega_s_const",
+        "position": [
+          50,
+          500,
+          160,
+          532
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "4",
+        "name": "Q_set",
+        "position": [
+          1830,
+          200,
+          1940,
+          232
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "26",
+        "name": "From_Qmeas",
+        "position": [
+          1830,
+          280,
+          1940,
+          312
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "27",
+        "name": "Sum_Qerr",
+        "position": [
+          2010,
+          240,
+          2120,
+          272
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "28",
+        "name": "Gain_qv",
+        "position": [
+          2170,
+          240,
+          2280,
+          272
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "3",
+        "name": "V_set",
+        "position": [
+          2170,
+          340,
+          2280,
+          372
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "29",
+        "name": "Sum_Vdref",
+        "position": [
+          2330,
+          280,
+          2440,
+          312
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "30",
+        "name": "Goto_Vdref",
+        "position": [
+          2490,
+          280,
+          2600,
+          312
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "327",
+        "name": "View_gates_6",
+        "position": [
+          2920,
+          230,
+          3070,
+          262
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "328",
+        "name": "Scope_gates_6",
+        "position": [
+          3160,
+          220,
+          3270,
+          272
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "329",
+        "name": "View_V_load_abc",
+        "position": [
+          2920,
+          320,
+          3070,
+          352
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "330",
+        "name": "Scope_V_load_abc",
+        "position": [
+          3160,
+          310,
+          3270,
+          362
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "331",
+        "name": "View_i_L_abc",
+        "position": [
+          2920,
+          410,
+          3070,
+          442
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "332",
+        "name": "Scope_i_L_abc",
+        "position": [
+          3160,
+          400,
+          3270,
+          452
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "333",
+        "name": "View_Vds_A_high",
+        "position": [
+          2920,
+          500,
+          3070,
+          532
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "334",
+        "name": "Scope_Vds_A_high",
+        "position": [
+          3160,
+          490,
+          3270,
+          542
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "209",
+        "name": "powergui",
+        "position": [
+          3550,
+          200,
+          3710,
+          270
+        ],
+        "color": "[1 0.96 0.8]"
+      },
+      {
+        "sid": "31",
+        "name": "From_Vdref_v",
+        "position": [
+          50,
+          740,
+          160,
+          772
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "32",
+        "name": "From_VLd_v",
+        "position": [
+          50,
+          825,
+          160,
+          857
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "33",
+        "name": "Sum_Vderr",
+        "position": [
+          230,
+          775,
+          280,
+          825
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "34",
+        "name": "PI_V_d",
+        "position": [
+          360,
+          775,
+          490,
+          825
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "35",
+        "name": "Goto_idref",
+        "position": [
+          570,
+          785,
+          700,
+          817
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "5",
+        "name": "Vq_ref_zero",
+        "position": [
+          50,
+          970,
+          160,
+          1002
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "36",
+        "name": "From_VLq_v",
+        "position": [
+          50,
+          1055,
+          160,
+          1087
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "37",
+        "name": "Sum_Vqerr",
+        "position": [
+          230,
+          1005,
+          280,
+          1055
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "38",
+        "name": "PI_V_q",
+        "position": [
+          360,
+          1005,
+          490,
+          1055
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "39",
+        "name": "Goto_iqref",
+        "position": [
+          570,
+          1015,
+          700,
+          1047
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "40",
+        "name": "From_idref",
+        "position": [
+          850,
+          740,
+          960,
+          772
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "41",
+        "name": "From_iLd_c",
+        "position": [
+          850,
+          820,
+          960,
+          852
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "42",
+        "name": "Sum_iderr",
+        "position": [
+          1030,
+          770,
+          1140,
+          802
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "43",
+        "name": "PI_I_d",
+        "position": [
+          1190,
+          770,
+          1300,
+          802
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "44",
+        "name": "From_omega_ffd",
+        "position": [
+          850,
+          910,
+          960,
+          942
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "45",
+        "name": "From_iLq_ffd",
+        "position": [
+          1030,
+          910,
+          1140,
+          942
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "47",
+        "name": "Prod_wLiq_d",
+        "position": [
+          1190,
+          910,
+          1300,
+          942
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "48",
+        "name": "Gain_Lf_d",
+        "position": [
+          1350,
+          910,
+          1460,
+          942
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "46",
+        "name": "From_VLd_ffd",
+        "position": [
+          1350,
+          840,
+          1460,
+          872
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "49",
+        "name": "Sum_Vinvd_FF",
+        "position": [
+          1510,
+          770,
+          1620,
+          802
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "50",
+        "name": "Goto_Vinvd",
+        "position": [
+          1680,
+          770,
+          1790,
+          802
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "51",
+        "name": "From_iqref",
+        "position": [
+          850,
+          1010,
+          960,
+          1042
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "52",
+        "name": "From_iLq_c",
+        "position": [
+          850,
+          1090,
+          960,
+          1122
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "53",
+        "name": "Sum_iqerr",
+        "position": [
+          1030,
+          1040,
+          1140,
+          1072
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "54",
+        "name": "PI_I_q",
+        "position": [
+          1190,
+          1040,
+          1300,
+          1072
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "55",
+        "name": "From_omega_ffq",
+        "position": [
+          850,
+          1180,
+          960,
+          1212
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "56",
+        "name": "From_iLd_ffq",
+        "position": [
+          1030,
+          1180,
+          1140,
+          1212
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "58",
+        "name": "Prod_wLid_q",
+        "position": [
+          1190,
+          1180,
+          1300,
+          1212
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "59",
+        "name": "Gain_Lf_q",
+        "position": [
+          1350,
+          1180,
+          1460,
+          1212
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "57",
+        "name": "From_VLq_ffq",
+        "position": [
+          1350,
+          1110,
+          1460,
+          1142
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "60",
+        "name": "Sum_Vinvq_FF",
+        "position": [
+          1510,
+          1040,
+          1620,
+          1072
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "61",
+        "name": "Goto_Vinvq",
+        "position": [
+          1680,
+          1040,
+          1790,
+          1072
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "62",
+        "name": "From_Vinvd_p",
+        "position": [
+          1930,
+          740,
+          2060,
+          772
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "63",
+        "name": "From_Vinvq_p",
+        "position": [
+          1930,
+          820,
+          2060,
+          852
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "64",
+        "name": "From_theta_ip",
+        "position": [
+          1930,
+          900,
+          2060,
+          932
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "65",
+        "name": "Mux_dqt_inv",
+        "position": [
+          2130,
+          730,
+          2142,
+          940
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "66",
+        "name": "Fcn_Va_ref",
+        "position": [
+          2220,
+          745,
+          2360,
+          777
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "69",
+        "name": "Goto_Varef",
+        "position": [
+          2440,
+          745,
+          2570,
+          777
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "200",
+        "name": "From_V_a_ref_now",
+        "position": [
+          1930,
+          1060,
+          2075,
+          1092
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "201",
+        "name": "Delay_V_a_ref",
+        "position": [
+          2220,
+          1060,
+          2360,
+          1095
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "202",
+        "name": "Goto_V_a_ref_d",
+        "position": [
+          2440,
+          1060,
+          2570,
+          1092
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "67",
+        "name": "Fcn_Vb_ref",
+        "position": [
+          2220,
+          835,
+          2360,
+          867
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "70",
+        "name": "Goto_Vbref",
+        "position": [
+          2440,
+          835,
+          2570,
+          867
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "203",
+        "name": "From_V_b_ref_now",
+        "position": [
+          1930,
+          1145,
+          2075,
+          1177
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "204",
+        "name": "Delay_V_b_ref",
+        "position": [
+          2220,
+          1145,
+          2360,
+          1180
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "205",
+        "name": "Goto_V_b_ref_d",
+        "position": [
+          2440,
+          1145,
+          2570,
+          1177
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "68",
+        "name": "Fcn_Vc_ref",
+        "position": [
+          2220,
+          925,
+          2360,
+          957
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "71",
+        "name": "Goto_Vcref",
+        "position": [
+          2440,
+          925,
+          2570,
+          957
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "206",
+        "name": "From_V_c_ref_now",
+        "position": [
+          1930,
+          1230,
+          2075,
+          1262
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "207",
+        "name": "Delay_V_c_ref",
+        "position": [
+          2220,
+          1230,
+          2360,
+          1265
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "208",
+        "name": "Goto_V_c_ref_d",
+        "position": [
+          2440,
+          1230,
+          2570,
+          1262
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "72",
+        "name": "Carrier",
+        "position": [
+          2730,
+          1080,
+          2860,
+          1130
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "73",
+        "name": "Goto_carrier",
+        "position": [
+          2940,
+          1090,
+          3080,
+          1122
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "210",
+        "name": "Gate_Driver_and_MOSFET_Circuit",
+        "position": [
+          3520,
+          740,
+          3840,
+          1240
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "212",
+        "name": "Electrical_V_a_ref",
+        "position": [
+          3290,
+          800,
+          3445,
+          832
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "214",
+        "name": "Electrical_V_b_ref",
+        "position": [
+          3290,
+          900,
+          3445,
+          932
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "216",
+        "name": "Electrical_V_c_ref",
+        "position": [
+          3290,
+          1000,
+          3445,
+          1032
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "218",
+        "name": "Electrical_V_carrier",
+        "position": [
+          3290,
+          1100,
+          3445,
+          1132
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "307",
+        "name": "Electrical_out_V_load_abc",
+        "position": [
+          3980,
+          750,
+          4140,
+          776
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "309",
+        "name": "Electrical_out_i_L_abc",
+        "position": [
+          3980,
+          802,
+          4140,
+          828
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "311",
+        "name": "Electrical_out_i_load_abc",
+        "position": [
+          3980,
+          854,
+          4140,
+          880
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "313",
+        "name": "Electrical_out_V_inv_a",
+        "position": [
+          3980,
+          906,
+          4140,
+          932
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "315",
+        "name": "Electrical_out_gates_6",
+        "position": [
+          3980,
+          958,
+          4140,
+          984
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "317",
+        "name": "Electrical_out_I_dc",
+        "position": [
+          3980,
+          1010,
+          4140,
+          1036
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "319",
+        "name": "Electrical_out_V_neutral",
+        "position": [
+          3980,
+          1062,
+          4140,
+          1088
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "321",
+        "name": "Electrical_out_V_pole_abc",
+        "position": [
+          3980,
+          1114,
+          4140,
+          1140
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "323",
+        "name": "Electrical_out_Vds_A_high",
+        "position": [
+          3980,
+          1166,
+          4140,
+          1192
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "325",
+        "name": "Electrical_out_Vdc_measured",
+        "position": [
+          3980,
+          1218,
+          4140,
+          1244
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "119",
+        "name": "Fp_Vload_park",
+        "position": [
+          50,
+          1500,
+          190,
+          1532
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "121",
+        "name": "Demux_VL",
+        "position": [
+          260,
+          1480,
+          272,
+          1600
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "120",
+        "name": "Fp_theta_VLpark",
+        "position": [
+          50,
+          1650,
+          190,
+          1682
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "122",
+        "name": "Mux_VL_park",
+        "position": [
+          440,
+          1480,
+          452,
+          1690
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "123",
+        "name": "Fcn_VLd",
+        "position": [
+          540,
+          1500,
+          690,
+          1532
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "125",
+        "name": "Goto_VLd",
+        "position": [
+          770,
+          1500,
+          920,
+          1532
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "124",
+        "name": "Fcn_VLq",
+        "position": [
+          540,
+          1600,
+          690,
+          1632
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "126",
+        "name": "Goto_VLq",
+        "position": [
+          770,
+          1600,
+          920,
+          1632
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "127",
+        "name": "Fp_iL_park",
+        "position": [
+          50,
+          1780,
+          190,
+          1812
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "129",
+        "name": "Demux_iL",
+        "position": [
+          260,
+          1760,
+          272,
+          1880
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "128",
+        "name": "Fp_theta_iLpark",
+        "position": [
+          50,
+          1930,
+          190,
+          1962
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "130",
+        "name": "Mux_iL_park",
+        "position": [
+          440,
+          1760,
+          452,
+          1970
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "131",
+        "name": "Fcn_iLd",
+        "position": [
+          540,
+          1780,
+          690,
+          1812
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "133",
+        "name": "Goto_iLd",
+        "position": [
+          770,
+          1780,
+          920,
+          1812
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "132",
+        "name": "Fcn_iLq",
+        "position": [
+          540,
+          1880,
+          690,
+          1912
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "134",
+        "name": "Goto_iLq",
+        "position": [
+          770,
+          1880,
+          920,
+          1912
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "135",
+        "name": "Fp_VLd_p",
+        "position": [
+          1080,
+          1500,
+          1210,
+          1532
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "136",
+        "name": "Fp_VLq_p",
+        "position": [
+          1080,
+          1590,
+          1210,
+          1622
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "137",
+        "name": "Fp_iLd_p",
+        "position": [
+          1080,
+          1680,
+          1210,
+          1712
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "138",
+        "name": "Fp_iLq_p",
+        "position": [
+          1080,
+          1770,
+          1210,
+          1802
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "139",
+        "name": "Prod_VdId",
+        "position": [
+          1310,
+          1500,
+          1375,
+          1542
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "140",
+        "name": "Prod_VqIq",
+        "position": [
+          1310,
+          1600,
+          1375,
+          1642
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "144",
+        "name": "Prod_VqId",
+        "position": [
+          1310,
+          1700,
+          1375,
+          1742
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "145",
+        "name": "Prod_VdIq",
+        "position": [
+          1310,
+          1800,
+          1375,
+          1842
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "141",
+        "name": "Sum_PinDQ",
+        "position": [
+          1480,
+          1550,
+          1545,
+          1600
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "142",
+        "name": "Gain_3o2_P",
+        "position": [
+          1630,
+          1550,
+          1730,
+          1595
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "143",
+        "name": "Goto_P",
+        "position": [
+          1800,
+          1550,
+          1915,
+          1582
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "146",
+        "name": "Sum_QinDQ",
+        "position": [
+          1480,
+          1770,
+          1545,
+          1820
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "147",
+        "name": "Gain_3o2_Q",
+        "position": [
+          1630,
+          1770,
+          1730,
+          1815
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "148",
+        "name": "Goto_Q",
+        "position": [
+          1800,
+          1770,
+          1915,
+          1802
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "178",
+        "name": "From_V_load_d_ct",
+        "position": [
+          2110,
+          1500,
+          2255,
+          1532
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "179",
+        "name": "ZOH_V_load_d",
+        "position": [
+          2340,
+          1500,
+          2470,
+          1535
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "180",
+        "name": "Goto_V_load_d_s",
+        "position": [
+          2580,
+          1500,
+          2720,
+          1532
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "181",
+        "name": "TWS_Vload_d_ct_ts",
+        "position": [
+          2340,
+          1560,
+          2520,
+          1592
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "182",
+        "name": "From_V_load_q_ct",
+        "position": [
+          2110,
+          1625,
+          2255,
+          1657
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "183",
+        "name": "ZOH_V_load_q",
+        "position": [
+          2340,
+          1625,
+          2470,
+          1660
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "184",
+        "name": "Goto_V_load_q_s",
+        "position": [
+          2580,
+          1625,
+          2720,
+          1657
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "185",
+        "name": "TWS_Vload_q_ct_ts",
+        "position": [
+          2340,
+          1685,
+          2520,
+          1717
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "186",
+        "name": "From_i_L_d_ct",
+        "position": [
+          2110,
+          1750,
+          2255,
+          1782
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "187",
+        "name": "ZOH_i_L_d",
+        "position": [
+          2340,
+          1750,
+          2470,
+          1785
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "188",
+        "name": "Goto_i_L_d_s",
+        "position": [
+          2580,
+          1750,
+          2720,
+          1782
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "189",
+        "name": "TWS_iL_d_ct_ts",
+        "position": [
+          2340,
+          1810,
+          2520,
+          1842
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "190",
+        "name": "From_i_L_q_ct",
+        "position": [
+          2110,
+          1875,
+          2255,
+          1907
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "191",
+        "name": "ZOH_i_L_q",
+        "position": [
+          2340,
+          1875,
+          2470,
+          1910
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "192",
+        "name": "Goto_i_L_q_s",
+        "position": [
+          2580,
+          1875,
+          2720,
+          1907
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "193",
+        "name": "TWS_iL_q_ct_ts",
+        "position": [
+          2340,
+          1935,
+          2520,
+          1967
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "194",
+        "name": "From_P_meas_raw",
+        "position": [
+          2900,
+          1550,
+          3060,
+          1582
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "195",
+        "name": "LPF_P_meas",
+        "position": [
+          3160,
+          1550,
+          3305,
+          1592
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "196",
+        "name": "Goto_P_meas_f",
+        "position": [
+          3410,
+          1550,
+          3565,
+          1582
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "197",
+        "name": "From_Q_meas_raw",
+        "position": [
+          2900,
+          1710,
+          3060,
+          1742
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "198",
+        "name": "LPF_Q_meas",
+        "position": [
+          3160,
+          1710,
+          3305,
+          1752
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "199",
+        "name": "Goto_Q_meas_f",
+        "position": [
+          3410,
+          1710,
+          3565,
+          1742
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "149",
+        "name": "FL_omega_ts",
+        "position": [
+          50,
+          2250,
+          220,
+          2282
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "150",
+        "name": "TWS_omega_ts",
+        "position": [
+          350,
+          2250,
+          560,
+          2285
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "151",
+        "name": "FL_delta_ts",
+        "position": [
+          50,
+          2340,
+          220,
+          2372
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "152",
+        "name": "TWS_delta_ts",
+        "position": [
+          350,
+          2340,
+          560,
+          2375
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "153",
+        "name": "FL_Vd_ref_ts",
+        "position": [
+          50,
+          2430,
+          220,
+          2462
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "154",
+        "name": "TWS_Vd_ref_ts",
+        "position": [
+          350,
+          2430,
+          560,
+          2465
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "155",
+        "name": "FL_Vload_d_ts",
+        "position": [
+          50,
+          2520,
+          220,
+          2552
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "156",
+        "name": "TWS_Vload_d_ts",
+        "position": [
+          350,
+          2520,
+          560,
+          2555
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "157",
+        "name": "FL_Vload_q_ts",
+        "position": [
+          50,
+          2610,
+          220,
+          2642
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "158",
+        "name": "TWS_Vload_q_ts",
+        "position": [
+          350,
+          2610,
+          560,
+          2645
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "159",
+        "name": "FL_iL_d_ts",
+        "position": [
+          830,
+          2250,
+          1000,
+          2282
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "160",
+        "name": "TWS_iL_d_ts",
+        "position": [
+          1130,
+          2250,
+          1340,
+          2285
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "161",
+        "name": "FL_iL_q_ts",
+        "position": [
+          830,
+          2340,
+          1000,
+          2372
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "162",
+        "name": "TWS_iL_q_ts",
+        "position": [
+          1130,
+          2340,
+          1340,
+          2375
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "163",
+        "name": "FL_Vload_abc_ts",
+        "position": [
+          830,
+          2430,
+          1000,
+          2462
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "164",
+        "name": "TWS_Vload_abc_ts",
+        "position": [
+          1130,
+          2430,
+          1340,
+          2465
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "165",
+        "name": "FL_iL_abc_ts",
+        "position": [
+          830,
+          2520,
+          1000,
+          2552
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "166",
+        "name": "TWS_iL_abc_ts",
+        "position": [
+          1130,
+          2520,
+          1340,
+          2555
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "167",
+        "name": "FL_iload_abc_ts",
+        "position": [
+          830,
+          2610,
+          1000,
+          2642
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "168",
+        "name": "TWS_iload_abc_ts",
+        "position": [
+          1130,
+          2610,
+          1340,
+          2645
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "169",
+        "name": "FL_Vinv_a_ts",
+        "position": [
+          1610,
+          2250,
+          1780,
+          2282
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "170",
+        "name": "TWS_Vinv_a_ts",
+        "position": [
+          1910,
+          2250,
+          2120,
+          2285
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "171",
+        "name": "FL_P_ts",
+        "position": [
+          1610,
+          2340,
+          1780,
+          2372
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "172",
+        "name": "TWS_P_ts",
+        "position": [
+          1910,
+          2340,
+          2120,
+          2375
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "173",
+        "name": "FL_Q_ts",
+        "position": [
+          1610,
+          2430,
+          1780,
+          2462
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "174",
+        "name": "TWS_Q_ts",
+        "position": [
+          1910,
+          2430,
+          2120,
+          2465
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "335",
+        "name": "Log_gates_6",
+        "position": [
+          2450,
+          2250,
+          2620,
+          2282
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "336",
+        "name": "LogOut_gates_6",
+        "position": [
+          2750,
+          2250,
+          2960,
+          2285
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "337",
+        "name": "Log_I_dc",
+        "position": [
+          2450,
+          2350,
+          2620,
+          2382
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "338",
+        "name": "LogOut_I_dc",
+        "position": [
+          2750,
+          2350,
+          2960,
+          2385
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "339",
+        "name": "Log_V_neutral",
+        "position": [
+          2450,
+          2450,
+          2620,
+          2482
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "340",
+        "name": "LogOut_V_neutral",
+        "position": [
+          2750,
+          2450,
+          2960,
+          2485
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "341",
+        "name": "Log_V_pole_abc",
+        "position": [
+          3300,
+          2250,
+          3470,
+          2282
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "342",
+        "name": "LogOut_V_pole_abc",
+        "position": [
+          3600,
+          2250,
+          3810,
+          2285
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "343",
+        "name": "Log_Vds_A_high",
+        "position": [
+          3300,
+          2350,
+          3470,
+          2382
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "344",
+        "name": "LogOut_Vds_A_high",
+        "position": [
+          3600,
+          2350,
+          3810,
+          2385
+        ],
+        "color": "[0.94 0.94 0.94]"
+      },
+      {
+        "sid": "345",
+        "name": "Log_Vdc_measured",
+        "position": [
+          3300,
+          2450,
+          3470,
+          2482
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "346",
+        "name": "LogOut_Vdc_measured",
+        "position": [
+          3600,
+          2450,
+          3810,
+          2485
+        ],
+        "color": "[0.94 0.94 0.94]"
+      }
+    ],
+    "headings": [
+      {
+        "text": "STAGE 5h  |  VSG CONTROL + SWITCHING MOSFET INVERTER\n40 V DC  /  50 Hz  /  Ts = 100 us  /  10 kHz PWM",
+        "position": [
+          50,
+          20
+        ]
+      },
+      {
+        "text": "01  ACTIVE POWER / FREQUENCY / VIRTUAL ROTOR",
+        "position": [
+          50,
+          130
+        ]
+      },
+      {
+        "text": "02  REACTIVE POWER / VOLTAGE DROOP",
+        "position": [
+          1830,
+          130
+        ]
+      },
+      {
+        "text": "LIVE SIGNALS  |  Double-click a Scope, then Run\nPWM channel order: AH, AL, BH, BL, CH, CL",
+        "position": [
+          2920,
+          130
+        ]
+      },
+      {
+        "text": "03  VOLTAGE CONTROL  |  d / q",
+        "position": [
+          50,
+          650
+        ]
+      },
+      {
+        "text": "04  CURRENT CONTROL + DECOUPLING",
+        "position": [
+          850,
+          650
+        ]
+      },
+      {
+        "text": "05  INVERSE PARK + ONE-TICK DELAY",
+        "position": [
+          1930,
+          650
+        ]
+      },
+      {
+        "text": "06  ELECTRICAL PLANT  |  Double-click to inspect MOSFETs",
+        "position": [
+          3300,
+          650
+        ]
+      },
+      {
+        "text": "07  VOLTAGE / CURRENT MEASUREMENT  |  abc -> dq",
+        "position": [
+          50,
+          1410
+        ]
+      },
+      {
+        "text": "08  MEASURED ACTIVE / REACTIVE POWER",
+        "position": [
+          1080,
+          1410
+        ]
+      },
+      {
+        "text": "09  SAMPLED FEEDBACK + 5 Hz POWER FILTERS",
+        "position": [
+          2110,
+          1410
+        ]
+      },
+      {
+        "text": "10  SAVED DATA  |  Workspace timeseries (separate from live Scopes)",
+        "position": [
+          50,
+          2150
+        ]
+      }
+    ],
+    "nets": [
+      {
+        "physical": false,
+        "ports": [
+          "6#out:1",
+          "7#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "8#out:1",
+          "10#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "9#out:1",
+          "10#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "10#out:1",
+          "11#in:1",
+          "14#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "1#out:1",
+          "12#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "11#out:1",
+          "12#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "12#out:1",
+          "13#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "7#out:1",
+          "13#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "13#out:1",
+          "15#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "14#out:1",
+          "15#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "15#out:1",
+          "16#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "19#out:1",
+          "21#in:1",
+          "176#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "20#out:1",
+          "21#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "26#out:1",
+          "27#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "4#out:1",
+          "27#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "27#out:1",
+          "28#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "3#out:1",
+          "29#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "28#out:1",
+          "29#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "29#out:1",
+          "30#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "31#out:1",
+          "33#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "32#out:1",
+          "33#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "33#out:1",
+          "34#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "34#out:1",
+          "35#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "5#out:1",
+          "37#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "36#out:1",
+          "37#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "37#out:1",
+          "38#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "38#out:1",
+          "39#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "40#out:1",
+          "42#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "41#out:1",
+          "42#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "42#out:1",
+          "43#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "44#out:1",
+          "47#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "45#out:1",
+          "47#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "47#out:1",
+          "48#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "43#out:1",
+          "49#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "46#out:1",
+          "49#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "48#out:1",
+          "49#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "49#out:1",
+          "50#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "51#out:1",
+          "53#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "52#out:1",
+          "53#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "53#out:1",
+          "54#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "55#out:1",
+          "58#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "56#out:1",
+          "58#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "58#out:1",
+          "59#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "54#out:1",
+          "60#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "57#out:1",
+          "60#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "59#out:1",
+          "60#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "60#out:1",
+          "61#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "62#out:1",
+          "65#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "63#out:1",
+          "65#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "64#out:1",
+          "65#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "65#out:1",
+          "66#in:1",
+          "67#in:1",
+          "68#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "66#out:1",
+          "69#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "67#out:1",
+          "70#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "68#out:1",
+          "71#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "72#out:1",
+          "73#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "119#out:1",
+          "121#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "121#out:1",
+          "122#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "121#out:2",
+          "122#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "121#out:3",
+          "122#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "120#out:1",
+          "122#in:4"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "122#out:1",
+          "123#in:1",
+          "124#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "123#out:1",
+          "125#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "124#out:1",
+          "126#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "127#out:1",
+          "129#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "129#out:1",
+          "130#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "129#out:2",
+          "130#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "129#out:3",
+          "130#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "128#out:1",
+          "130#in:4"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "130#out:1",
+          "131#in:1",
+          "132#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "131#out:1",
+          "133#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "132#out:1",
+          "134#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "135#out:1",
+          "139#in:1",
+          "145#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "137#out:1",
+          "139#in:2",
+          "144#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "136#out:1",
+          "140#in:1",
+          "144#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "138#out:1",
+          "140#in:2",
+          "145#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "139#out:1",
+          "141#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "140#out:1",
+          "141#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "141#out:1",
+          "142#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "142#out:1",
+          "143#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "144#out:1",
+          "146#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "145#out:1",
+          "146#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "146#out:1",
+          "147#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "147#out:1",
+          "148#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "149#out:1",
+          "150#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "151#out:1",
+          "152#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "153#out:1",
+          "154#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "155#out:1",
+          "156#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "157#out:1",
+          "158#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "159#out:1",
+          "160#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "161#out:1",
+          "162#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "163#out:1",
+          "164#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "165#out:1",
+          "166#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "167#out:1",
+          "168#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "169#out:1",
+          "170#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "171#out:1",
+          "172#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "173#out:1",
+          "174#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "16#out:1",
+          "175#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "175#out:1",
+          "18#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "176#out:1",
+          "23#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "21#out:1",
+          "177#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "177#out:1",
+          "25#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "178#out:1",
+          "179#in:1",
+          "181#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "179#out:1",
+          "180#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "182#out:1",
+          "183#in:1",
+          "185#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "183#out:1",
+          "184#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "186#out:1",
+          "187#in:1",
+          "189#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "187#out:1",
+          "188#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "190#out:1",
+          "191#in:1",
+          "193#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "191#out:1",
+          "192#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "194#out:1",
+          "195#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "195#out:1",
+          "196#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "197#out:1",
+          "198#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "198#out:1",
+          "199#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "200#out:1",
+          "201#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "201#out:1",
+          "202#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "203#out:1",
+          "204#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "204#out:1",
+          "205#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "206#out:1",
+          "207#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "207#out:1",
+          "208#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "212#out:1",
+          "210#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "214#out:1",
+          "210#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "216#out:1",
+          "210#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "218#out:1",
+          "210#in:4"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:1",
+          "307#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:2",
+          "309#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:3",
+          "311#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:4",
+          "313#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:5",
+          "315#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:6",
+          "317#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:7",
+          "319#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:8",
+          "321#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:9",
+          "323#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "210#out:10",
+          "325#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "327#out:1",
+          "328#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "329#out:1",
+          "330#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "331#out:1",
+          "332#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "333#out:1",
+          "334#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "335#out:1",
+          "336#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "337#out:1",
+          "338#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "339#out:1",
+          "340#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "341#out:1",
+          "342#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "343#out:1",
+          "344#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "345#out:1",
+          "346#in:1"
+        ]
+      }
+    ]
+  },
+  {
+    "scope": "Gate_Driver_and_MOSFET_Circuit",
+    "blocks": [
+      {
+        "sid": "219",
+        "name": "DC_40V",
+        "position": [
+          1100,
+          180,
+          1160,
+          260
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "220",
+        "name": "DC_Current",
+        "position": [
+          1230,
+          150,
+          1295,
+          190
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "221",
+        "name": "DC_Reference",
+        "position": [
+          1100,
+          320,
+          1135,
+          350
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "222",
+        "name": "Measured_DC_rail",
+        "position": [
+          1410,
+          190,
+          1475,
+          240
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "223",
+        "name": "Load_Step_1s",
+        "position": [
+          2030,
+          180,
+          2130,
+          225
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "211",
+        "name": "V_a_ref",
+        "position": [
+          60,
+          140,
+          120,
+          160
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "213",
+        "name": "V_b_ref",
+        "position": [
+          60,
+          205,
+          120,
+          225
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "215",
+        "name": "V_c_ref",
+        "position": [
+          60,
+          270,
+          120,
+          290
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "217",
+        "name": "V_carrier",
+        "position": [
+          60,
+          335,
+          120,
+          355
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "229",
+        "name": "PWM_A",
+        "position": [
+          230,
+          520,
+          300,
+          570
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "230",
+        "name": "Complement_A",
+        "position": [
+          230,
+          750,
+          300,
+          790
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "232",
+        "name": "One_A1",
+        "position": [
+          390,
+          515,
+          435,
+          540
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "231",
+        "name": "ResetTimer_A1",
+        "position": [
+          390,
+          590,
+          445,
+          620
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "233",
+        "name": "HighTime_A1",
+        "position": [
+          540,
+          520,
+          610,
+          570
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "234",
+        "name": "Deadtime_A1",
+        "position": [
+          540,
+          615,
+          625,
+          640
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "235",
+        "name": "DelayElapsed_A1",
+        "position": [
+          720,
+          530,
+          785,
+          580
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "236",
+        "name": "Gate_A1",
+        "position": [
+          920,
+          530,
+          995,
+          580
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "238",
+        "name": "One_A2",
+        "position": [
+          390,
+          745,
+          435,
+          770
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "237",
+        "name": "ResetTimer_A2",
+        "position": [
+          390,
+          820,
+          445,
+          850
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "239",
+        "name": "HighTime_A2",
+        "position": [
+          540,
+          750,
+          610,
+          800
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "240",
+        "name": "Deadtime_A2",
+        "position": [
+          540,
+          845,
+          625,
+          870
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "241",
+        "name": "DelayElapsed_A2",
+        "position": [
+          720,
+          760,
+          785,
+          810
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "242",
+        "name": "Gate_A2",
+        "position": [
+          920,
+          760,
+          995,
+          810
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "243",
+        "name": "MOSFET_A_HIGH",
+        "position": [
+          1160,
+          525,
+          1235,
+          615
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "244",
+        "name": "MOSFET_A_LOW",
+        "position": [
+          1160,
+          800,
+          1235,
+          890
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "245",
+        "name": "iL_A",
+        "position": [
+          1340,
+          690,
+          1405,
+          730
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "246",
+        "name": "Lf_Rf_A",
+        "position": [
+          1490,
+          690,
+          1610,
+          730
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "247",
+        "name": "Rd_Cf_A",
+        "position": [
+          1680,
+          810,
+          1755,
+          900
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "248",
+        "name": "iload_A",
+        "position": [
+          1820,
+          690,
+          1885,
+          730
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "249",
+        "name": "Load_RL_A",
+        "position": [
+          1980,
+          690,
+          2100,
+          730
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "250",
+        "name": "Load_Extra_R_A",
+        "position": [
+          2190,
+          690,
+          2300,
+          730
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "251",
+        "name": "Bypass_Extra_R_A",
+        "position": [
+          2190,
+          850,
+          2300,
+          890
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "252",
+        "name": "Vphase_A",
+        "position": [
+          2440,
+          690,
+          2510,
+          745
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "253",
+        "name": "Vpole_A",
+        "position": [
+          1340,
+          930,
+          1410,
+          985
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "255",
+        "name": "PWM_B",
+        "position": [
+          230,
+          1120,
+          300,
+          1170
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "256",
+        "name": "Complement_B",
+        "position": [
+          230,
+          1350,
+          300,
+          1390
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "258",
+        "name": "One_B1",
+        "position": [
+          390,
+          1115,
+          435,
+          1140
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "257",
+        "name": "ResetTimer_B1",
+        "position": [
+          390,
+          1190,
+          445,
+          1220
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "259",
+        "name": "HighTime_B1",
+        "position": [
+          540,
+          1120,
+          610,
+          1170
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "260",
+        "name": "Deadtime_B1",
+        "position": [
+          540,
+          1215,
+          625,
+          1240
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "261",
+        "name": "DelayElapsed_B1",
+        "position": [
+          720,
+          1130,
+          785,
+          1180
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "262",
+        "name": "Gate_B1",
+        "position": [
+          920,
+          1130,
+          995,
+          1180
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "264",
+        "name": "One_B2",
+        "position": [
+          390,
+          1345,
+          435,
+          1370
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "263",
+        "name": "ResetTimer_B2",
+        "position": [
+          390,
+          1420,
+          445,
+          1450
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "265",
+        "name": "HighTime_B2",
+        "position": [
+          540,
+          1350,
+          610,
+          1400
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "266",
+        "name": "Deadtime_B2",
+        "position": [
+          540,
+          1445,
+          625,
+          1470
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "267",
+        "name": "DelayElapsed_B2",
+        "position": [
+          720,
+          1360,
+          785,
+          1410
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "268",
+        "name": "Gate_B2",
+        "position": [
+          920,
+          1360,
+          995,
+          1410
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "269",
+        "name": "MOSFET_B_HIGH",
+        "position": [
+          1160,
+          1125,
+          1235,
+          1215
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "270",
+        "name": "MOSFET_B_LOW",
+        "position": [
+          1160,
+          1400,
+          1235,
+          1490
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "271",
+        "name": "iL_B",
+        "position": [
+          1340,
+          1290,
+          1405,
+          1330
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "272",
+        "name": "Lf_Rf_B",
+        "position": [
+          1490,
+          1290,
+          1610,
+          1330
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "273",
+        "name": "Rd_Cf_B",
+        "position": [
+          1680,
+          1410,
+          1755,
+          1500
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "274",
+        "name": "iload_B",
+        "position": [
+          1820,
+          1290,
+          1885,
+          1330
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "275",
+        "name": "Load_RL_B",
+        "position": [
+          1980,
+          1290,
+          2100,
+          1330
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "276",
+        "name": "Load_Extra_R_B",
+        "position": [
+          2190,
+          1290,
+          2300,
+          1330
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "277",
+        "name": "Bypass_Extra_R_B",
+        "position": [
+          2190,
+          1450,
+          2300,
+          1490
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "278",
+        "name": "Vphase_B",
+        "position": [
+          2440,
+          1290,
+          2510,
+          1345
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "279",
+        "name": "Vpole_B",
+        "position": [
+          1340,
+          1530,
+          1410,
+          1585
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "280",
+        "name": "PWM_C",
+        "position": [
+          230,
+          1720,
+          300,
+          1770
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "281",
+        "name": "Complement_C",
+        "position": [
+          230,
+          1950,
+          300,
+          1990
+        ],
+        "color": "[0.88 0.94 1]"
+      },
+      {
+        "sid": "283",
+        "name": "One_C1",
+        "position": [
+          390,
+          1715,
+          435,
+          1740
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "282",
+        "name": "ResetTimer_C1",
+        "position": [
+          390,
+          1790,
+          445,
+          1820
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "284",
+        "name": "HighTime_C1",
+        "position": [
+          540,
+          1720,
+          610,
+          1770
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "285",
+        "name": "Deadtime_C1",
+        "position": [
+          540,
+          1815,
+          625,
+          1840
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "286",
+        "name": "DelayElapsed_C1",
+        "position": [
+          720,
+          1730,
+          785,
+          1780
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "287",
+        "name": "Gate_C1",
+        "position": [
+          920,
+          1730,
+          995,
+          1780
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "289",
+        "name": "One_C2",
+        "position": [
+          390,
+          1945,
+          435,
+          1970
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "288",
+        "name": "ResetTimer_C2",
+        "position": [
+          390,
+          2020,
+          445,
+          2050
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "290",
+        "name": "HighTime_C2",
+        "position": [
+          540,
+          1950,
+          610,
+          2000
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "291",
+        "name": "Deadtime_C2",
+        "position": [
+          540,
+          2045,
+          625,
+          2070
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "292",
+        "name": "DelayElapsed_C2",
+        "position": [
+          720,
+          1960,
+          785,
+          2010
+        ],
+        "color": "[0.92 0.88 1]"
+      },
+      {
+        "sid": "293",
+        "name": "Gate_C2",
+        "position": [
+          920,
+          1960,
+          995,
+          2010
+        ],
+        "color": "[0.88 1 0.88]"
+      },
+      {
+        "sid": "294",
+        "name": "MOSFET_C_HIGH",
+        "position": [
+          1160,
+          1725,
+          1235,
+          1815
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "295",
+        "name": "MOSFET_C_LOW",
+        "position": [
+          1160,
+          2000,
+          1235,
+          2090
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "296",
+        "name": "iL_C",
+        "position": [
+          1340,
+          1890,
+          1405,
+          1930
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "297",
+        "name": "Lf_Rf_C",
+        "position": [
+          1490,
+          1890,
+          1610,
+          1930
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "298",
+        "name": "Rd_Cf_C",
+        "position": [
+          1680,
+          2010,
+          1755,
+          2100
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "299",
+        "name": "iload_C",
+        "position": [
+          1820,
+          1890,
+          1885,
+          1930
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "300",
+        "name": "Load_RL_C",
+        "position": [
+          1980,
+          1890,
+          2100,
+          1930
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "301",
+        "name": "Load_Extra_R_C",
+        "position": [
+          2190,
+          1890,
+          2300,
+          1930
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "302",
+        "name": "Bypass_Extra_R_C",
+        "position": [
+          2190,
+          2050,
+          2300,
+          2090
+        ],
+        "color": "[1 0.94 0.82]"
+      },
+      {
+        "sid": "303",
+        "name": "Vphase_C",
+        "position": [
+          2440,
+          1890,
+          2510,
+          1945
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "304",
+        "name": "Vpole_C",
+        "position": [
+          1340,
+          2130,
+          1410,
+          2185
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "254",
+        "name": "Vds_A_HIGH",
+        "position": [
+          1320,
+          520,
+          1390,
+          575
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "305",
+        "name": "N_AC_to_DCminus",
+        "position": [
+          2440,
+          2250,
+          2510,
+          2305
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "224",
+        "name": "Vload_abc",
+        "position": [
+          2750,
+          520,
+          2765,
+          640
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "306",
+        "name": "V_load_abc",
+        "position": [
+          3070,
+          570,
+          3135,
+          592
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "225",
+        "name": "iL_abc",
+        "position": [
+          2750,
+          820,
+          2765,
+          940
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "308",
+        "name": "i_L_abc",
+        "position": [
+          3070,
+          870,
+          3135,
+          892
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "226",
+        "name": "iload_abc",
+        "position": [
+          2750,
+          1120,
+          2765,
+          1240
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "310",
+        "name": "i_load_abc",
+        "position": [
+          3070,
+          1170,
+          3135,
+          1192
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "227",
+        "name": "Gate_Order_AH_AL_BH_BL_CH_CL",
+        "position": [
+          2750,
+          1420,
+          2765,
+          1620
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "314",
+        "name": "gates_6",
+        "position": [
+          3070,
+          1470,
+          3135,
+          1492
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "228",
+        "name": "Pole_Voltage_abc",
+        "position": [
+          2750,
+          1720,
+          2765,
+          1840
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "320",
+        "name": "V_pole_abc",
+        "position": [
+          3070,
+          1770,
+          3135,
+          1792
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "312",
+        "name": "V_inv_a",
+        "position": [
+          3070,
+          2040,
+          3135,
+          2062
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "316",
+        "name": "I_dc",
+        "position": [
+          3070,
+          2130,
+          3135,
+          2152
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "318",
+        "name": "V_neutral",
+        "position": [
+          3070,
+          2220,
+          3135,
+          2242
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "322",
+        "name": "Vds_A_high",
+        "position": [
+          3070,
+          2310,
+          3135,
+          2332
+        ],
+        "color": "white"
+      },
+      {
+        "sid": "324",
+        "name": "Vdc_measured",
+        "position": [
+          3070,
+          2400,
+          3135,
+          2422
+        ],
+        "color": "white"
+      }
+    ],
+    "headings": [
+      {
+        "text": "STAGE 5h  |  GATE COMMANDS -> SIX MOSFETS -> LC FILTER -> RL LOAD\nLogic gates include 520 ns turn-on delay; the driver is not an electrical Vgs model.",
+        "position": [
+          60,
+          20
+        ]
+      },
+      {
+        "text": "DC SUPPLY  |  40 V",
+        "position": [
+          1100,
+          100
+        ]
+      },
+      {
+        "text": "PWM + DEADTIME",
+        "position": [
+          230,
+          400
+        ]
+      },
+      {
+        "text": "HALF BRIDGE",
+        "position": [
+          1130,
+          400
+        ]
+      },
+      {
+        "text": "FILTER + DAMPING",
+        "position": [
+          1440,
+          400
+        ]
+      },
+      {
+        "text": "RL LOAD + BYPASS AT 1 s",
+        "position": [
+          1960,
+          400
+        ]
+      },
+      {
+        "text": "MEASUREMENTS / OUTPUTS",
+        "position": [
+          2650,
+          400
+        ]
+      },
+      {
+        "text": "PHASE A",
+        "position": [
+          60,
+          475
+        ]
+      },
+      {
+        "text": "PHASE B",
+        "position": [
+          60,
+          1075
+        ]
+      },
+      {
+        "text": "PHASE C",
+        "position": [
+          60,
+          1675
+        ]
+      },
+      {
+        "text": "N_AC: shared floating filter/load star; no direct connection to DC minus.",
+        "position": [
+          1530,
+          2380
+        ]
+      }
+    ],
+    "nets": [
+      {
+        "physical": true,
+        "ports": [
+          "219#rconn:1",
+          "220#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "219#lconn:1",
+          "221#lconn:1",
+          "222#lconn:2",
+          "244#rconn:1",
+          "253#lconn:2",
+          "270#rconn:1",
+          "279#lconn:2",
+          "295#rconn:1",
+          "304#lconn:2",
+          "305#lconn:2"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "220#rconn:1",
+          "222#lconn:1",
+          "243#lconn:1",
+          "254#lconn:1",
+          "269#lconn:1",
+          "294#lconn:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "211#out:1",
+          "229#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "217#out:1",
+          "229#in:2",
+          "255#in:2",
+          "280#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "229#out:1",
+          "230#in:1",
+          "231#in:1",
+          "236#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "232#out:1",
+          "233#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "231#out:1",
+          "233#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "233#out:1",
+          "235#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "234#out:1",
+          "235#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "235#out:1",
+          "236#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "236#out:1",
+          "227#in:1",
+          "243#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "230#out:1",
+          "237#in:1",
+          "242#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "238#out:1",
+          "239#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "237#out:1",
+          "239#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "239#out:1",
+          "241#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "240#out:1",
+          "241#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "241#out:1",
+          "242#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "242#out:1",
+          "227#in:2",
+          "244#in:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "243#rconn:1",
+          "244#lconn:1",
+          "245#lconn:1",
+          "253#lconn:1",
+          "254#lconn:2"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "245#rconn:1",
+          "246#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "246#rconn:1",
+          "247#lconn:1",
+          "248#lconn:1",
+          "252#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "248#rconn:1",
+          "249#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "249#rconn:1",
+          "250#lconn:1",
+          "251#lconn:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "223#out:1",
+          "251#in:1",
+          "277#in:1",
+          "302#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "252#out:1",
+          "224#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "245#out:1",
+          "225#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "248#out:1",
+          "226#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "253#out:1",
+          "228#in:1",
+          "312#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "213#out:1",
+          "255#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "255#out:1",
+          "256#in:1",
+          "257#in:1",
+          "262#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "258#out:1",
+          "259#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "257#out:1",
+          "259#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "259#out:1",
+          "261#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "260#out:1",
+          "261#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "261#out:1",
+          "262#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "262#out:1",
+          "227#in:3",
+          "269#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "256#out:1",
+          "263#in:1",
+          "268#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "264#out:1",
+          "265#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "263#out:1",
+          "265#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "265#out:1",
+          "267#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "266#out:1",
+          "267#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "267#out:1",
+          "268#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "268#out:1",
+          "227#in:4",
+          "270#in:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "269#rconn:1",
+          "270#lconn:1",
+          "271#lconn:1",
+          "279#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "271#rconn:1",
+          "272#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "272#rconn:1",
+          "273#lconn:1",
+          "274#lconn:1",
+          "278#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "274#rconn:1",
+          "275#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "275#rconn:1",
+          "276#lconn:1",
+          "277#lconn:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "278#out:1",
+          "224#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "271#out:1",
+          "225#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "274#out:1",
+          "226#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "279#out:1",
+          "228#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "215#out:1",
+          "280#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "280#out:1",
+          "281#in:1",
+          "282#in:1",
+          "287#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "283#out:1",
+          "284#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "282#out:1",
+          "284#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "284#out:1",
+          "286#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "285#out:1",
+          "286#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "286#out:1",
+          "287#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "287#out:1",
+          "227#in:5",
+          "294#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "281#out:1",
+          "288#in:1",
+          "293#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "289#out:1",
+          "290#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "288#out:1",
+          "290#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "290#out:1",
+          "292#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "291#out:1",
+          "292#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "292#out:1",
+          "293#in:2"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "293#out:1",
+          "227#in:6",
+          "295#in:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "294#rconn:1",
+          "295#lconn:1",
+          "296#lconn:1",
+          "304#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "296#rconn:1",
+          "297#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "297#rconn:1",
+          "298#lconn:1",
+          "299#lconn:1",
+          "303#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "299#rconn:1",
+          "300#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "300#rconn:1",
+          "301#lconn:1",
+          "302#lconn:1"
+        ]
+      },
+      {
+        "physical": true,
+        "ports": [
+          "301#rconn:1",
+          "298#rconn:1",
+          "247#rconn:1",
+          "250#rconn:1",
+          "273#rconn:1",
+          "276#rconn:1",
+          "302#rconn:1",
+          "251#rconn:1",
+          "252#lconn:2",
+          "277#rconn:1",
+          "278#lconn:2",
+          "303#lconn:2",
+          "305#lconn:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "303#out:1",
+          "224#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "296#out:1",
+          "225#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "299#out:1",
+          "226#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "304#out:1",
+          "228#in:3"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "224#out:1",
+          "306#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "225#out:1",
+          "308#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "226#out:1",
+          "310#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "227#out:1",
+          "314#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "220#out:1",
+          "316#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "305#out:1",
+          "318#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "228#out:1",
+          "320#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "254#out:1",
+          "322#in:1"
+        ]
+      },
+      {
+        "physical": false,
+        "ports": [
+          "222#out:1",
+          "324#in:1"
+        ]
+      }
+    ]
+  }
+]

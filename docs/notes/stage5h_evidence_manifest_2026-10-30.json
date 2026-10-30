@@ -1,0 +1,55 @@
+{
+  "verified_date_UTC7": "2026-10-30",
+  "runner": "Codex desktop / GPT-6",
+  "scope": "Six SPS MOSFET circuit with inherited Stage5d control; no board flash or powered test",
+  "files": [
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\build_stage5h_mosfet.m",
+      "sha256": "a0f2c2cc0c54f736d4b60d08b59cd5f97f177515959a88ddca96369166b092a2"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\run_stage5h_mosfet.m",
+      "sha256": "e0076895118b5c5f8c6a50a9284e0d0d10cfa961a7650e978726d8408fbc3578"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\show_stage5h_results.m",
+      "sha256": "bd0c414293c6d01464a6fde10d814b6c793f766d1f116704403ae392eaf8a26c"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\check_stage5h_refinement.m",
+      "sha256": "6f2fa33c1b933a418d391dfa7c8653c927eb449e72229a686267e4f2dd4d213d"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\vsg_stage5h_mosfet.slx",
+      "sha256": "8eef21ba8620383f1727ad567b5cddb3a96259520754effce1f86fd8b1e0de7a"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\report_nominal.json",
+      "sha256": "b6bf7d0679e4ffa582fc7ca9aca7b0299e2a51041ecb3cc2c0db7289cabc0dcb"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\report_refined.json",
+      "sha256": "e31d693c5344611e03c5458b6b19c78255fa6ef7591fd42b31fbbad4bbf10576"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\step_refinement.json",
+      "sha256": "139140d39585e832ca675b30c4e404cc41ae8bd31fe4c31756c8d36b17c35a82"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5d\\vsg_stage5d.slx",
+      "sha256": "cfec11c9e8a1135b984240ac207cf24eeb565fd4216478d205e28ffecf4f08db"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\esp32\\vsg_controller\\vsg_controller.ino",
+      "sha256": "9963a68d018b0946786b6742da80847165b7fbdcd683da65258d912fbb0c7b85"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\stage5h_mosfet_manual_th_2026-10-29.md",
+      "sha256": "98a439629c14fb38e4197f2ef816540e83067ace540cba2414781282b4491088"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5h_mosfet_nominal_2026-10-29.png",
+      "sha256": "3cbfbf349db62d9e5d0a1699ea555e704cdba0b99403b48837b26f346fac4867"
+    }
+  ]
+}

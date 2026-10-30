@@ -46,7 +46,7 @@ else
     H_grid = [0, 1, 3, 5, 7, 10];
     % D grid revised after smoke test: original {0,5,10,20,40} over-damped
     % every case with D>=5 (Î”f < 0.005 Hz). Lowered range to {0,0.5,1,2,5}
-    % to span underdamped â†’ moderately-damped regime visible in figures.
+    % to span underdamped â?’ moderately-damped regime visible in figures.
     D_grid = [0, 0.5, 1, 2, 5];
 end
 
@@ -139,7 +139,7 @@ for i = 1:nH
         % literal 1/0 or huge integrator gain (1e6) explodes ode23tb (smoke
         % test: H=0 D=0 ran 601s wall vs 19s otherwise, with RoCoF=8678 Hz/s
         % numerical artifact). Use H_eff = max(H, 0.01): integrator time
-        % constant â‰ˆ 64 Âµs â‰ª 1 s control timescale, so dynamics behave
+        % constant â?? 64 Âµs â?ª 1 s control timescale, so dynamics behave
         % algebraic but the solver stays stable.
         H_eff = max(H_ij, 0.01);
         inv_2Hws = omega_s / (2 * H_eff);

@@ -68,3 +68,19 @@ docs/notes/*.pdf
 docs/notes/*.pptx
 docs/notes/*.docx
 matlab/*.log
+
+# Keep raw runs and backups local; publish current small evidence and models.
+matlab/validation_outputs/*
+!matlab/validation_outputs/motor_ideal_source/
+!matlab/validation_outputs/stage5[d-h]/
+matlab/validation_outputs/*/*
+!matlab/validation_outputs/motor_ideal_source/*.json
+!matlab/validation_outputs/stage5[d-h]/*.json
+!matlab/validation_outputs/stage5d/vsg_stage5d.slx
+!matlab/validation_outputs/stage5h/vsg_stage5h_mosfet.slx
+!matlab/validation_outputs/stage5h/vsg_stage5h_mosfet_layout.slx
+
+# Local dependencies and investigation scratch files
+python/.deps_stage5h/
+/tmp/
+docs/figures/*_INCOMPLETE_EXPORT.png

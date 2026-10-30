@@ -1,0 +1,229 @@
+{
+  "date": "2026-10-20",
+  "runner_model": "Codex desktop / GPT-6",
+  "base_head": "22a68c9bd94adb9f3b06278b798991fed516495e",
+  "note": "Snapshot of task changes; inventory excludes itself. Generated ignored validation artifacts are referenced separately. No commit or push.",
+  "files": [
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\.gitignore",
+      "git_status": " M",
+      "sha256": "bf32c2b77bfa20971c29adc6e58ab5d64dd321bdf295c5fe132c18d2bd610c53"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\README.md",
+      "git_status": " M",
+      "sha256": "326c7f2a9a0ae5bbc5892ce79dc8fd21ee92ea600a5805eabadba95d01192eff"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\power_stage_A_wiring.png",
+      "git_status": " M",
+      "sha256": "c45b1b88ca249c88015a31899c01d31196cbe8f5c5664b260a21b7ec98245ab0"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\design_point_reconciliation.md",
+      "git_status": " M",
+      "sha256": "93179b681bfb7626581ff90beccbe8317ebc3dbe6c60ab34f75411f7a0eee794"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\hardware_safety_handbook.md",
+      "git_status": " M",
+      "sha256": "44f864b071c358576680d82abf177900af3d135c3ec6b5aee7cd3358f6070a20"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\hardware_safety_handbook_th.md",
+      "git_status": " M",
+      "sha256": "654a339638e6f72db6e4f4f062466c07c3f2265bf50d54fff05620e69c4d3306"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\power_stage_options.md",
+      "git_status": " M",
+      "sha256": "c7e3794c9a4636b03e35f6ec4883099f79224e2880d4d1aa41be2e3e55016a58"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\vsg_esp32_implementation_guide.md",
+      "git_status": " M",
+      "sha256": "622c33e99d49aba44b8a35f5f50478c152872ce76ebff55b4cab944b1651856b"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\chapter3_methodology.md",
+      "git_status": " M",
+      "sha256": "e0f0485808479fcbd51deb699313a8eb58e006c6e88f7790ce6792d2c10a98cd"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\chapter4_simulation_results.md",
+      "git_status": " M",
+      "sha256": "4d8866dd902979f78ff18ef051eceea558e9aebbbfe43fdf18925284f3d5d742"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\chapter5_hardware_design.md",
+      "git_status": " M",
+      "sha256": "10d099b068b4604cd102729410b0e1b6599f6afbc66ecca7df6286203c9d67d2"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\esp32\\vsg_controller\\vsg_controller.ino",
+      "git_status": " M",
+      "sha256": "9963a68d018b0946786b6742da80847165b7fbdcd683da65258d912fbb0c7b85"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\phase5d_discrete.m",
+      "git_status": " M",
+      "sha256": "811b3e82b39cdc5f32184058695e0da41c567aafd5f4f9a954892e34ef191369"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\power_stage_A_wiring.py",
+      "git_status": " M",
+      "sha256": "d8d4c6fe276df1aa7399977b6322031f32026844aef3c5dce331f00cbd7a8567"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\plots\\power_stage_A_wiring.png",
+      "git_status": " M",
+      "sha256": "c45b1b88ca249c88015a31899c01d31196cbe8f5c5664b260a21b7ec98245ab0"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5e_robustness_2026-10-13.png",
+      "git_status": "??",
+      "sha256": "e38023b112aabe3150de04e371c43e72df6ce3f9b8ba3f01bc2e0fa3e2d085ee"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\design_baseline.md",
+      "git_status": "??",
+      "sha256": "c3317e626c299e1fcf62b5674912db3ab6b5dd2eaf050435f627b664a2574423"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\firmware_validation_2026-10-13.md",
+      "git_status": "??",
+      "sha256": "d47da40d3768f04faf576d12c8cfe9acfabb4b1142ebd6da1f7f68e23cca6184"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\hardware_shutdown_and_bench_plan.md",
+      "git_status": "??",
+      "sha256": "a844be0c2f0a1833e6926e618dd1f8f08de179f3eeea680b96e45b180ef7f432"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\implementation_status_2026-10-20.md",
+      "git_status": "??",
+      "sha256": "63b0f0ed4511413160e4a4a9c5d0c44bf5332979b4e62e5efe96598969637526"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\project_review_2026-10-12.md",
+      "git_status": "??",
+      "sha256": "863f5da51828ed98162300867b4b27f9dc57d8d760b2ba2a652e86211a764895"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\simulation_validation_2026-10-13.md",
+      "git_status": "??",
+      "sha256": "373899b9474f2c9f4129312a50001917726668e1acea7cdbeb74cf47122030c1"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\review_2026-10-20\\chapter3_methodology.docx",
+      "git_status": "??",
+      "sha256": "3b1b3044f72b160d42e783f3c46a333e74faac0c34ebd01236297c566a51454e"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\review_2026-10-20\\chapter4_simulation_results.docx",
+      "git_status": "??",
+      "sha256": "19408aa581d586a2ab3a8a1a4fd330604a48a69fabbe3ad4bca8f3f10cacca5b"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\review_2026-10-20\\chapter5_hardware_design.docx",
+      "git_status": "??",
+      "sha256": "45f3b24131208efb77e12d87fa8a8dc6ca39a7c102cac72ac5df851a5561856f"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\review_2026-10-20\\export_manifest.json",
+      "git_status": "??",
+      "sha256": "70520083d885867faeacfea2fccb957064645391824026a5d91508eef83754e6"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\esp32\\tests\\compile_matrix.py",
+      "git_status": "??",
+      "sha256": "442dc2797e63b177f77dfbcc0fe1526cdc7626bf0ea1fed12fbadc020298578d"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\esp32\\tests\\run_policy_tests.py",
+      "git_status": "??",
+      "sha256": "5de73ef8d090a8b05404269806ac0d92a14e86f2e3e042ba85dd57b558f19618"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\esp32\\tests\\safety_policy_test.cpp",
+      "git_status": "??",
+      "sha256": "151d728d024aa7cd5f68e900e164f77bf411fd272d2451bb150b1e42bd69db3f"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\esp32\\vsg_controller\\safety_policy.h",
+      "git_status": "??",
+      "sha256": "4342c1b5f174b73c78706ff50ebb4e23b7dcee80b659a57ef05219b6a2fc5b6b"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\phase5e_robustness.m",
+      "git_status": "??",
+      "sha256": "5671e710391bdcfc5b7742afc780948f684d5449b668f6382194a5620a3636ec"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\test_vsg_validation.m",
+      "git_status": "??",
+      "sha256": "201cf58a773602598d532a8c830f6be3de5393b37abae92717de20f63b466b1b"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\vsg_assert_firmware_parameters.m",
+      "git_status": "??",
+      "sha256": "9f8a9a17f95c911d4a2e4855620d162812ea560eae43a67d0997df41046aacb2"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\vsg_assert_source_identity.m",
+      "git_status": "??",
+      "sha256": "3a089c13b73167ff7b3543a56eecd98524962584295b31441e367a1f8277e32d"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\vsg_assert_stage5c.m",
+      "git_status": "??",
+      "sha256": "798be2869e4a1472200e34cd1e6c21a9e5785d4066e5b6ac6d7b0f307a86ca58"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\vsg_backup_output.m",
+      "git_status": "??",
+      "sha256": "348ef82cb8c6edab2e2ed81847c0d4ceb11247c1153237c175c2d4ab0ece85ea"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\vsg_compare_stage5.m",
+      "git_status": "??",
+      "sha256": "06cc191e57722cf3a9501850f4dba3d827540372468b3c2aa18e4ccd96e96a31"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\vsg_firmware_control_step.m",
+      "git_status": "??",
+      "sha256": "523024043ddfb7ea8c731e2daa0ea584175ae77b3e1e8e9cb55cbd55bd150a3b"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\vsg_source_identity.m",
+      "git_status": "??",
+      "sha256": "49034ff3d9c5c6c0a7be369d6a87b74b65082ca048bbc3983a1b769b25a82f06"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\vsg_validate_signals.m",
+      "git_status": "??",
+      "sha256": "92e26ffff058e37a3f90b1ba2c0ee5b64f8a1c7bc2ea6dc1dc59007d61836735"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\export_thesis_review.py",
+      "git_status": "??",
+      "sha256": "4c9127284f8b1ca922de0f5148fbed670b32516d9d40a9ea40609f0c7c6bbbfd"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\plot_validation_20261013.py",
+      "git_status": "??",
+      "sha256": "b2fe20beef1ea9d4cc6a4e9e7220f98f958a29060e230b7128db29d4bfc0935c"
+    }
+  ],
+  "preexisting_manual_learning_files_preserved": [
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\manual\\PROGRESS.md",
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\manual\\SIM_STAGES_EXPLAINED.md",
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\manual\\STAGE1_MANUAL_BUILD.md",
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\manual\\STAGE2_MANUAL_BUILD.md",
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\manual\\m1.png",
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\manual\\stage1_progress.png",
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\manual\\stage2_progress.png",
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\validate_stage1_manual.m",
+    "D:\\workspace\\engineering\\vsg-project\\matlab\\validate_stage2_manual.m"
+  ]
+}

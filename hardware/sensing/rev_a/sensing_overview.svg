@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+<style>text{font-family:Arial,sans-serif;fill:#14233b} .title{font-size:25px;font-weight:bold}.h{font-size:19px;font-weight:bold}.t{font-size:17px}.small{font-size:15px}.wire{fill:none;stroke:#244a70;stroke-width:3}.box{fill:#edf4fb;stroke:#244a70;stroke-width:2}.warn{fill:#fff2d9;stroke:#ad6b00;stroke-width:2}</style>
+<rect width="1400" height="900" fill="white"/>
+<text x="35" y="40" class="title">VSG SENSING Rev A — neutral + differential voltage measurement</text>
+<text x="35" y="68" class="small">Design values selected. NOT released for power operation. Module, sequencing and alias tests remain pending.</text>
+<rect x="30" y="90" width="1340" height="165" rx="8" class="box"/>
+<text x="50" y="120" class="h">Neutral: ONE N_AC star for the three Rd-Cf branches and the three Y-load branches</text>
+<text x="50" y="155" class="t">SW_x → L_x → ACS_x → OUT_x → load branch → N_AC</text>
+<text x="50" y="185" class="t">OUT_x → Rd_x → Cf_x → N_AC     |     N_AC sense lead → amplifier negative-input chains</text>
+<text x="50" y="218" class="h">NO hard bond N_AC ↔ DC− / AGND / PE. AGND_SENSE has a quiet reference connection to DC−.</text>
+<text x="50" y="243" class="small">The resistor networks still load N_AC; this is NOT galvanic isolation. Repeat phase circuit below for A, B and C.</text>
+<text x="45" y="315" class="h">OUT_x</text><path d="M130 310 H195" class="wire"/>
+<rect x="195" y="290" width="220" height="40" class="box"/><text x="210" y="316" class="t">4 × 10k in series</text>
+<path d="M415 310 H650" class="wire"/><circle cx="520" cy="310" r="5" fill="#244a70"/>
+<path d="M520 310 V355" class="wire"/><rect x="445" y="355" width="150" height="65" class="box"/>
+<text x="465" y="382" class="t">10k || 1nF</text><text x="458" y="405" class="small">matched pair</text>
+<path d="M520 420 V448" class="wire"/><text x="435" y="475" class="t">AGND_SENSE</text>
+<polygon points="650,280 650,570 870,425" class="box"/>
+<text x="665" y="320" class="h">+</text><text x="665" y="540" class="h">−</text>
+<text x="687" y="415" class="h">OPA4197</text><text x="705" y="445" class="t">±12 V</text>
+<text x="45" y="540" class="h">N_AC</text><path d="M130 535 H195" class="wire"/>
+<rect x="195" y="515" width="220" height="40" class="box"/><text x="210" y="541" class="t">4 × 10k in series</text>
+<path d="M415 535 H650" class="wire"/><circle cx="610" cy="535" r="5" fill="#244a70"/>
+<path d="M610 535 V615 H710 M865 615 H940 V425 M870 425 H1070" class="wire"/>
+<rect x="710" y="590" width="155" height="50" class="box"/><text x="723" y="620" class="t">10k || 1nF</text>
+<circle cx="940" cy="425" r="5" fill="#244a70"/><text x="930" y="390" class="h">V_SENSE_x</text>
+<rect x="1070" y="325" width="270" height="210" class="box"/>
+<text x="1090" y="355" class="h">Output selection</text>
+<text x="1090" y="385" class="small">NO = V_SENSE_x via 0Ω</text>
+<text x="1090" y="415" class="small">NC = AGND_SENSE</text>
+<text x="1090" y="445" class="small">COM = ADC V4 / V5 / V6</text>
+<text x="1090" y="475" class="small">COM → 100k → AGND</text>
+<text x="1090" y="505" class="small">Relay coil drive: see netlist</text>
+<text x="45" y="665" class="h">H(s) = 0.25 / (1 + s · 10k · 1nF)     |     ±14 V phase → ±3.5 V ADC     |     firmware ×4</text>
+<text x="45" y="695" class="t">U1D bus channel: DC+ → 9×10k → BUS_DIV; BUS_DIV → (10k || 10nF) → AGND; follower → V7.</text>
+<text x="45" y="725" class="small">All gain/divider resistors: 10k 0.01% ≤5ppm/°C. 1nF pair matching ≤0.1%. Supplies/decoupling/bleeders: see design note.</text>
+<rect x="30" y="750" width="1340" height="125" rx="8" class="warn"/>
+<text x="50" y="780" class="h">Release gates: actual ADC network + rail-loss/relay timing + low-current contacts + alias/loop tests + CAD review</text>
+<text x="50" y="810" class="t">15.9 kHz pole is NOT adequate anti-alias proof at 10 kSPS. Default-ground relay is NOT instantaneous protection.</text>
+<text x="50" y="840" class="t">No invented module header pins. No bus energization, firmware flag changes or hardware PASS claimed.</text>
+</svg>

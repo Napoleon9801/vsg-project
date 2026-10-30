@@ -1,0 +1,84 @@
+{
+  "review_date_utc_plus_7": "2026-10-23",
+  "runner_model": "Codex desktop / GPT-6",
+  "status": "TOPOLOGY_AND_VALUES_SELECTED_NOT_RELEASED_FOR_POWER",
+  "analytical_checks_passed": 14,
+  "firmware_sha256_unchanged": "9963A68D018B0946786B6742DA80847165B7FBDCD683DA65258D912FBB0C7B85",
+  "release_gates_pending": [
+    "R-A actual ADC schematic/input network/header",
+    "R-B rail monitoring and ADC disconnect/hold-up timing",
+    "R-C low-level relay contact qualification",
+    "R-D calibration and fault injection",
+    "R-E PWM common-mode, alias rejection and loop margins",
+    "R-F CAD footprints/ERC/DRC and assembly inspection"
+  ],
+  "verification_limits": "Analytical model only; no SPICE, PCB ERC/DRC, physical calibration, board flash or energization. No purchases.",
+  "budget_thb": {
+    "calculated_low": 16148.4,
+    "calculated_high": 35280,
+    "planning_midpoint_rounded": 26000,
+    "scope": "Borrowed lab instruments including auxiliary rails assumed; BESS excluded; engineering allowances, not checkout quotes."
+  },
+  "files": [
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\analytical_results.json",
+      "sha256": "1faceb11965bd19f1c47541a49ce29f716abe1f83e8608fd486bf812db43305c"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\export_design.py",
+      "sha256": "15be42b18fafd2673b786d794618081f7a3360e2d5868a88020d1efe18e27218"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\frequency_response.csv",
+      "sha256": "395a07cc99d1e610ce0ceca591445a178bcf80d971e81904ff1d671e4a3d3ce9"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\logical_connections.csv",
+      "sha256": "de7f0dc49aa33829bd496a6e9b6ce14aa9a43a29e2a4118eada4fa1357cc87e9"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\sensing_bom.csv",
+      "sha256": "a959e3e9daa1ce561120c7ea4354e1efcde7af5992fb107233c9593a53032c73"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\sensing_overview.png",
+      "sha256": "25817243dfee8d9597304bdc1ed1697bb5b823f617f6bb29427632176479be05"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\sensing_overview.svg",
+      "sha256": "bdb86629601340fa0f0d574bd9f53435225342243225e54ec3080c75818e75b2"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\validate_design.py",
+      "sha256": "cf6170e93fe77658ec86b56a949646168593efa0019317c6c1cf4bd182f68841"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\hardware\\sensing\\rev_a\\validation_console.txt",
+      "sha256": "41fea8e176bcf2125b652956cbbca848e42265f770413c12731b00178a578d96"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\README.md",
+      "sha256": "3f777e5a0cbfdf6526de3190a0d4623d8d66966e738a0a1048e19b3c8ba12eb2"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\neutral_voltage_sensing_design_rev_a_2026-10-22.md",
+      "sha256": "e4682001d84cdbf7b08103dbf288c90c7363c3433e6d6ad93857b400f7eaf0bc"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\complete_prototype_budget_2026-10-22.md",
+      "sha256": "a3713005cb7bfa734e7faddb8a0db55b4034605d87f1d27300cdd7b5c776fcbf"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\wiring_manual_th_2026-10-22.md",
+      "sha256": "19b9f777a1553121dd9550fb9160c853733937a6b021827cb09886db6d58d075"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\design_baseline.md",
+      "sha256": "c3c5396637dc325c6d899fd6a5b31fc14d1c82f4a3dc04f5441739169a937d76"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\procurement_agent_brief_2026-10-20.md",
+      "sha256": "a128d691f3a60387d368af97cf605abc620e904d86091e671b228052ed4a406a"
+    }
+  ]
+}

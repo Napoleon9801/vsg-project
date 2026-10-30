@@ -1,0 +1,287 @@
+{
+  "recorded_at": "2026-10-24T15:54:30.772334+07:00",
+  "runner_model": "Codex desktop / GPT-6",
+  "status": "Study executed; coupled operating criteria failed; cold-start convergence unresolved",
+  "unit_tests": {
+    "passed": 10,
+    "failed": 0,
+    "incomplete": 0
+  },
+  "stage5f_overall_pass": false,
+  "case_invariant_checks_pass": true,
+  "motor_cases_passing_operating_screen": 0,
+  "gain_candidates_passing_operating_screen": 0,
+  "original_convergence": {
+    "motor_cold_start": {
+      "pass": false,
+      "checks": {
+        "same_termination": true,
+        "same_duration": true,
+        "voltage": false,
+        "bus": true,
+        "current": false,
+        "speed": false,
+        "fine_numerical": true
+      },
+      "coarse_step": 1e-05,
+      "fine_step": 5e-06,
+      "max_voltage_difference": 0.5870339315304902,
+      "max_bus_difference": 0.013906762339274792,
+      "max_current_difference": 0.06242250665765048,
+      "max_speed_difference": 2.125321469742758
+    },
+    "motor_direct_connection": {
+      "pass": true,
+      "checks": {
+        "same_termination": true,
+        "same_duration": true,
+        "voltage": true,
+        "bus": true,
+        "current": true,
+        "speed": true,
+        "fine_numerical": true
+      },
+      "coarse_step": 1e-05,
+      "fine_step": 5e-06,
+      "max_voltage_difference": 0.0018563169372285415,
+      "max_bus_difference": 0.00016881404265234323,
+      "max_current_difference": 0.0003285117691149697,
+      "max_speed_difference": 0.0020658974379301753
+    }
+  },
+  "cold_refinement": {
+    "scenario": "motor_cold_start",
+    "pass": false,
+    "checks": {
+      "same_termination": true,
+      "same_duration": true,
+      "voltage": false,
+      "bus": true,
+      "current": true,
+      "speed": true,
+      "fine_numerical": true
+    },
+    "coarse_step": 5e-06,
+    "fine_step": 2.5e-06,
+    "max_voltage_difference": 0.10936100592055098,
+    "max_bus_difference": 0.002539951631177928,
+    "max_current_difference": 0.010958960256660655,
+    "max_speed_difference": 0.3019244559555858
+  },
+  "ideal_motor_phasor_pass": true,
+  "firmware_sha256": "9963a68d018b0946786b6742da80847165b7fbdcd683da65258d912fbb0c7b85",
+  "verified_unique_recorded_source_identities": 12,
+  "evidence_location_note": "Paths relative to project root. validation_outputs is Git-ignored local evidence, not included by committing sources alone.",
+  "files": [
+    {
+      "path": "docs/figures/stage5f_motor_limits_2026-10-24.png",
+      "bytes": 259234,
+      "sha256": "5c017cac698a9dbd16c189433a7b9c8e512a5c97fb13748041f25aac63c7bd2f"
+    },
+    {
+      "path": "docs/figures/stage5f_motor_limits_2026-10-24.svg",
+      "bytes": 311688,
+      "sha256": "05a0261460bdc1c29aaa2eb161d41cae8f97f7d50227c3bf4653a4bbce178506"
+    },
+    {
+      "path": "docs/figures/stage5f_motor_operation_2026-10-24.png",
+      "bytes": 731849,
+      "sha256": "a4d9dd9881b9e89ede3b78d32a8a3c9fc5384a3289004e943b1790f81864d006"
+    },
+    {
+      "path": "docs/figures/stage5f_motor_operation_2026-10-24.svg",
+      "bytes": 641008,
+      "sha256": "a287c77f16b53068d88bdd0f8a2c8b484eca1057f5c4bc771714ad73b7d0cc75"
+    },
+    {
+      "path": "docs/figures/stage5g_motor_damping_2026-10-24.png",
+      "bytes": 336770,
+      "sha256": "6cee1d136177b88ee141f241121d0c1995546bccf2f61e9cfea6d1df19a4ce00"
+    },
+    {
+      "path": "docs/figures/stage5g_motor_damping_2026-10-24.svg",
+      "bytes": 1112599,
+      "sha256": "fcd3d871ed7c3e21182e04aa26d3e2c6d87d20317d9535905f15eeda683e2f6b"
+    },
+    {
+      "path": "docs/notes/design_baseline.md",
+      "bytes": 7336,
+      "sha256": "7e60a4aba3576d40b33f1ed9cfd359c5514cd0128d320b5c2a9d18c146b4a559"
+    },
+    {
+      "path": "docs/notes/motor_simulation_stage5f_2026-10-24.md",
+      "bytes": 19365,
+      "sha256": "516bca5084a842a34a6ab47739c21122076e8bdd13676cc1938f19bcb3e2c108"
+    },
+    {
+      "path": "matlab/phase5f_motor_realism.m",
+      "bytes": 4551,
+      "sha256": "2d702983bc9c39aef53db6100602c610011835ab2c4e3e452a000d46524fa8c2"
+    },
+    {
+      "path": "matlab/phase5f_refine_convergence.m",
+      "bytes": 2247,
+      "sha256": "1d46129750c4af1d0ea2507d0fad4a14718d7592de2c56d9ae944f2a8831cffe"
+    },
+    {
+      "path": "matlab/phase5g_motor_damping.m",
+      "bytes": 1857,
+      "sha256": "726bc3d5da541b25490ce1aba97e1ea71129f5d7d79794b218216d7cc47d6c71"
+    },
+    {
+      "path": "matlab/test_vsg_motor.m",
+      "bytes": 3866,
+      "sha256": "b7ec4e95ec4d0b9087ca6d170d8d3552576631570673c1fdbe3d8ee69bb3c601"
+    },
+    {
+      "path": "matlab/validation_outputs/motor_ideal_source/ideal_source.json",
+      "bytes": 1590,
+      "sha256": "d08591aa5c4493fd8338a2e82e138a361d673e5157a20d04320db613b3913591"
+    },
+    {
+      "path": "matlab/validation_outputs/motor_ideal_source/ideal_source.mat",
+      "bytes": 196492,
+      "sha256": "a82160c42d202d4fdb9b2ba9697207e1a50103f98cb03b667b115a24b48e331f"
+    },
+    {
+      "path": "matlab/validation_outputs/motor_ideal_source/independent_phasor_check.json",
+      "bytes": 1627,
+      "sha256": "6eb0ba1febac206da64688dc25abd71528d4162c544dc53a8291681a2316ca52"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/independent_phasor_check.json",
+      "bytes": 3279,
+      "sha256": "88b8c2d5f9061807d2b3e2e4856c8bcb940204f24b577afb85f9d2b556aa74bc"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_cold_start.mat",
+      "bytes": 13737745,
+      "sha256": "38dd71c77110b21c960bca7c42f70aef518441b7480a7d850e20e68c2b597152"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_cold_start_fine.mat",
+      "bytes": 13709784,
+      "sha256": "03183b084a003fd42ad65422a6f310ea9b4da8b3fde386dedf58ce2acba5469d"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_cold_start_refined.mat",
+      "bytes": 13686208,
+      "sha256": "ff7ab4daad88a307ff6a3fed1f3ef252a7c01231dd8d136b3f9eb50f662cfd5a"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_cold_start_refinement.json",
+      "bytes": 2465,
+      "sha256": "f4690a3e8060ba8a6a6bff3e3c4fed3066d749ba8bbfa1845c1962ecb230851a"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_direct_connection.mat",
+      "bytes": 10220889,
+      "sha256": "98b3e7b40ad897e54b82f46cd614d0040aea7330fb90f81856a11756244f5cdf"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_direct_connection_fine.mat",
+      "bytes": 10191322,
+      "sha256": "ea2d451aeb008b5c7f8b9ae367080e0353bb0402f9212b14493fc3adaad32242"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_locked_rotor.mat",
+      "bytes": 7976089,
+      "sha256": "f9ee59d1368e01a35173f421c40b374dac38d633697b929fb6090267d6f92052"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_nonideal.mat",
+      "bytes": 14549757,
+      "sha256": "f97ac6e6093ac7d287df6eea71644e5d7d553ace2e7367a51ce38d7dde49886e"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_source_limit.mat",
+      "bytes": 9135233,
+      "sha256": "232c90f3c1a2b3bb0eec7c0fa54de42b2ff97306013231f5de34141d9d725ba7"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/motor_torque_step.mat",
+      "bytes": 13825856,
+      "sha256": "155af9d8eeac3ed9c2aaa2ceb94a0794bcfe0e0e14d4fe6d62cfba2766328bc2"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/rl_reference.mat",
+      "bytes": 5804000,
+      "sha256": "a661111efe290584e56655e18e770831e074a83b665d6e4c8dd07aac82cf9912"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5f/validation_stage5f.json",
+      "bytes": 15590,
+      "sha256": "fb4ce658e3e7f5e5ecb8cd313aa0b05afb186cce2bf876ef5d546e13bbe99663"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5g/independent_phasor_check.json",
+      "bytes": 236,
+      "sha256": "c8c32dfb4cb849dcc0fb240d35f4e7fb99f5e4017774750b7984161b5b30f5f6"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5g/kp_x12_ki_x025.mat",
+      "bytes": 13607835,
+      "sha256": "ba15e59eeec762378dde91df390d91fb880b9853cf1f172ff514eb994ae5456a"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5g/kp_x4_ki_x025.mat",
+      "bytes": 13646847,
+      "sha256": "41fa16188c7b23eb2aa974e7bc69725f2c2e3fcdd6576b518e99952975ca8627"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5g/kp_x8_ki_x025.mat",
+      "bytes": 13529053,
+      "sha256": "b36d169af869f20bf05fc76919915a38e758fc7b7d486cc49ae89f80ffe223f6"
+    },
+    {
+      "path": "matlab/validation_outputs/stage5g/validation_stage5g.json",
+      "bytes": 6373,
+      "sha256": "c35867de7aad5749dfd4810d2899ee9815a52e8fee8e20185264e0347b5dfebd"
+    },
+    {
+      "path": "matlab/vsg_motor_ideal_source_check.m",
+      "bytes": 1949,
+      "sha256": "d7b8ad638668d3fe5e8048850e6f8615eb52f6772e5a835a1e44732eac1681fd"
+    },
+    {
+      "path": "matlab/vsg_motor_parameters.m",
+      "bytes": 1566,
+      "sha256": "d55fb8f0a2d9be1015df4e18476f536afbb372bc7fec271310d65304e64db8b1"
+    },
+    {
+      "path": "matlab/vsg_motor_plant_rhs.m",
+      "bytes": 2577,
+      "sha256": "b7862cb94ebd0350b821093260652fb7867989b170d5bcf200e4848b6f467513"
+    },
+    {
+      "path": "matlab/vsg_motor_rhs.m",
+      "bytes": 1315,
+      "sha256": "9f139cc09c9a3da8b727b7ab6230329475a55dc4b0bc7a33cf618d45837e32bc"
+    },
+    {
+      "path": "matlab/vsg_motor_run_case.m",
+      "bytes": 8359,
+      "sha256": "840a770602baae5aec8cb8d676c381b2ca76f85b543dcc3fcb991376858357a3"
+    },
+    {
+      "path": "python/analysis/motor_equivalent_circuit.py",
+      "bytes": 6566,
+      "sha256": "6dd33ea714614321ad477b6cf9468f29738f2a43e8af12ab357230a4cb76ab93"
+    },
+    {
+      "path": "python/analysis/plot_stage5f_motor.py",
+      "bytes": 7364,
+      "sha256": "485ce99d8cb1e6cc6e93314ee4ee234c104d525c9b04b4fa0298044d71e96da6"
+    },
+    {
+      "path": "python/analysis/plot_stage5g_motor.py",
+      "bytes": 3496,
+      "sha256": "53dbe2f65516353650c007f6ee27161aa15f195d9f57aba028cb438e36786535"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7004,
+      "sha256": "9d33e88b0bcd0f7689751c3e7f149b2b469a6449d75f6a0b685b9c0503cfb03e"
+    }
+  ]
+}

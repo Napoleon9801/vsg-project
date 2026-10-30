@@ -1,0 +1,41 @@
+{
+  "pass": true,
+  "scope": "Independent equivalent circuit vs ODE45 motor-only equilibrium; not inverter stability",
+  "relative_errors": {
+    "stator_current_rms_A": 5.918777491309279e-16,
+    "electromagnetic_torque_Nm": 6.944680797596223e-16,
+    "input_active_W": 8.83389983797856e-16,
+    "available_shaft_W": 1.3036520323622433e-14
+  },
+  "observed": {
+    "stator_current_rms_A": 1.1254584510960226,
+    "electromagnetic_torque_Nm": 0.15986667450711933,
+    "input_active_W": 28.15177464961414,
+    "available_shaft_W": 23.16420756471677
+  },
+  "predicted": {
+    "slip": 0.06904105660245197,
+    "synchronous_rpm": 1500.0,
+    "speed_rpm": 1396.4384150963222,
+    "stator_current_rms_A": 1.125458451096022,
+    "stator_current_peak_A": 1.591638605427411,
+    "rotor_current_rms_A": 0.9814233151307075,
+    "input_active_W": 28.151774649614115,
+    "input_reactive_var": 18.018568634990757,
+    "electromagnetic_torque_Nm": 0.15986667450711922,
+    "converted_mechanical_W": 23.378053407001953,
+    "available_shaft_W": 23.16420756471707,
+    "stator_copper_loss_W": 3.039976140344297,
+    "rotor_copper_loss_W": 1.733745102267866,
+    "friction_loss_W": 0.2138458422848825,
+    "power_identity_residual_W": -3.552713678800501e-15
+  },
+  "edge_checks": {
+    "power_identity": true,
+    "locked_shaft_zero_work": true,
+    "synchronous_zero_torque": true,
+    "generator_torque_sign": true
+  },
+  "input_sha256": "d08591aa5c4493fd8338a2e82e138a361d673e5157a20d04320db613b3913591",
+  "python_source_sha256": "6dd33ea714614321ad477b6cf9468f29738f2a43e8af12ab357230a4cb76ab93"
+}

@@ -3,12 +3,12 @@
 
 > **ผู้เขียน:** ชินวัตร ดุมกลาง (Napoleon)
 > **โครงงาน:** Virtual Synchronous Generator (VSG) for Inverter Control
-> **สถานะ:** Draft v1 — เรียบเรียงจากผลการจำลองที่ตรวจสอบแล้ว Stage 1–5c (MATLAB/Simulink R2018b) พร้อม Python post-processing
-> **ข้อมูลอ้างอิง:** ทุกค่าตัวเลขในบทนี้สกัดจากสคริปต์จำลองจริงและไฟล์ผลลัพธ์ (`.mat`/`.csv`) ในคลังโครงงาน — ไม่มีการประมาณค่าด้วยมือ
+> **สถานะ:** ฉบับทบทวน 2026-10-20 — เก็บผล Stage 1–5c จากร่างเดิมเป็น historical results; เพิ่มข้อแก้ไขและสถานะ Stage 5d/5e ใน §4.10
+> **ข้อมูลอ้างอิง:** ตารางเดิมคงตัวเลขและสถานะที่เคยรายงานไว้ ไม่ใช่ผล rerun ของ revision ปัจจุบัน ต้องตรวจ metadata ของแต่ละ artifact ก่อนนำมาเปรียบเทียบข้าม revision; ค่าทำนายเชิงทฤษฎีแยกจากค่าจำลอง
 
 ---
 
-ในบทนี้ ผู้ดำเนินโครงงานนำเสนอผลการจำลองระบบ VSG ที่พัฒนาขึ้นบนโปรแกรม MATLAB/Simulink (เวอร์ชัน R2018b) โดยใช้**วิธีการตรวจสอบแบบล่างขึ้นบน (bottom-up verification)** กล่าวคือ แบ่งการสร้างแบบจำลองออกเป็น 7 ระยะย่อย (Stage 1 ถึง Stage 5c) ในแต่ละระยะจะ (1) ทำนายผลตอบสนองด้วยการวิเคราะห์เชิงทฤษฎีก่อน (2) สร้างและรันแบบจำลอง และ (3) เปรียบเทียบผลจำลองกับค่าทำนาย โดยกำหนดเกณฑ์ยอมรับว่าความคลาดเคลื่อนต้องน้อยกว่า 10% วิธีนี้ทำให้สามารถตรวจจับข้อผิดพลาดของโครงสร้างแบบจำลองได้ทันทีที่เกิดขึ้น ก่อนที่จะสะสมไปยังระยะถัดไป และเป็นการสร้างความมั่นใจว่าพารามิเตอร์ควบคุมที่จะนำไปใช้กับฮาร์ดแวร์จริงนั้นผ่านการตรวจสอบมาแล้ว
+ในบทนี้ ผู้ดำเนินโครงงานนำเสนอผลการจำลองระบบ VSG ที่พัฒนาขึ้นบนโปรแกรม MATLAB/Simulink (เวอร์ชัน R2018b) โดยใช้**วิธีการตรวจสอบแบบล่างขึ้นบน (bottom-up verification)** กล่าวคือ แบ่งการสร้างแบบจำลองออกเป็น 7 ระยะย่อย (Stage 1 ถึง Stage 5c) ในแต่ละระยะจะ (1) ทำนายผลตอบสนองด้วยการวิเคราะห์เชิงทฤษฎีก่อน (2) สร้างและรันแบบจำลอง และ (3) เปรียบเทียบผลจำลองกับค่าทำนาย โดยกำหนดเกณฑ์ยอมรับว่าความคลาดเคลื่อนต้องน้อยกว่า 10% วิธีนี้ทำให้สามารถตรวจจับข้อผิดพลาดของโครงสร้างแบบจำลองได้ทันทีที่เกิดขึ้น ก่อนที่จะสะสมไปยังระยะถัดไป ผลดังกล่าวสนับสนุนเฉพาะกรณีที่ทดสอบและไม่แทนการตรวจ limits, source dynamics, firmware timing หรือ hardware protection
 
 ---
 
@@ -29,9 +29,9 @@
 | Stage 5b | `phase5b_hd_sweep.m` | การกวาดพารามิเตอร์ H–D (30 กรณี) | ผลของความเฉื่อย/การหน่วงเชิงปริมาณ |
 | Stage 5c | `phase5c_tuned.m` | ตัวต้านทานหน่วง $R_d$ + decoupling feedforward | คุณภาพแรงดัน, การติดตามกระแสลูปใน |
 
-**จุดออกแบบทางไฟฟ้า (Electrical Design Point)** ที่ใช้ตั้งแต่ Stage 4 เป็นต้นไป (Stage 1–3 เป็นแบบจำลองลดทอนระดับควบคุมในหน่วยต่อหน่วย pu) แสดงในตารางที่ 4.2 ค่าทั้งหมดสกัดจากบล็อกพารามิเตอร์ของ `phase5c_tuned.m`
+**ประวัติจุดออกแบบ:** ตารางที่ 4.2 เก็บ 48 V จากร่างเดิมเพื่ออธิบายการแก้ overmodulation ในช่วงพัฒนา ไม่ใช่ค่าปัจจุบันของทุก Stage และไม่ควรอ้างว่าเป็นค่าจาก source ปัจจุบัน ผล Stage 5c/5d ที่ตรวจซ้ำจากไฟล์บันทึกเมื่อ 2026-10-12 ใช้ 40 V; จุดออกแบบปัจจุบันและขอบเขตผลอยู่ใน §4.10
 
-**ตารางที่ 4.2** จุดออกแบบทางไฟฟ้าของแบบจำลองสวิตชิ่ง (Stage 4–5c)
+**ตารางที่ 4.2** จุดออกแบบ 48 V ที่บันทึกไว้ในประวัติการพัฒนา (ไม่ใช่ current baseline)
 
 | พารามิเตอร์ | สัญลักษณ์ | ค่า | หมายเหตุ |
 |---|---|---|---|
@@ -39,14 +39,14 @@
 | กำลังพิกัด 3 เฟส | $P_{base}$ | 100 W | — |
 | ความถี่ฐาน | $f_{base}$ | 50 Hz | $\omega_s = 2\pi \cdot 50$ rad/s |
 | แรงดันตั้งต้นแกน d | $V_{set}$ | 14 V (peak/phase) | ดัชนีมอดูเลชัน $m = 14/24 = 0.58$ |
-| ตัวเหนี่ยวนำฟิลเตอร์ | $L_f$ | 1.2 mH | **⚠ BoM ระบุ 1.5 mH — ต้องสมานค่า (ดู 4.9)** |
+| ตัวเหนี่ยวนำฟิลเตอร์ | $L_f$ | 1.2 mH | ปัจจุบันยืนยัน Lf = 1.2 mH; ไม่ใช้ BoM 1.5 mH เดิม |
 | ตัวเก็บประจุฟิลเตอร์ | $C_f$ | 10 µF | — |
 | ความต้านทานปรสิตฟิลเตอร์ | $R_f$ | 0.05 Ω | — |
 | ตัวต้านทานหน่วง (Stage 5c) | $R_d$ | 1.0 Ω | อนุกรมกับ $C_f$ |
 | ความถี่เรโซแนนซ์ฟิลเตอร์ | $f_{res}$ | ≈ 1.45 kHz | $1/(2\pi\sqrt{L_f C_f})$ |
 | โหลดฐาน | $R_{load}$ | 2.94 Ω | ให้ $P_{3\phi} = 100$ W ที่ $V_d = 14$ V |
 | ความถี่สวิตชิ่ง | $f_{sw}$ | 10 kHz | เป้าหมาย ESP32 MCPWM |
-| ดรูป P-f / Q-V | $R_p, R_q$ | 0.05 / 0.05 | ดรูป 5% |
+| ดรูป P-f / Q-V | $R_p, R_q$ | 0.05 / 0.05 | Governor parameters; effective P-f slope ขึ้นกับ D |
 | ขั้นรบกวนโหลด | — | $R_{load} \times 0.70$ ที่ $t=1.0$ s | กระแส +43%, กำลัง ≈ +37 W |
 
 เครื่องมือที่ใช้: การสร้างแบบจำลอง Simulink แบบโปรแกรม (programmatic `add_block`/`add_line`) ซึ่งทำให้แบบจำลองสามารถสร้างซ้ำได้จากข้อความล้วน และการประมวลผลหลัง (post-processing) ด้วย Python (NumPy/SciPy/Matplotlib) สำหรับคำนวณดัชนีชี้วัด (nadir, RoCoF, $\tau$, $\zeta$ ผ่าน log-decrement) และสร้างรูปกราฟ
@@ -132,7 +132,7 @@ Stage 5a เพิ่มชั้นสวิตชิ่งสามเฟส�
 
 **การค้นพบสำคัญ — Overmodulation ที่ $V_{dc}=24$ V:** ค่า $V_{set}=14$ V (peak) เกินช่วงเชิงเส้นของ SPWM ($V_{dc}/2 = 12$ V) ส่งผลให้เอาต์พุตผิดเพี้ยนด้วยฮาร์มอนิก และค่า P/Q คลาดเคลื่อนจากการทำนายประมาณ 2 เท่า
 
-**การแก้ไข:** ปรับจุดออกแบบเป็น **$V_{dc}=48$ V** (ตัวเลือกสำรองที่มีอยู่แล้วในข้อเสนอ 66AOS02) ทำให้ดัชนีมอดูเลชันลดเหลือ $14/24 = 0.58$ อยู่ในช่วงเชิงเส้นที่ปลอดภัย และออกแบบ $R_{load}$ ใหม่เป็น 2.94 Ω เพื่อให้ $P_{3\phi} = 100$ W ที่สถานะอยู่ตัว (รวมตัวประกอบ 3/2 จาก Park แบบ amplitude-invariant)
+**การแก้ไขในประวัติ Stage 5a:** ปรับจุดออกแบบเป็น **$V_{dc}=48$ V** (ตัวเลือกสำรองที่มีอยู่แล้วในข้อเสนอ 66AOS02) ทำให้ดัชนีมอดูเลชันลดเหลือ $14/24 = 0.58$ อยู่ในช่วงเชิงเส้นของ nominal SPWM และออกแบบ $R_{load}$ ใหม่เป็น 2.94 Ω เพื่อให้ $P_{3\phi} = 100$ W ที่สถานะอยู่ตัว (รวมตัวประกอบ 3/2 จาก Park แบบ amplitude-invariant)
 
 **ผลลัพธ์หลังแก้ไข (48 V):**
 
@@ -166,7 +166,7 @@ Stage 5b เป็นการวิเคราะห์เชิงปริ�
 
 ### 4.7.1 ตารางผลการกวาดทั้งหมด
 
-**ตารางที่ 4.6** ผลการกวาด H–D ทั้ง 30 กรณี (สกัดจาก `phase5b_hd_sweep_summary.csv`)
+**ตารางที่ 4.6** ผลการกวาด H–D ทั้ง 30 กรณีจาก historical run (สกัดจาก `phase5b_hd_sweep_summary.csv`)
 
 | H (s) | D | RoCoF สูงสุด (Hz/s) | Nadir (Hz) | Overshoot (Hz) | เวลาเข้าที่ $t_{settle}$ (s) | $f_{ss}$ (Hz) | $P_{ss}$ (W) |
 |---|---|---|---|---|---|---|---|
@@ -231,7 +231,7 @@ Stage 5c แก้ไขจุดอ่อนเชิงควบคุม 2 �
 
 **(1) ตัวต้านทานหน่วง $R_d$ อนุกรมกับ $C_f$:** ปรับอัตราหน่วงฟิลเตอร์ LC จาก $\zeta \approx 0.0023$ เป็น $\zeta \approx 0.046$ (ดีขึ้น ~20 เท่า)
 
-ในการทดสอบแรก $R_d = 5$ Ω พบปัญหา: โทโพโลยี $C_f$-อนุกรม-$R_d$ ฉีดแรงดันริปเปิล $R_d \cdot i_{Cf}$ เข้าสู่ $V_{load}$ เนื่องจาก $i_{Cf}$ พา PWM ripple ~1 A ทำให้เกิดริปเปิล 10 kHz ขนาด ~5 V บนเอาต์พุต จึงลดเป็น $R_d = 1$ Ω (ฉีดริปเปิลเหลือ ~1 V, $\zeta$ ยังดีกว่า 5a ถึง 20 เท่า) งานในอนาคต (Stage 5d) อาจใช้ active damping ในซอฟต์แวร์เพื่อขจัดการแลกเปลี่ยนนี้
+ในการทดสอบแรก $R_d = 5$ Ω พบปัญหา: โทโพโลยี $C_f$-อนุกรม-$R_d$ ฉีดแรงดันริปเปิล $R_d \cdot i_{Cf}$ เข้าสู่ $V_{load}$ เนื่องจาก $i_{Cf}$ พา PWM ripple ~1 A ทำให้เกิดริปเปิล 10 kHz ขนาด ~5 V บนเอาต์พุต จึงลดเป็น $R_d = 1$ Ω (ฉีดริปเปิลเหลือ ~1 V, $\zeta$ ยังดีกว่า 5a ถึง 20 เท่า) Active damping เป็นงานต่อยอดแยกต่างหาก; Stage 5d ที่มีอยู่เป็น discrete-controller model และยังใช้ passive Rd
 
 **(2) Decoupling Feedforward ที่เอาต์พุตของ PI ลูปกระแส:**
 
@@ -242,14 +242,14 @@ $$V_{inv,q}^{ref} = \text{PI}_{I,q} + V_{load,q} + \omega L_f i_{L,d}$$
 
 **การวิเคราะห์แบบเทียบเคียงตรง (apples-to-apples):** เพื่อแยกผลของ $R_d$+FF ออกจากผลของ $H/D$ ผู้ดำเนินโครงงานสร้าง `phase5a_rerun_matched.m` ที่รัน Stage 5a ซ้ำที่จุดทำงานเดียวกัน ($H=5,D=0.5$) โดยใช้ `SimulationInput` override (ใช้เวลาเพียง 41 วินาทีเทียบกับ 3–5 นาทีของการ build ใหม่) ผลการเปรียบเทียบ:
 
-**ตารางที่ 4.7** ผลของการปรับจูน Stage 5c (เทียบกับ baseline ที่จุดทำงานเดียวกัน)
+**ตารางที่ 4.7** ผล historical comparison ของการปรับจูน Stage 5c (เทียบกับ baseline ที่จุดทำงานเดียวกัน)
 
 | ดัชนีชี้วัด | ผลของ $R_d$ + FF | หมายเหตุ |
 |---|---|---|
 | อัตราหน่วงฟิลเตอร์ $\zeta$ | 0.0023 → 0.046 (×20) | เชิงทฤษฎี |
 | กระแสลูปใน $i_{L,d}$ peak | ลดลง ~6% | ผลปานกลางที่จุด/รบกวนนี้ |
 | แรงดันตกค้างแกน q $V_q$ residual | ลดลง ~10% | — |
-| ลูปนอก (f, P) | ไม่เปลี่ยนแปลง | ยืนยัน control-structure invariance |
+| ลูปนอก (f, P) | ไม่เปลี่ยนแปลง | ข้อสังเกตเดิมเฉพาะกรณีที่เปรียบเทียบ ไม่ใช่ invariance ทุก operating point |
 
 **ข้อค้นพบที่ซื่อตรง:** ที่จุดทำงานและการรบกวนนี้ (ขั้นโหลด $R_{load}$) ผลของ FF/$R_d$ อยู่ในระดับ**ปานกลาง** การหน่วงของ $R_d$ มองไม่เห็นชัดเพราะการรบกวนแบบขั้นโหลดไม่กระตุ้นการแกว่งฟิลเตอร์ LC มากนัก หากต้องการแสดงผลการหน่วงให้ชัด ต้องใช้การรบกวนที่คมกว่า (เช่น line fault) ซึ่งเป็นงานในอนาคต ความจริงข้อนี้จะถูกเขียนไว้ในบทอภิปรายอย่างตรงไปตรงมา
 
@@ -259,7 +259,7 @@ $$V_{inv,q}^{ref} = \text{PI}_{I,q} + V_{load,q} + \omega L_f i_{L,d}$$
 > **รูปที่ 4.10** เปรียบเทียบการติดตามกระแสลูปใน $i_{L,dq}$
 > *(ไฟล์: `python/plots/phase5c_compare_iLdq.png`)*
 
-> **รูปที่ 4.11** เปรียบเทียบผลตอบสนองความถี่และกำลังลูปนอก (พิสูจน์ว่าลูปนอกไม่เปลี่ยน)
+> **รูปที่ 4.11** เปรียบเทียบผลตอบสนองความถี่และกำลังลูปนอก (ข้อสังเกตเฉพาะกรณีที่ทดสอบ)
 > *(ไฟล์: `python/plots/phase5c_compare_f_P.png`)*
 
 ---
@@ -269,7 +269,7 @@ $$V_{inv,q}^{ref} = \text{PI}_{I,q} + V_{load,q} + \omega L_f i_{L,d}$$
 
 ### 4.9.1 ตารางสรุปการตรวจสอบทุกระยะ
 
-**ตารางที่ 4.8** สรุปการตรวจสอบเชิงปริมาณ Stage 1–5c
+**ตารางที่ 4.8** สรุปสถานะที่รายงานใน historical runs ของ Stage 1–5c (ไม่ใช่ current rerun)
 
 | ระยะ | ดัชนีหลัก | ค่าทำนาย | ค่าจำลอง | ผลการตรวจสอบ |
 |---|---|---|---|---|
@@ -281,16 +281,65 @@ $$V_{inv,q}^{ref} = \text{PI}_{I,q} + V_{load,q} + \omega L_f i_{L,d}$$
 | Stage 5b | จุดทำงานแนะนำ | — | $H=5, D=0.5$ | ✅ 30 กรณีสมบูรณ์ |
 | Stage 5c | $\zeta$, ลูปนอก | ×20, ไม่เปลี่ยน | ×20, ไม่เปลี่ยน | ✅ ยืนยัน |
 
-ทุกระยะผ่านเกณฑ์ความคลาดเคลื่อน < 10% ยืนยันว่าสถาปัตยกรรมควบคุม VSG และพารามิเตอร์ที่ตรวจสอบแล้วพร้อมสำหรับการนำไปใช้กับฮาร์ดแวร์ (port ไปยังเฟิร์มแวร์ ESP32)
+ตารางนี้เก็บสถานะเดิมเพื่อการตรวจสอบย้อนกลับ ไม่ใช่ทุกดัชนีจะเป็น relative-error test ที่ใช้เกณฑ์ 10% ได้ และไม่ยืนยันความพร้อมของฮาร์ดแวร์ ผล current revision ต้องผูกกับ validation artifact ที่มีพารามิเตอร์และ timestamp ถูกต้อง
 
-### 4.9.2 ข้อจำกัดและประเด็นที่ต้องดำเนินการก่อนสร้างฮาร์ดแวร์
+### 4.9.2 ข้อจำกัดและงานตรวจสอบเพิ่มเติม
 
-1. **การแกว่งฟิลเตอร์ LC ที่ 1.45 kHz** — ใน Stage 5a มี $\zeta \approx 0.23\%$ ซึ่งต่ำมาก Stage 5c ปรับเป็น ~4.6% ด้วย $R_d=1$ Ω แต่ยังต้องพิจารณา active damping ในเฟิร์มแวร์สำหรับต้นแบบจริง มิฉะนั้นจะเป็นปัญหาดีบักบนโต๊ะทดลอง
-2. **⚠ ความไม่สอดคล้องของค่า $L_f$** — สคริปต์จำลองใช้ $L_f = 1.2$ mH แต่ตาราง BoM ในบทที่ 3 ระบุ 1.5 mH (และ session log เคยอ้าง 1.0 mH) **ต้องสมานค่าให้ตรงกันก่อนสั่งซื้อ** โดยเลือกค่าเดียวแล้วรัน Stage 5a/5c ซ้ำ หรือแก้ BoM
-3. **แบบจำลองสะพานเป็นเชิงพฤติกรรมในอุดมคติ** — ไม่รวม dead-time, on-resistance, body diode และการสูญเสียสวิตชิ่ง เพียงพอสำหรับการตรวจสอบการควบคุม แต่การวิเคราะห์ประสิทธิภาพ/ความร้อนต้องใช้ Simscape Universal Bridge ในงานต่อไป
-4. **การรบกวนทดสอบเป็นแบบขั้นโหลดเท่านั้น** — ผลการหน่วงของ $R_d$ จึงแสดงไม่เด่นชัด ควรเพิ่มกรณี line fault เพื่อแสดงคุณค่าการหน่วง
-5. **กรณี $H$ สูง–$D$ ต่ำ ใน 5b ยังไม่เข้าที่เต็มที่ที่ $T_{sim}=3$ s** — ค่า $f_{ss}$ ของกลุ่มนี้มี caveat ตามที่ระบุในหัวข้อ 4.7.2
+1. ฟิลเตอร์ resonance ประมาณ 1.45 kHz และ passive Rd = 1 Ω ต้องประเมินร่วมกับ sampling/delay และ component tolerance; active damping ยังไม่ใช่ผลสำเร็จของ Stage 5d
+2. จุดออกแบบปัจจุบันคือ 40 V, Lf 1.2 mH, Cf 10 µF, Rd 1 Ω; การแก้เอกสารให้ตรงกันไม่ใช่การยืนยัน measured component values
+3. Stage 5c/5d ใช้ behavioral switching bridge และ ideal DC source; ไม่ครอบคลุม dead-time, semiconductor losses/thermal behavior, source/BESS dynamics และ protection ครบถ้วน
+4. เพิ่ม current/voltage limits และ anti-windup ให้ตรง firmware พร้อม startup, load increase/decrease, overload recovery และ finite-source tests; Stage 5e ต้องรายงาน fidelity และกรณีที่รันจริงแยกกัน ถ้าเป็น reduced/averaged model จะไม่ใช้เป็น switching/hardware proof
+5. กลุ่ม H สูง–D ต่ำใน historical 5b ยังไม่เข้าที่เต็มที่ใน 3 s; ค่าปลายหน้าต่างไม่ใช่ steady state ที่แท้จริง และ H=0 step RoCoF ขึ้นกับ numerical differentiation/window
+6. กำลังหลัง load step ประมาณ 136 W สูงกว่า nominal 100 W จึงเป็น overload experiment ไม่ใช่พิกัด continuous ของต้นแบบ
 
-### 4.9.3 บทสรุป
+### 4.9.3 ขอบเขตข้อสรุปจากผลเดิม
 
-ผลการจำลองยืนยันว่าระบบ VSG ที่พัฒนาขึ้นทำงานได้ตามทฤษฎีในทุกระยะ ตั้งแต่แกนสมการสวิงไปจนถึงชั้นสวิตชิ่งสามเฟสที่สมบูรณ์ การกวาดพารามิเตอร์ H–D (Stage 5b) ให้จุดทำงานที่เหมาะสม ($H=5, D=0.5$) และตอบวัตถุประสงค์การเปรียบเทียบ VSG-กับ-Droop ผ่านกรณี $H=0$ และการปรับจูน Stage 5c เตรียมโครงสร้างควบคุมที่พร้อม port ไปยังเฟิร์มแวร์ ESP32 (โดยบล็อก FF กลายเป็นโค้ด C และ $R_d$ กลายเป็นตัวต้านทาน 1 Ω 5 W บนโต๊ะทดลอง) ผลและข้อจำกัดที่ระบุในบทนี้เป็นฐานสำหรับการออกแบบฮาร์ดแวร์และการทดสอบจริงในบทถัดไป
+ผลเดิมสนับสนุนการตรวจสมการและการเลือก H = 5 s, D = 0.5 ภายใต้สมมติฐานและกรณีทดสอบที่รายงาน การนำไปใช้กับ ESP32 ต้องตรวจ discretization, latency, saturation และ fault handling เพิ่ม และต้องมีหลักฐาน bench แยกต่างหาก ไม่มี HIL หรือ physical prototype validation ที่เกิดขึ้นจากตารางเหล่านี้
+
+## 4.10 ข้อแก้ไขและ baseline ปัจจุบัน — 2026-10-20
+
+เอกสารอ้างอิง: `D:\workspace\engineering\vsg-project\docs\notes\design_baseline.md` และ `D:\workspace\engineering\vsg-project\docs\notes\hardware_shutdown_and_bench_plan.md`
+
+### 4.10.1 จุดออกแบบที่ใช้ปัจจุบัน
+
+40 V DC / 100 W nominal / 14 V peak phase / 50 Hz; Lf = 1.2 mH, Rf = 0.05 Ω, Cf = 10 µF, Rd = 1 Ω; H = 5 s, D = 0.5, Rp = Rq = 0.05; control/PWM target = 10 kHz. Nominal m = 0.70 ไม่รับประกันว่า instantaneous reference ไม่ saturate
+
+ที่ฐาน 100 VA ได้ Vbase_LL = 17.1464 V RMS, Ibase = 3.3672 A RMS, Zbase = 2.94 Ω, Lbase = 9.3583 mH, Cbase = 1082.69 µF; Lf = 0.1282 pu และ Cf = 0.009236 pu
+
+พจน์ damping ใช้ deviation หน่วย rad/s จึงได้ effective static P-f slope
+
+$$R_{eff}=\frac{1}{1/R_p+D\omega_s}=\frac{1}{20+0.5(2\pi50)}=0.005647\;\mathrm{pu/pu}$$
+
+หรือประมาณ 0.565% ไม่ใช่ความชันรวม 5% การเปรียบเทียบผล H ต้องรักษา D/effective slope เดียวกัน ส่วน historical Stage 3 มีสมมติฐานของกรณีนั้นเอง ไม่ควรนำผล droop 5% มาแทน baseline นี้
+
+### 4.10.2 Stage 5d และความถูกต้องของข้อมูล
+
+Stage 5d คือ discrete-controller switching model ที่ต่อยอด Stage 5c ไม่ใช่ future active-damping model การตรวจไฟล์เดิมเมื่อ 2026-10-12 พบดังนี้:
+
+**ตารางที่ 4.9** Historical pre-fix saved results (ไม่ใช่การจำลองรอบใหม่)
+
+| รายการ | Stage 5c | Stage 5d |
+|---|---:|---:|
+| Final frequency | 49.8959089 Hz | 49.8981208 Hz |
+| Saved DC bus | 40 V | 40 V |
+| dq-current p-p ที่เคยเปรียบเทียบ | 0.385343 A | 0.035277 A |
+
+ผล frequency ต่างประมาณ 2.212 mHz แต่ไม่ได้ยืนยัน hardware readiness ค่า current p-p สองคอลัมน์มี sampling bandwidth ต่างกันจึงห้ามตีความเป็น physical ripple reduction
+
+ไฟล์ 5d เดิมเก็บ t/frequency/sampled dq จำนวน 30,001 samples แต่ waveform Vload_abc, iL_abc และ Vinv_a จำนวน 912,094 samples การใช้ t เดียวกับทุก array จึงผิด ต้องเก็บ timestamp รายสัญญาณ/กลุ่มพร้อม units, parameters, revision และ build settings ตรวจ dimensions, finite values และ monotonic time และให้ verdict ที่ล้มเหลวเป็น machine-readable failure
+
+การเปรียบเทียบ controller-visible signals ต้องใช้ rate/window/bandwidth เดียวกัน ส่วน continuous plant ripple และ THD ต้องใช้ waveform timestamp จริงกับวิธี resampling/anti-alias และ harmonic band ที่ระบุชัด การสุ่มหนึ่งครั้งต่อ carrier อาจมองไม่เห็น switching ripple
+
+**สถานะของการแก้ไข:** Stage 5d source ปัจจุบันบันทึก schema version 2 พร้อม timestamp รายสัญญาณ และเปรียบเทียบ continuous dq observations ที่ rate/filter/window เดียวกันแล้ว รายละเอียดผล run, criteria และ provenance อยู่ใน `D:\workspace\engineering\vsg-project\docs\notes\simulation_validation_2026-10-13.md` ให้ใช้รายงานนั้นพร้อม JSON ของ run เป็นหลักฐาน current validation; ตารางที่ 4.9 ยังคงเป็น historical pre-fix results และไม่ถูกเขียนทับ
+
+รายงานแยก control-envelope comparison ออกจาก raw PWM ripple/THD โดยใช้ 5 µs resampling grid และ 1 ms boxcar เหมือนกันทั้งสองโมเดล ค่า current envelope ของ Stage 5d ไม่ได้ต่ำกว่า Stage 5c และเกณฑ์ regression มี amplitude floor 0.05 A จึงห้ามสรุปว่า strict 3× ripple ratio ผ่าน การผ่าน screening criteria ไม่ใช่ hardware acceptance
+
+Stage 5d ยังไม่รวม startup ramp, capacitor-current feedforward, vector clamps, conditional anti-windup, protection, ADC และ finite DC-source behavior ครบเหมือน firmware ส่วน Stage 5e เพิ่มการศึกษาระบบ balanced averaged dq ที่มี limits และ finite-source assumptions; ไม่ใช่ compiled-firmware SIL หรือ switching validation
+
+### 4.10.3 ขอบเขต Stage 5e และหลักฐานที่ยังต้องเพิ่ม
+
+Stage 5e robustness extension และ executed case matrix, acceptance limits, failures กับ model fidelity อ้างอิง `D:\workspace\engineering\vsg-project\docs\notes\simulation_validation_2026-10-13.md` Reduced/averaged finite-source results ไม่แทน switch-level dead-time/thermal/protection หรือ BESS hardware qualification ผลจากแบบจำลองไม่พิสูจน์ exact dynamic equivalence กับระบบกำลังสูงทั้งระบบ
+
+การทดสอบ hardware timing, ADC, independent shutdown, energy absorption และ thermal envelope เป็นงานแยกตาม shutdown plan ส่วน manual learning track มี Stage 1–2 recorded passed และ Stage 3 เป็นลำดับถัดไป ซึ่งแยกจาก scripted model progress
+
+รายงาน Stage 5e ระบุว่า source-limited case อาจมี DC-bus sag รุนแรงโดยไม่ทริป overcurrent/thermal protection ของ firmware จึงยังต้องมี DC-bus undervoltage/overvoltage interlock ที่ตรวจสอบจริง หรือออกแบบ sensing/protection เพิ่ม ไม่กำหนด threshold/ADC scale จากสมมติฐาน simulation โดยไม่มี hardware specification

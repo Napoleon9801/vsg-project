@@ -1,0 +1,40 @@
+{
+  "source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\results_nominal.mat",
+  "signal": "signals.gates_6",
+  "gate_order": [
+    "A HIGH (AH)",
+    "A LOW (AL)",
+    "B HIGH (BH)",
+    "B LOW (BL)",
+    "C HIGH (CH)",
+    "C LOW (CL)"
+  ],
+  "view_start_s": 2.9,
+  "view_end_s": 2.9005,
+  "samples_in_source": 2698023,
+  "overlap_samples_ABC_full_run": [
+    0,
+    0,
+    0
+  ],
+  "deadtime_examples": [
+    {
+      "phase": "A",
+      "lower_off_time_s": 2.9000584473935547,
+      "upper_on_time_s": 2.900058967393583,
+      "deadtime_us": 0.520000028370049
+    },
+    {
+      "phase": "B",
+      "lower_off_time_s": 2.900091403566384,
+      "upper_on_time_s": 2.9000919235664124,
+      "deadtime_us": 0.520000028370049
+    },
+    {
+      "phase": "C",
+      "lower_off_time_s": 2.9000751490400902,
+      "upper_on_time_s": 2.9000756690401186,
+      "deadtime_us": 0.520000028370049
+    }
+  ]
+}

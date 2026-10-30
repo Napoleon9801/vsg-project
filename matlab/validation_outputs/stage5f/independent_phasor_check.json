@@ -1,0 +1,77 @@
+{
+  "scope": "Independent steady-state per-phase phasor comparison, no measured-motor validation",
+  "cases": {
+    "rl_reference": {
+      "status": "not_applicable",
+      "reason": "Not a completed settled motor operating point"
+    },
+    "motor_cold_start": {
+      "status": "not_applicable",
+      "reason": "Not a completed settled motor operating point"
+    },
+    "motor_direct_connection": {
+      "status": "not_applicable",
+      "reason": "Not a completed settled motor operating point"
+    },
+    "motor_torque_step": {
+      "status": "not_applicable",
+      "reason": "Not a completed settled motor operating point"
+    },
+    "motor_locked_rotor": {
+      "status": "not_applicable",
+      "reason": "Not a completed settled motor operating point"
+    },
+    "motor_source_limit": {
+      "status": "not_applicable",
+      "reason": "Not a completed settled motor operating point"
+    },
+    "motor_nonideal": {
+      "status": "not_applicable",
+      "reason": "Not a completed settled motor operating point"
+    }
+  },
+  "checked_count": 0,
+  "pass": null,
+  "source_hashes": [
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5f\\validation_stage5f.json",
+      "sha256": "fb4ce658e3e7f5e5ecb8cd313aa0b05afb186cce2bf876ef5d546e13bbe99663"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\plot_stage5f_motor.py",
+      "sha256": "485ce99d8cb1e6cc6e93314ee4ee234c104d525c9b04b4fa0298044d71e96da6"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\motor_equivalent_circuit.py",
+      "sha256": "6dd33ea714614321ad477b6cf9468f29738f2a43e8af12ab357230a4cb76ab93"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5f\\rl_reference.mat",
+      "sha256": "a661111efe290584e56655e18e770831e074a83b665d6e4c8dd07aac82cf9912"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5f\\motor_cold_start.mat",
+      "sha256": "38dd71c77110b21c960bca7c42f70aef518441b7480a7d850e20e68c2b597152"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5f\\motor_direct_connection.mat",
+      "sha256": "98b3e7b40ad897e54b82f46cd614d0040aea7330fb90f81856a11756244f5cdf"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5f\\motor_torque_step.mat",
+      "sha256": "155af9d8eeac3ed9c2aaa2ceb94a0794bcfe0e0e14d4fe6d62cfba2766328bc2"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5f\\motor_locked_rotor.mat",
+      "sha256": "f9ee59d1368e01a35173f421c40b374dac38d633697b929fb6090267d6f92052"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5f\\motor_source_limit.mat",
+      "sha256": "232c90f3c1a2b3bb0eec7c0fa54de42b2ff97306013231f5de34141d9d725ba7"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5f\\motor_nonideal.mat",
+      "sha256": "f97ac6e6093ac7d287df6eea71644e5d7d553ace2e7367a51ce38d7dde49886e"
+    }
+  ]
+}

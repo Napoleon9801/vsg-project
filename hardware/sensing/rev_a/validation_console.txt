@@ -1,0 +1,195 @@
+{
+  "status": "ANALYTICAL_CHECKS_ONLY",
+  "checks": [
+    {
+      "name": "dc_transfer",
+      "passed": true,
+      "details": {
+        "out_coefficient": 0.25,
+        "neutral_coefficient": -0.25
+      }
+    },
+    {
+      "name": "selected_normal_envelope",
+      "passed": true,
+      "details": {
+        "max_adc_output_V": 6.0,
+        "opamp_input_min_V": -0.4,
+        "opamp_input_max_V": 10.0,
+        "minimum_positive_rail_V": 11.4
+      }
+    },
+    {
+      "name": "ideal_transfer_0Hz",
+      "passed": true,
+      "details": "Ideal matched components; opamp bandwidth and ADC filter excluded."
+    },
+    {
+      "name": "ideal_transfer_50Hz",
+      "passed": true,
+      "details": "Ideal matched components; opamp bandwidth and ADC filter excluded."
+    },
+    {
+      "name": "ideal_transfer_100Hz",
+      "passed": true,
+      "details": "Ideal matched components; opamp bandwidth and ADC filter excluded."
+    },
+    {
+      "name": "ideal_transfer_1000Hz",
+      "passed": true,
+      "details": "Ideal matched components; opamp bandwidth and ADC filter excluded."
+    },
+    {
+      "name": "ideal_transfer_5000Hz",
+      "passed": true,
+      "details": "Ideal matched components; opamp bandwidth and ADC filter excluded."
+    },
+    {
+      "name": "ideal_transfer_10000Hz",
+      "passed": true,
+      "details": "Ideal matched components; opamp bandwidth and ADC filter excluded."
+    },
+    {
+      "name": "ideal_transfer_20000Hz",
+      "passed": true,
+      "details": "Ideal matched components; opamp bandwidth and ADC filter excluded."
+    },
+    {
+      "name": "room_temperature_resistor_error_budget",
+      "passed": true,
+      "details": {
+        "temperature_delta_C": 0,
+        "aggregate_resistor_tolerance": 0.0001,
+        "max_cm_gain_V_per_V": 8.00032006080531e-05,
+        "max_phase_error_V": 0.012800512097292938,
+        "note": "Independent worst-sign tolerances; thermal tracking NOT assumed; opamp/ADC excluded."
+      }
+    },
+    {
+      "name": "bounded_dc_injection",
+      "passed": true,
+      "details": {
+        "total_upper_bound_A": 0.009667633430009669,
+        "bleeder_sink_at_12V_A": 0.011881188118811881,
+        "off_rail_upper_bound_V": 9.764309764309765,
+        "warning": "Not zero volts. No dynamic, protection-diode, partial-power or surge qualification."
+      }
+    },
+    {
+      "name": "bleeder_power",
+      "passed": true,
+      "details": {
+        "worst_selected_rail_power_W": 0.16036363636363635,
+        "rating_W": 0.5
+      }
+    },
+    {
+      "name": "individual_input_resistor_power",
+      "passed": true,
+      "details": {
+        "conservative_10k_power_W": 0.022506751125157518,
+        "rating_W": 0.25
+      }
+    },
+    {
+      "name": "balanced_neutral_algebra",
+      "passed": true,
+      "details": {
+        "max_error_V": 1.0658141036401503e-14
+      }
+    }
+  ],
+  "all_checks_passed": true,
+  "phase_fc_Hz": 15915.494309189533,
+  "bus_fc_Hz": 1768.3882565766146,
+  "nominal_neutral_loading_A": 0.0012,
+  "nominal_phase_loading_A": 0.0012,
+  "frequency_response": [
+    {
+      "frequency_Hz": 0,
+      "relative_gain": 1.0,
+      "attenuation_dB": 0.0,
+      "phase_deg": 0.0
+    },
+    {
+      "frequency_Hz": 50,
+      "relative_gain": 0.9999950652343274,
+      "attenuation_dB": -4.2862935781694725e-05,
+      "phase_deg": -0.17999940782724272
+    },
+    {
+      "frequency_Hz": 100,
+      "relative_gain": 0.9999802613756332,
+      "attenuation_dB": -0.0001714492049482957,
+      "phase_deg": -0.3599952627020996
+    },
+    {
+      "frequency_Hz": 1000,
+      "relative_gain": 0.9980319045036451,
+      "attenuation_dB": -0.017111504344579972,
+      "phase_deg": -3.5952737798681746
+    },
+    {
+      "frequency_Hz": 5000,
+      "relative_gain": 0.9540282163784651,
+      "attenuation_dB": -0.4087756078835214,
+      "phase_deg": -17.440594490511874
+    },
+    {
+      "frequency_Hz": 10000,
+      "relative_gain": 0.8467330159648303,
+      "attenuation_dB": -1.4450701162052881,
+      "phase_deg": -32.141907635342065
+    },
+    {
+      "frequency_Hz": 20000,
+      "relative_gain": 0.6226769922994998,
+      "attenuation_dB": -4.1147436202747105,
+      "phase_deg": -51.48811274603343
+    }
+  ],
+  "resistor_corners": [
+    {
+      "temperature_delta_C": 0,
+      "aggregate_resistor_tolerance": 0.0001,
+      "max_cm_gain_V_per_V": 8.00032006080531e-05,
+      "max_phase_error_V": 0.012800512097292938,
+      "note": "Independent worst-sign tolerances; thermal tracking NOT assumed; opamp/ADC excluded."
+    },
+    {
+      "temperature_delta_C": 25,
+      "aggregate_resistor_tolerance": 0.000225,
+      "max_cm_gain_V_per_V": 0.0001800162069266198,
+      "max_phase_error_V": 0.028802593108260055,
+      "note": "Independent worst-sign tolerances; thermal tracking NOT assumed; opamp/ADC excluded."
+    }
+  ],
+  "ac_common_mode_corners": [
+    {
+      "frequency_Hz": 50,
+      "max_cm_gain": 8.000616478604168e-05,
+      "phase_equivalent_error_for_20Vpeak_cm_V": 0.0064004931828833345
+    },
+    {
+      "frequency_Hz": 1000,
+      "max_cm_gain": 8.117217925545976e-05,
+      "phase_equivalent_error_for_20Vpeak_cm_V": 0.006493774340436781
+    },
+    {
+      "frequency_Hz": 10000,
+      "max_cm_gain": 0.00012955280486666245,
+      "phase_equivalent_error_for_20Vpeak_cm_V": 0.010364224389332996
+    }
+  ],
+  "exclusions": [
+    "Real opamp loop/settling",
+    "ADC/module network",
+    "Alias rejection",
+    "Relay contact/release/bounce",
+    "ADC rail-loss hold-up",
+    "S05 circuit",
+    "PWM common-mode parasitics",
+    "PCB ERC/DRC",
+    "Physical testing"
+  ]
+}

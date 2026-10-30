@@ -1,0 +1,13 @@
+{
+  "source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\vsg_stage5h_mosfet.slx",
+  "target": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\vsg_stage5h_mosfet_layout.slx",
+  "source_sha256": "8eef21ba8620383f1727ad567b5cddb3a96259520754effce1f86fd8b1e0de7a",
+  "target_sha256": "3ea5318ec90305bcc40c092c18b3cd48d72a7d37bdb3c0ce5e28e47d6e53362c",
+  "block_count": 297,
+  "nonvisual_block_changes": [],
+  "signal_and_physical_nets_identical": true,
+  "configuration_files_identical": true,
+  "overlapping_block_rectangles": [],
+  "normalization_note": "Only known default ScopeSpecificationString initialization and visual fields excluded.",
+  "pass": true
+}

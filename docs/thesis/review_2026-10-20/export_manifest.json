@@ -1,0 +1,50 @@
+[
+  {
+    "source": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\chapter3_methodology.md",
+    "source_sha256": "e0f0485808479fcbd51deb699313a8eb58e006c6e88f7790ce6792d2c10a98cd",
+    "output": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\review_2026-10-20\\chapter3_methodology.docx",
+    "output_sha256": "3b1b3044f72b160d42e783f3c46a333e74faac0c34ebd01236297c566a51454e",
+    "paragraphs": 36,
+    "tables": 3,
+    "native_math_elements": 5,
+    "render_verified": true,
+    "renderer": "Microsoft Word native ExportAsFixedFormat",
+    "pdf": "C:\\Users\\User\\.codex\\vsg-doc-qa\\2026-10-20\\final-pdf\\chapter3_methodology.pdf",
+    "pdf_sha256": "b70fc89126168a4635024d4fb0d5d8490179cd855223de0154f5bee93bae4614",
+    "rendered_pages": 4,
+    "review_date": "2026-10-20",
+    "visual_review": "All pages reviewed in contact sheets for layout; selected equation and dense table pages additionally inspected at full page resolution. No clipping or detached table captions observed. Review copies, not university-template final submissions."
+  },
+  {
+    "source": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\chapter4_simulation_results.md",
+    "source_sha256": "4d8866dd902979f78ff18ef051eceea558e9aebbbfe43fdf18925284f3d5d742",
+    "output": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\review_2026-10-20\\chapter4_simulation_results.docx",
+    "output_sha256": "19408aa581d586a2ab3a8a1a4fd330604a48a69fabbe3ad4bca8f3f10cacca5b",
+    "paragraphs": 123,
+    "tables": 9,
+    "native_math_elements": 121,
+    "render_verified": true,
+    "renderer": "Microsoft Word native ExportAsFixedFormat",
+    "pdf": "C:\\Users\\User\\.codex\\vsg-doc-qa\\2026-10-20\\final-pdf\\chapter4_simulation_results.pdf",
+    "pdf_sha256": "2e7809ce6545807a0af9d25f81b1b909cd9520b187d2e8e22ba4ad5a9bc3905e",
+    "rendered_pages": 11,
+    "review_date": "2026-10-20",
+    "visual_review": "All pages reviewed in contact sheets for layout; selected equation and dense table pages additionally inspected at full page resolution. No clipping or detached table captions observed. Review copies, not university-template final submissions."
+  },
+  {
+    "source": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\chapter5_hardware_design.md",
+    "source_sha256": "10d099b068b4604cd102729410b0e1b6599f6afbc66ecca7df6286203c9d67d2",
+    "output": "D:\\workspace\\engineering\\vsg-project\\docs\\thesis\\review_2026-10-20\\chapter5_hardware_design.docx",
+    "output_sha256": "45f3b24131208efb77e12d87fa8a8dc6ca39a7c102cac72ac5df851a5561856f",
+    "paragraphs": 51,
+    "tables": 8,
+    "native_math_elements": 2,
+    "render_verified": true,
+    "renderer": "Microsoft Word native ExportAsFixedFormat",
+    "pdf": "C:\\Users\\User\\.codex\\vsg-doc-qa\\2026-10-20\\final-pdf\\chapter5_hardware_design.pdf",
+    "pdf_sha256": "05c2d30a9d3a098457affe72dc2abb73b8460de59649b96030618605a66ca603",
+    "rendered_pages": 6,
+    "review_date": "2026-10-20",
+    "visual_review": "All pages reviewed in contact sheets for layout; selected equation and dense table pages additionally inspected at full page resolution. No clipping or detached table captions observed. Review copies, not university-template final submissions."
+  }
+]

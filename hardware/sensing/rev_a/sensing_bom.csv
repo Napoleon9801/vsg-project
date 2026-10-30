@@ -1,0 +1,17 @@
+﻿references,part_or_spec,description,used_quantity,suggested_buy_quantity,budget_owner,qualification_note
+U1,OPA4197ID,SOIC-14; quad opamp; +/-12 V analog supply,1,1,S01/S02,Verify stock and package; no firmware change
+RA/RB/RC gain networks; RBUS chain,PLT0805Z1002LBTS,10k;0.01%;5ppm/C;0805;0.25W,40,44,S01/S02,30 phase +10 bus;4 spare; no assumed ratio tracking
+CGA/CFA/CGB/CFB/CGC/CFC,Specification-controlled,1nF C0G >=50V <=1%;pair match<=0.1%,6,10,S01,Selection inventory may need increasing; verify measurement uncertainty
+CBUS,Specification-controlled,10nF C0G >=50V <=5%,1,2,S02,Bus divider pole ~1.768kHz
+CDEC_P/CDEC_N,Specification-controlled,100nF ceramic >=25V,2,4,S01/S02,Close to U1 rails
+CBULK_P/CBULK_N,Specification-controlled,4.7uF >=25V,2,3,S01/S02,Negative rail electrolytic positive terminal at AGND
+RBLEED_P/RBLEED_N,Specification-controlled,1k 0.5W <=1%,2,2,S01/S02,DC rail-rise bound only; does not make off rail zero
+K1/K2,G6K-2P-Y DC5,Nonlatching DPDT;5V coil;polarized;bottom-view drawing,2,2,S01/S02,Contact reliability and ADC power-loss timing remain HOLD
+QK1/QK2,2N3904,One transistor per coil; actual manufacturer pinout required,2,4,S01/S02,Package/footprint not released
+DK1/DK2,1N4148,Coil flyback diode; anode collector/cathode +5V,2,4,S01/S02,Release delay with diode must be measured
+RBK1/RBK2,Specification-controlled,1k >=0.125W <=1%,2,4,S01/S02,One base resistor per transistor
+RPD_K1/RPD_K2;RADCPD_A/B/C/BUS,Specification-controlled,100k >=0.125W <=1%,6,8,S01/S02,2 base pulldowns +4 ADC-side pulldowns
+RLINK_A/B/C/BUS,Specification-controlled,0 ohm output link,4,6,S01/S02,Do not add arbitrary unmatched ADC series-R
+J1/J2/J3/J4,Specification-controlled,6/3/8/3 pin keyed connectors; pitch/rating/layout review,4,4,P11,Connector cost in wiring budget not double-counted
+Sensing PCB,CAD not released,Precision analog layout and test points,1,1,P10,PCB fabrication cost separate
+S05 interface,Separate design,Qualified AFE_CONNECT_DRIVE and fast gate shutdown,1,1,S05,Not included as completed circuitry; separate protection budget
