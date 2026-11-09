@@ -1,0 +1,142 @@
+{
+  "pass": true,
+  "source_model": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\vsg_stage5i_secondary.slx",
+  "source_sha256": "5d1dc46705d56473ec26d16791155c09a3d916242ef4830d4ed5fde9dbe5bc71",
+  "target_model": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\vsg_stage5i_load_cycle.slx",
+  "target_sha256": "208d788fb32010022f1a14949c4084bc1ea9e65985ab023346d2e4401e0b2980",
+  "preserved_original_blocks": 338,
+  "new_blocks": [
+    "415",
+    "416",
+    "417"
+  ],
+  "allowed_parameter_changes": [
+    {
+      "sid": "223",
+      "parameter": "Time",
+      "new": "load_increase_time_s"
+    },
+    {
+      "sid": "223",
+      "parameter": "Name",
+      "new": "Load_Increase_3s"
+    },
+    {
+      "sid": "338",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "340",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "342",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "346",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "344",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "336",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "409",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "406",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "154",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "170",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "164",
+      "parameter": "SampleTime",
+      "new": "5e-6"
+    },
+    {
+      "sid": "181",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "156",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "185",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "158",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "152",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "166",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "189",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "160",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "193",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "162",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    },
+    {
+      "sid": "168",
+      "parameter": "SampleTime",
+      "new": "5e-6"
+    },
+    {
+      "sid": "150",
+      "parameter": "MaxDataPoints",
+      "new": "1"
+    }
+  ],
+  "physical_netsets_unchanged": true,
+  "scope": "Block parameters/hierarchy and electrical/control netlists; new load command and logging-only changes explicitly allowed."
+}

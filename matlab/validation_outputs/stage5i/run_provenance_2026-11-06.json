@@ -1,0 +1,6 @@
+{
+  "tested_model": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\vsg_stage5i_secondary.slx",
+  "tested_model_archive": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\vsg_stage5i_secondary.tested_2026-11-06.slx",
+  "tested_model_sha256": "ec68a566a3f972e295e655bfc876b53624163dd3cfc1b1994337175975c82693",
+  "scope": "Model used by nominal and refined runs; final presentation may update annotations/view only."
+}

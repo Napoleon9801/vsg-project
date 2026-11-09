@@ -1,0 +1,29 @@
+{
+  "source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\results_nominal.mat",
+  "logging_period_s": 5e-06,
+  "moving_window_s": 0.02,
+  "checks": [
+    {
+      "window_s": [
+        0.96,
+        1.16
+      ],
+      "max_Vrms_difference_V": 0.00012920414147554737,
+      "max_Irms_difference_A": 1.1236043397921947e-06,
+      "max_Pmean_difference_W": 0.0016079536074187217,
+      "pass": true
+    },
+    {
+      "window_s": [
+        5.8,
+        6.0
+      ],
+      "max_Vrms_difference_V": 3.108972016363509e-05,
+      "max_Irms_difference_A": 6.588917491612278e-07,
+      "max_Pmean_difference_W": 0.000723700794310389,
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "scope": "Logging resolution assessed against existing full-resolution Stage5i step-up and steady records; not new full-model solver refinement."
+}

@@ -1,0 +1,13 @@
+{
+  "source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\results_nominal.mat",
+  "signal": "signals.freq",
+  "unit": "Hz",
+  "samples": 30001,
+  "start_time_s": 0.0,
+  "end_time_s": 3.0,
+  "last_sample_Hz": 49.89817055152797,
+  "maximum_Hz": 50.19745457146116,
+  "maximum_time_s": 0.0978,
+  "load_step_s": 1,
+  "note": "Saved controller frequency, not a fresh simulation or output zero-crossing estimate."
+}

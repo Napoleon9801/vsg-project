@@ -1,0 +1,125 @@
+{
+  "date_UTC_plus_7": "2026-11-06",
+  "runner": "Codex desktop / GPT-6",
+  "source_model_unchanged": true,
+  "tested_model_hash_matches": true,
+  "runner_hash_matches": true,
+  "scope": "Full11s load increase/removal simulation; plots/data checked; substantial voltage transient excursions remain, no hardware/gate/timing certification.",
+  "files": [
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\run_stage5i_load_cycle.m",
+      "size_bytes": 8614,
+      "sha256": "7d15bd00de656d9ec37d8da3af85268720eaf37dfb531e55870f0d3435dbe051"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\run_stage5i_load_cycle_job.m",
+      "size_bytes": 354,
+      "sha256": "94e321e43d93f3dc843c598d309ac7557ded56ad7d1008f8fbdb19638b4c3dd9"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\show_stage5i_load_cycle.m",
+      "size_bytes": 1922,
+      "sha256": "0af3b517221409e79df5662f37fcc3035af9ea62a83cd130ce1d5f80858245d3"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\plot_stage5i_load_cycle.py",
+      "size_bytes": 14385,
+      "sha256": "473d5d6a1aba46860d7694c1d4f8b85655b1a404e2e860f9e0f4a1d0530b52c9"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\check_stage5i_load_cycle.py",
+      "size_bytes": 7262,
+      "sha256": "c570c93a6568e9534abc3889172fb07cd521b5cf33132050a6d52a84f338ee51"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\stage5i_load_cycle_th_2026-11-06.md",
+      "size_bytes": 10347,
+      "sha256": "a43bce292a1b8dd34d8e4a79a0acf1fb7cdce97ab634103f3cc0c849ed9f6261"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\vsg_stage5i_load_cycle.slx",
+      "size_bytes": 55933,
+      "sha256": "208d788fb32010022f1a14949c4084bc1ea9e65985ab023346d2e4401e0b2980"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\vsg_stage5i_load_cycle.tested_nominal.slx",
+      "size_bytes": 55933,
+      "sha256": "208d788fb32010022f1a14949c4084bc1ea9e65985ab023346d2e4401e0b2980"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\results_nominal.mat",
+      "size_bytes": 309088224,
+      "sha256": "22890138781d8acc5f768441c57d37c30f0f2b9a8bb00dc400d11e3d157769a2"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\report_nominal.json",
+      "size_bytes": 2492,
+      "sha256": "2c77381ef240991a53d03c2e552e5d4e8fa0a1d93fa16186415c92e501c2ca32"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\analysis_nominal.json",
+      "size_bytes": 5261,
+      "sha256": "82302c09a1ca1497f693d723a2038f1ee3213cf06e7b3dc52ee123855fa3c3f6"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\independent_checks_nominal.json",
+      "size_bytes": 2215,
+      "sha256": "fbd5bdfcf2625b56aed67e684f5ccde1d642540b77cdec57c9f3bc5d07e980a0"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\structure_verification.json",
+      "size_bytes": 3063,
+      "sha256": "95e4844bf05f853611bb7964eac3713e43d923b59072c9553704e06e21f88f88"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\logging_resolution_check.json",
+      "size_bytes": 883,
+      "sha256": "d94398426adeda7d9255d5a83dcb692c029d1d00519a92725e7097338a1a9042"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\transient_rms_verification.json",
+      "size_bytes": 1755,
+      "sha256": "cea3c48134a8234bcf1472cffa8378f76beb2d9601ddd1d42761d3cc7877a718"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\curves_nominal.csv",
+      "size_bytes": 1378463,
+      "sha256": "347841552fb4390c111856657fac71a8a6244b17dc870f2008538f8ae4c79f8f"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\curves_nominal.mat",
+      "size_bytes": 879104,
+      "sha256": "e92151c6130416100c8cd9f712b5a30090ab1391d64a031b1dd77e6a57151130"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\stage5i_load_cycle_nominal.fig",
+      "size_bytes": 2017350,
+      "sha256": "b89c99f55830dea207d426a4beb12abb25a00884b51726e8d3181612a0e0342e"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\run_bounded_retry_20261106.log",
+      "size_bytes": 6741,
+      "sha256": "de8d0f52fa092561d8866a3b195dc89cb9c5b148b62be389d8f9e706e8070ae5"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\run_nominal_failed_memory_20261106.log",
+      "size_bytes": 1680,
+      "sha256": "ca50b7edaeae99f4cc651fc9e3c61c41416dbe39d09934856097b72f78aad8f6"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\export_viewer_20261106.log",
+      "size_bytes": 250,
+      "sha256": "a6f67bd8a01a63058f0102bc764bb1fb6897e128c392039061e02738a99b6be1"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5i_load_cycle_nominal_2026-11-06.png",
+      "size_bytes": 264715,
+      "sha256": "242cc1563cbdacb2069eacf4fbd37299203c885c40d3372ae120a505be80ba18"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5i_load_cycle_rms_zoom_nominal_2026-11-06.png",
+      "size_bytes": 213480,
+      "sha256": "6468eee236bbe2b0cb32f0853ab26fa5779bac449945ad0bf9e92e284fcf408b"
+    }
+  ]
+}

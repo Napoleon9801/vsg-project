@@ -1,0 +1,66 @@
+{
+  "scope": "Independent recalculation of 20ms RMS at displayed transient extrema; voltage excursions are observed behavior, not a pass of voltage-transient requirements.",
+  "checks": [
+    {
+      "event_s": 3,
+      "extremum": "min",
+      "phase": "A",
+      "window_end_s": 3.02,
+      "Vrms_V": 7.218751179,
+      "independent_Vrms_V": 7.218767000796004,
+      "difference_V": 1.58217960040119e-05,
+      "pass": true
+    },
+    {
+      "event_s": 3,
+      "extremum": "min",
+      "phase": "B",
+      "window_end_s": 3.021,
+      "Vrms_V": 7.187007641,
+      "independent_Vrms_V": 7.187024423693809,
+      "difference_V": 1.678269380889219e-05,
+      "pass": true
+    },
+    {
+      "event_s": 3,
+      "extremum": "min",
+      "phase": "C",
+      "window_end_s": 3.02,
+      "Vrms_V": 7.154213312,
+      "independent_Vrms_V": 7.15422896687422,
+      "difference_V": 1.565487421917311e-05,
+      "pass": true
+    },
+    {
+      "event_s": 7,
+      "extremum": "max",
+      "phase": "A",
+      "window_end_s": 7.026,
+      "Vrms_V": 13.30627169,
+      "independent_Vrms_V": 13.30628382947481,
+      "difference_V": 1.2139474808492423e-05,
+      "pass": true
+    },
+    {
+      "event_s": 7,
+      "extremum": "max",
+      "phase": "B",
+      "window_end_s": 7.023,
+      "Vrms_V": 13.45161555,
+      "independent_Vrms_V": 13.451626301304836,
+      "difference_V": 1.0751304836631448e-05,
+      "pass": true
+    },
+    {
+      "event_s": 7,
+      "extremum": "max",
+      "phase": "C",
+      "window_end_s": 7.03,
+      "Vrms_V": 13.17610199,
+      "independent_Vrms_V": 13.176113706169735,
+      "difference_V": 1.1716169735720428e-05,
+      "pass": true
+    }
+  ],
+  "pass": true
+}

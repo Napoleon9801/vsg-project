@@ -1,0 +1,63 @@
+{
+  "checks": [
+    {
+      "name": "before_enable_matches_saved_primary_frequency",
+      "max_abs_difference_Hz": 9.889141949770419e-09,
+      "threshold_Hz": 1e-06,
+      "pass": true
+    },
+    {
+      "name": "all_last_second_samples_within_50_plus_minus_0_005Hz",
+      "max_abs_error_Hz": 0.0013148139112502122,
+      "pass": true
+    },
+    {
+      "name": "correction_stays_in_declared_bounds",
+      "min_pu": -0.02213310545801199,
+      "max_pu": 0.3591654242124287,
+      "pass": true
+    },
+    {
+      "name": "P_ref_equals_one_pu_plus_correction",
+      "max_abs_error_pu": 1.1102230246251565e-16,
+      "pass": true
+    },
+    {
+      "name": "halved_step_full_frequency_trace",
+      "max_abs_difference_Hz": 7.411821130176577e-07,
+      "threshold_Hz": 0.001,
+      "pass": true
+    },
+    {
+      "name": "halved_step_final_frequency_Hz",
+      "absolute_difference": 1.0043407883131295e-08,
+      "threshold": 0.0005,
+      "pass": true
+    },
+    {
+      "name": "halved_step_final_sec_delta_P_pu",
+      "absolute_difference": 1.6666970910628187e-06,
+      "threshold": 0.005,
+      "pass": true
+    },
+    {
+      "name": "halved_step_phase_voltage_rms_V",
+      "max_relative_difference": 2.1223008218416375e-05,
+      "threshold": 0.01,
+      "pass": true
+    },
+    {
+      "name": "halved_step_load_current_rms_A",
+      "max_relative_difference": 2.1174015902434505e-05,
+      "threshold": 0.01,
+      "pass": true
+    },
+    {
+      "name": "both_full_run_reports_pass",
+      "pass": true
+    }
+  ],
+  "refinement_available": true,
+  "pass": true,
+  "scope": "Saved-data regression and numerical refinement; not physical hardware qualification."
+}

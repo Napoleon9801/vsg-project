@@ -1,0 +1,79 @@
+{
+  "source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\results_nominal.mat",
+  "checks": [
+    {
+      "name": "runner_finite_complete_load_protocol_checks",
+      "pass": true
+    },
+    {
+      "name": "before_increase_independent_2us_quadrature",
+      "max_voltage_rms_error_V": 1.1212085786027615e-05,
+      "max_current_rms_error_A": 3.6173953166240835e-08,
+      "power_error_W": 0.00012255775777703093,
+      "thresholds_V_A_W": [
+        0.001,
+        0.001,
+        0.02
+      ],
+      "pass": true
+    },
+    {
+      "name": "higher_load_independent_2us_quadrature",
+      "max_voltage_rms_error_V": 1.2020175166327363e-05,
+      "max_current_rms_error_A": 2.592997372374839e-08,
+      "power_error_W": 0.00018124113796602614,
+      "thresholds_V_A_W": [
+        0.001,
+        0.001,
+        0.02
+      ],
+      "pass": true
+    },
+    {
+      "name": "after_return_independent_2us_quadrature",
+      "max_voltage_rms_error_V": 1.1227300390714845e-05,
+      "max_current_rms_error_A": 3.611751386856099e-08,
+      "power_error_W": 0.00012247911482177187,
+      "thresholds_V_A_W": [
+        0.001,
+        0.001,
+        0.02
+      ],
+      "pass": true
+    },
+    {
+      "name": "power_and_all_phase_currents_increase_then_decrease",
+      "pass": true
+    },
+    {
+      "name": "return_to_original_load_operating_point",
+      "max_Vrms_change_V": 0.0004818861813813413,
+      "max_Irms_change_A": 0.0001658838159377396,
+      "thresholds_V_A": [
+        0.05,
+        0.05
+      ],
+      "pass": true
+    },
+    {
+      "name": "before_increase_mean_frequency",
+      "error_Hz": 0.0004357627528861485,
+      "threshold_Hz": 0.005,
+      "pass": true
+    },
+    {
+      "name": "higher_load_mean_frequency",
+      "error_Hz": 0.001729762910784416,
+      "threshold_Hz": 0.005,
+      "pass": true
+    },
+    {
+      "name": "after_return_mean_frequency",
+      "error_Hz": 0.0016575872667132785,
+      "threshold_Hz": 0.005,
+      "pass": true
+    }
+  ],
+  "pass": true,
+  "scope": "Explicit engineering screens for this scenario, not a universal SG/VSG certification."
+}

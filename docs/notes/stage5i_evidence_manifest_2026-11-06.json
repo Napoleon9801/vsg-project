@@ -1,0 +1,124 @@
+{
+  "date_UTC_plus_7": "2026-11-06",
+  "runner": "Codex desktop / GPT-6",
+  "tested_model_sha256": "ec68a566a3f972e295e655bfc876b53624163dd3cfc1b1994337175975c82693",
+  "final_presentation_equivalence": {
+    "block_ids_identical": true,
+    "all_block_nonvisual_parameters_identical": true,
+    "hierarchy_identical": true,
+    "all_netsets_identical": true,
+    "configurations_identical": true
+  },
+  "files": [
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\build_stage5i_secondary.m",
+      "bytes": 6742,
+      "sha256": "d6daa3d960765d11cd1bc6bf013f27b52c673071ffe6122f456772aaa97c0be1"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\run_stage5i_secondary.m",
+      "bytes": 12036,
+      "sha256": "289879f0b5d1ddc9dd32a4c3a26358a48c89a44859f2cdaec5c24a640d09cadd"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\test_stage5i_secondary_limits.m",
+      "bytes": 4326,
+      "sha256": "c558bf61ce02b8444c7c5f711e3089cd2ad3cde949796a7c489318ebdaa78b46"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\show_stage5i_results.m",
+      "bytes": 2293,
+      "sha256": "803beb0798f131990de3cdf4e851bae75728bba3174e0aa4967dc207864b0f5d"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\open_stage5i_secondary.m",
+      "bytes": 1153,
+      "sha256": "10059f73cfc33a1454333a2f82284211a1b9c17f7ce22ee714d0863ea681a9ac"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\plot_stage5i_secondary.py",
+      "bytes": 6616,
+      "sha256": "4ea0b9242ce62324516ea77aace1a49ca0c02130761d4f2e40f1297a44c92764"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\verify_stage5i_structure.py",
+      "bytes": 16725,
+      "sha256": "e1e9645019119d5052ce89715cf0d30615418a9025037151c86683401f1a6ed5"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\python\\analysis\\check_stage5i_results.py",
+      "bytes": 3435,
+      "sha256": "1be453cfa3f9349d8c6b195ba1b9de6d88ba2595fc8646c09c65bd016ef76625"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\vsg_stage5i_secondary.slx",
+      "bytes": 56788,
+      "sha256": "5d1dc46705d56473ec26d16791155c09a3d916242ef4830d4ed5fde9dbe5bc71"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\vsg_stage5i_secondary.tested_2026-11-06.slx",
+      "bytes": 56588,
+      "sha256": "ec68a566a3f972e295e655bfc876b53624163dd3cfc1b1994337175975c82693"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\results_nominal.mat",
+      "bytes": 799172339,
+      "sha256": "70e5734570ad110e38672a42739b0ea680e6601a56a57e1fbb0aa9a7d6eda9a2"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\results_refined.mat",
+      "bytes": 1255382620,
+      "sha256": "10fcd7371d483d066ac62ce50728888bb873f441bc7f5c93dfaf9d6d33978b6f"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\report_nominal.json",
+      "bytes": 3017,
+      "sha256": "5e3c017921c0c341be5b64c349995b3dd80236f7c337bfad3bd8cd32e909e791"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\report_refined.json",
+      "bytes": 3209,
+      "sha256": "2c6783a8d9a6b095edbc646503e7be2473674d2171ac00c2b5350abfddafe2ec"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\secondary_limits_test_2026-11-06.json",
+      "bytes": 804,
+      "sha256": "f2f6f8bb925f62311407dc562bbca40b6fd6aa1a3129da66274e388d8d4573f0"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\structure_verification_2026-11-06.json",
+      "bytes": 5917,
+      "sha256": "dcde15b73b93636752704ab8ee37b034bcc50d37707d4566689c9d15b5117bfa"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\independent_result_checks_2026-11-06.json",
+      "bytes": 1739,
+      "sha256": "269d95b28d81b474813922c18eaf8bf84d2734e1ce4be90c53d86a19e084a48f"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\final_presentation_equivalence_2026-11-06.json",
+      "bytes": 191,
+      "sha256": "07a30d344d71b49b24a953561f84769656b58743a50d9761439aa91cbd5eb287"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5i_secondary_frequency_2026-11-06.png",
+      "bytes": 217398,
+      "sha256": "8ebedaa01e252b129fcced1848aad1f954e92c50c885611376592cbf4e48f840"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5i_secondary_controller_2026-11-06.png",
+      "bytes": 53472,
+      "sha256": "777bc22c7dbfeb8c652017ab352a9c5744aabf5d3a87be3ba63155fde74dc8f6"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5i_model_overview_2026-11-06.png",
+      "bytes": 637379,
+      "sha256": "42a13ff3fe27ef3e87c34a182ea4d25073ead2efdebeaf7e0e2bc41d3a33e748"
+    },
+    {
+      "path": "D:\\workspace\\engineering\\vsg-project\\docs\\notes\\stage5i_secondary_frequency_th_2026-11-06.md",
+      "bytes": 11198,
+      "sha256": "9e6fde37847cbd9a36fb24f2194b53f726f3dd7de4bf8a65480e7f1e8da3b27f"
+    }
+  ]
+}

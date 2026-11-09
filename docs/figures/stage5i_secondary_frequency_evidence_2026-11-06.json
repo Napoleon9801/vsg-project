@@ -1,0 +1,40 @@
+{
+  "baseline_source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\results_nominal.mat",
+  "secondary_source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\results_nominal.mat",
+  "baseline_sha256": "b248384268e21aa43ebbb82990e82c32cc2e68ab7a3f64dc891b0a3c7b5d777e",
+  "secondary_sha256": "70e5734570ad110e38672a42739b0ea680e6601a56a57e1fbb0aa9a7d6eda9a2",
+  "baseline_time_range_s": [
+    0.0,
+    3.0
+  ],
+  "secondary_time_range_s": [
+    0.0,
+    6.0
+  ],
+  "comparison_overlap_range_s": [
+    0.0,
+    3.0
+  ],
+  "baseline_extrapolated": false,
+  "baseline_final_frequency_Hz": 49.89817055152797,
+  "secondary_final_frequency_Hz": 49.999612197953326,
+  "secondary_final_frequency_error_Hz": 0.0003878020466743237,
+  "secondary_final_delta_P_pu": 0.3591654242124287,
+  "secondary_final_correction_W_equivalent": 35.916542421242866,
+  "secondary_final_P_ref_pu": 1.3591654242124287,
+  "secondary_final_P_ref_W_equivalent": 135.91654242124287,
+  "signal_sample_counts": {
+    "baseline_freq": 30001,
+    "secondary_freq": 60001,
+    "sec_P_ref_pu": 5371438,
+    "sec_delta_P_pu": 5371438,
+    "sec_freq_error_Hz": 5371438
+  },
+  "plot": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5i_secondary_frequency_2026-11-06.png",
+  "power_base_W": 100,
+  "assumed_event_times_s": {
+    "secondary_enable": 0.5,
+    "load_step": 1
+  },
+  "scope": "Visualization of actual saved records; no independent full hardware validation."
+}

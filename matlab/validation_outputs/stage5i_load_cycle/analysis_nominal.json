@@ -1,0 +1,176 @@
+{
+  "source_mat": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\results_nominal.mat",
+  "source_sha256": "22890138781d8acc5f768441c57d37c30f0f2b9a8bb00dc400d11e3d157769a2",
+  "raw_voltage_current_sample_count": 2200001,
+  "raw_time_range_s": [
+    0,
+    11
+  ],
+  "rms_window_s": 0.02,
+  "plot_spacing_s": 0.001,
+  "quadrature_selfcheck": {
+    "analytic_nonuniform_linear_product_max_error": 1.7763568394002505e-15,
+    "pass": true
+  },
+  "method": "Exact time integrals of products of piecewise-linear recorded samples; trailing fixed 20 ms window. Solver MaxStep2.5us; output logging5us (200kHz).",
+  "voltage_current_logging_sample_time_s": 5e-06,
+  "observed_waveform_dt_min_max_s": [
+    4.999999998922533e-06,
+    5.000000001587068e-06
+  ],
+  "P_definition": "sum of load phase voltage times load branch current; displayed as trailing20ms mean",
+  "f_definition": "internal virtual rotor omega/(2*pi); not independently measured terminal frequency",
+  "V_definition": "phase-to-floating-load-neutral after LC",
+  "I_definition": "load branch, not filter-inductor current",
+  "steady_windows": [
+    {
+      "name": "before_increase",
+      "window_s": [
+        2.6,
+        3.0
+      ],
+      "P_load_W": 96.81266339951623,
+      "phase_voltage_rms_V": [
+        9.796146801407032,
+        9.796714455064613,
+        9.796972374489773
+      ],
+      "load_current_rms_A": [
+        3.3129245388749817,
+        3.313115695412459,
+        3.3131988497238467
+      ],
+      "frequency_internal_mean_Hz": 50.000435762752886,
+      "P_control_measurement_W": 97.42867538239393
+    },
+    {
+      "name": "higher_load",
+      "window_s": [
+        6.6,
+        7.0
+      ],
+      "P_load_W": 135.22488763255313,
+      "phase_voltage_rms_V": [
+        9.74552342849097,
+        9.746180485842991,
+        9.746368732483075
+      ],
+      "load_current_rms_A": [
+        4.6786241625574805,
+        4.678899991875655,
+        4.679023161105409
+      ],
+      "frequency_internal_mean_Hz": 49.998270237089216,
+      "P_control_measurement_W": 136.04775706002965
+    },
+    {
+      "name": "after_return",
+      "window_s": [
+        10.6,
+        11.0
+      ],
+      "P_load_W": 96.81263198884542,
+      "phase_voltage_rms_V": [
+        9.796628687588413,
+        9.796298912266161,
+        9.796914411627487
+      ],
+      "load_current_rms_A": [
+        3.3130904226909195,
+        3.312978085816966,
+        3.3131688221607014
+      ],
+      "frequency_internal_mean_Hz": 50.00165758726671,
+      "P_control_measurement_W": 97.42853319496122
+    }
+  ],
+  "frequency_events": [
+    {
+      "range_s": [
+        3,
+        7
+      ],
+      "min_Hz": 49.91593037908815,
+      "min_time_s": 3.4628,
+      "max_Hz": 50.02092360423497,
+      "max_time_s": 3.0725000000000002,
+      "observed_in_50_plus_minus_0_005_Hz_until_next_event_s": 5.9179,
+      "observed_settling_delay_s": 2.9179000000000004
+    },
+    {
+      "range_s": [
+        7,
+        11.000000001
+      ],
+      "min_Hz": 49.96476965484656,
+      "min_time_s": 7.074400000000001,
+      "max_Hz": 50.089475281009534,
+      "max_time_s": 7.407500000000001,
+      "observed_in_50_plus_minus_0_005_Hz_until_next_event_s": 9.881200000000002,
+      "observed_settling_delay_s": 2.8812000000000015
+    }
+  ],
+  "rms_events": [
+    {
+      "command_event_s": 3,
+      "observation_window_s": [
+        3,
+        3.5
+      ],
+      "Vrms_min_abc_V": [
+        7.218751178696084,
+        7.187007640711799,
+        7.154213311836844
+      ],
+      "Vrms_max_abc_V": [
+        9.796175955734263,
+        9.796722276312378,
+        9.796935060347332
+      ],
+      "Irms_min_abc_A": [
+        3.3129344721481457,
+        3.3131180898703305,
+        3.3131867167554363
+      ],
+      "Irms_max_abc_A": [
+        4.663141026189568,
+        4.662792156078421,
+        4.663916313600582
+      ]
+    },
+    {
+      "command_event_s": 7,
+      "observation_window_s": [
+        7,
+        7.5
+      ],
+      "Vrms_min_abc_V": [
+        9.745493254293795,
+        9.746117158150646,
+        9.737618751240987
+      ],
+      "Vrms_max_abc_V": [
+        13.30627168652807,
+        13.45161554757839,
+        13.17610199180093
+      ],
+      "Irms_min_abc_A": [
+        3.3144038463789722,
+        3.3143779217507756,
+        3.314007344687118
+      ],
+      "Irms_max_abc_A": [
+        4.680218434452194,
+        4.678956446929351,
+        4.679063424360703
+      ]
+    }
+  ],
+  "figures": [
+    "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5i_load_cycle_nominal_2026-11-06.png",
+    "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\stage5i_load_cycle_rms_zoom_nominal_2026-11-06.png"
+  ],
+  "csv": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\curves_nominal.csv",
+  "compact_mat": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\curves_nominal.mat",
+  "scope": "Observed simulation load-cycle response with secondary enabled; not hardware qualification or full VSG identification."
+}

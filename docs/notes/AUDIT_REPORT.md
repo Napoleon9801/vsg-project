@@ -266,3 +266,116 @@ Runner/model: Codex desktop / GPT-6; read-only engineering reviewer for AD7606/i
 **What failed / watch out for**: Raw MAT waveforms are not in GitHub; saved-data viewers require regeneration. Master remains unchanged; use the uploaded branch for the latest project state.
 **Next steps**: Use the uploaded Stage 5h layout model in MATLAB R2018b with Simscape Electrical Specialized Power Systems.
 ---
+
+## 2026-10-30 UTC+7 — Detailed Thai explanation of VSG Stage 5h
+**Runner / model**: Codex desktop / GPT-6; read-only engineering reviewer /root/stage5h_trace.
+**What was done**:
+- Traced D:\workspace\engineering\vsg-project\matlab\build_stage5h_mosfet.m, phase5d_discrete.m, phase5c_tuned.m and saved Stage 5h evidence to explain the physical power path, dq feedback, P/Q filter, VSG, cascaded PI, PWM/deadtime and 1s resistor-bypass disturbance in Thai with Mermaid diagrams.
+- Confirmed absolute theta drives both Park transforms; delta is diagnostic. P/Q uses load-node voltage and filter-inductor current. Controller period100us, one-tick phase-reference delay, 10kHz carrier, turn-on-only520ns deadtime, and no PI saturation/antiwindup in this inherited model.
+**What worked**: Source-grounded review plus engineering agent inspection of saved SLX agreed on equations and topology. Used existing report_nominal.json rather than rerunning simulation.
+**What failed / watch out for**: Effective damping uses rad/s deviation, so nominal Rp5% alone does not describe static droop. Floating AC neutral, ideal40V source, logic gate inputs and unqualified device assumptions limit hardware claims. No model, firmware or result changes.
+**Next steps**: Use explanation beside D:\workspace\engineering\vsg-project\matlab\validation_outputs\stage5h\vsg_stage5h_mosfet_layout.slx when tracing blocks.
+---
+
+## 2026-10-30 UTC+7 — VSG Stage 5H Thai HTML explainer
+**Runner / model**: Codex desktop / GPT-6; coder /root/build_explainer; read-only engineering reviewer /root/stage5h_trace.
+**What was done**:
+- Created D:\workspace\engineering\vsg-project\web\stage5h-explainer\dist\index.html with offline HTML/CSS/JS, interactive eight-stage block diagram, physical circuit schematic, three-state load-step explanation, exact control equations, saved-results gallery, image dialogs and print support. Assets copied byte-for-byte from existing simulation figures/report; no new simulation or model/firmware edits.
+- Published owner-private Site https://napoleon-vsg-stage5h.sweetlily65.chatgpt.site using Sites. Project appgprj_6ae46c3c310481919922bb57df62d2e1; source commit a4229de5c84e29341b51b37ef5e0fa8666fff2e6; deployment appgdep_6ae46e36337081918f1ec72b4c196c1f succeeded. Site manifest retained at D:\workspace\engineering\vsg-project\web\stage5h-explainer\.openai\hosting.json. Created README.md there and offline bundle D:\workspace\engineering\vsg-project\web\stage5h-explainer-qa\stage5h-explainer.zip.
+- Updated D:\workspace\engineering\vsg-project\.gitignore to exclude the independent Sites checkout and browser QA folder from the parent VSG repository, avoiding nested-repository staging. No parent-repository push. QA script, report and screenshots retained at D:\workspace\engineering\vsg-project\web\stage5h-explainer-qa.
+**What worked**: Engineering review passed. Existing Python Playwright/Chromium verified eight stages, next/previous controls, three timeline states, three image dialogs/Escape, image loading, anchors and zero JS errors. Widths1440/1024/768/390/320 show no horizontal overflow. Desktop hero/full page and mobile full page visually inspected. HTML has no external dependencies; saved plots remain identifiable as evidence, not live simulation.
+**What failed / watch out for**: CUA initialization failed with missing kernel-assets path; used installed Playwright for browser QA. Initial QA stdout used cp874 and could not print an arrow; changed diagnostic output to ASCII escapes and reran successfully. open_in_codex requests were queued, so no claim the user's tab became visible. Site is private, not publicly shared. Original models/results and firmware unchanged.
+**Next steps**: Open deployed Site or local HTML; use the preserved Site identity for future edits. ZIP contains index.html and assets for offline use.
+---
+
+## 2026-10-30 UTC+7 — Stage 5h output voltage increase feasibility
+**Runner / model**: Codex desktop / GPT-6
+**What was done**: Checked saved nominal report and V_set in D:\workspace\engineering\vsg-project\matlab\validation_outputs\stage5h\vsg_stage5h_mosfet_layout.slx. Explained present ~9.74 V phase RMS /14 V peak reference, increasing V_set within40 V SPWM capability, and voltage-squared load power increase. Verified SPWM Vphase,peak=m*Vdc/2 using official MathWorks PWM Generator documentation.
+**What worked**: Separated measured output from reference and theoretical inverter fundamental ceiling (~14.14 V phase RMS /24.49 V line RMS at40 V DC, before drops/control margin).
+**What failed / watch out for**: Higher voltage targets not yet simulated or hardware-qualified; no model, firmware or hardware settings changed.
+**Next steps**: Obtain desired RMS voltage and phase-neutral versus line-line measurement before selecting a new simulation case.
+---
+
+## 2026-10-30 UTC+7 — Verify deployed Stage 5H website
+**Runner / model**: Codex desktop / GPT-6.
+**What was done**: Verified existing Site appgprj_6ae46c3c310481919922bb57df62d2e1 is active, version1, live at https://napoleon-vsg-stage5h.sweetlily65.chatgpt.site. Current custom access allows only the owner; no external visitors. No duplicate deployment or access change.
+**What worked**: Native Sites get_site confirms live URL and access configuration; identity read from D:\workspace\engineering\vsg-project\web\stage5h-explainer\.openai\hosting.json.
+**What failed / watch out for**: Public access was not requested explicitly, so existing owner-private audience preserved.
+**Next steps**: Use live URL; public sharing requires an explicit audience-change request.
+---
+
+## 2026-10-30 UTC+7 — Add exact Simulink ZIP download to Stage 5H website
+**Runner / model**: Codex desktop / GPT-6; coder /root/build_explainer.
+**What was done**:
+- Added download navigation, hero link, download section and Thai R2018b/SPS extraction/Run/Scope instructions to D:\workspace\engineering\vsg-project\web\stage5h-explainer\dist\index.html. Used the exact user-selected D:\workspace\engineering\vsg-project\matlab\validation_outputs\stage5h\vsg_stage5h_mosfet_layout.zip, copied unchanged to dist\downloads\vsg_stage5h_mosfet_layout.zip. Updated D:\workspace\engineering\vsg-project\web\stage5h-explainer\README.md with archive provenance and currently public audience.
+- Published version2 of existing Site appgprj_6ae46c3c310481919922bb57df62d2e1, source commit e0f5d357721f5da08141d4120b60331e9af5cb75, deployment appgdep_6ae47212e6b48191a674cf571e885de8 succeeded. Current access was already public when get_site was read; preserved it without any audience mutation.
+- Direct live download: https://napoleon-vsg-stage5h.sweetlily65.chatgpt.site/downloads/vsg_stage5h_mosfet_layout.zip . HTTP200, application/zip,49464bytes; SHA256 AC53859A891156265ACDE64DBEAB8F25B2577A10279E20C06DF02CBD074CB328 matches requested source exactly. Refreshed offline website ZIP in D:\workspace\engineering\vsg-project\web\stage5h-explainer-qa\stage5h-explainer.zip.
+**What worked**: Playwright clicked the actual download anchor, checked suggested filename and exact bytes, CRC and single SLX entry, checked1440/390/320widths without overflow and no JS errors. Download section screenshot visually inspected. Anonymous live HTTP retrieval also matches source hash; production_download_check.json and other evidence stored in the QA directory.
+**What failed / watch out for**: Requested ZIP contains saved51194byte SLX; it differs from the loose SLX currently on disk. Preserved exact ZIP instead of regenerating it; page describes it as saved snapshot. Archived V_set14, StopTime3, ode23tb MaxStep2.5e-6 verified; no simulation rerun or model/firmware edits. One ad-hoc text-inspection shell command had quoting error; proper Python QA script passed.
+**Next steps**: Use download button on /#downloads or direct ZIP URL; extract and open SLX with the documented software.
+---
+
+## 2026-11-05 UTC+7 — Stage 5h standalone frequency plot
+**Runner / model**: Codex desktop / GPT-6; engineering read-only reviewer /root/vsg_evidence.
+**What was done**:
+- Created D:\workspace\engineering\vsg-project\python\analysis\plot_stage5h_frequency.py and rendered D:\workspace\engineering\vsg-project\docs\figures\stage5h_frequency_nominal_2026-11-05.png with matching JSON evidence.
+- Used all30,001 actual signals.freq samples from D:\workspace\engineering\vsg-project\matlab\validation_outputs\stage5h\results_nominal.mat over0–3s. Marked50Hz nominal, load increase1s, startup peak50.197454571Hz at0.0978s and last sample49.898170552Hz.
+**What worked**: Direct HDF5 extraction and independent source confirmation that freq=omega/(2*pi); image visually inspected.
+**What failed / watch out for**: Saved nominal V_set14Vpeak data, no new simulation; internal VSG frequency rather than zero-crossing estimate. Report final frequency is a2.8–2.99s mean, distinct from plotted final sample.
+**Next steps**: Use the standalone PNG for discussion or presentation.
+---
+
+## 2026-11-05 UTC+7 — Stage 5h load RMS current
+**Runner / model**: Codex desktop / GPT-6
+**What was done**: Verified D:\workspace\engineering\vsg-project\matlab\validation_outputs\stage5h\report_nominal.json and window selection in D:\workspace\engineering\vsg-project\matlab\run_stage5h_mosfet.m. Load phase RMS currents A/B/C=4.679582/4.674908/4.682996 A over2.8–3.0s after the1s load increase.
+**What worked**: Used recorded per-phase load RMS values, distinguished from filter-inductor or DC current.
+**What failed / watch out for**: Saved nominal V_set14Vpeak run; these are post-step values, not hardware ratings. No simulation/model changes.
+**Next steps**: None required.
+---
+
+## 2026-11-06 UTC+7 — Why Stage 5h frequency stays below50 Hz
+**Runner / model**: Codex desktop / GPT-6; engineering read-only verification requested from /root/vsg_evidence.
+**What was done**: Inspected D:\workspace\engineering\vsg-project\matlab\validation_outputs\stage5h\vsg_stage5h_mosfet.slx including simulink/bddefaults.xml. P_set inherits1pu, P_to_pu=.01, droop gain=-.063662, damping=.5, omega_ref314.1593. Saved P136.0650559W predicts steady f49.89817264Hz from omega_ref+(1-.01*P)/(.5+.063662), divided by2pi; agrees with saved49.89817211Hz.
+**What worked**: Exact local steady-state calculation supports primary droop/damping equilibrium explanation; checked primary-source literature on secondary frequency restoration.
+**What failed / watch out for**: Frequency error is not removed by merely extending time or adding virtual inertia. Model has no automatic secondary frequency restoration; a proposed integral correction requires tuning and validation. No changes to model/firmware and no new simulation.
+**Next steps**: If requested, implement and compare a slow secondary frequency controller with appropriate limits in a separate simulation variant.
+---
+
+## 2026-11-06 UTC+7 — Stage 5i secondary frequency restoration implemented
+**Runner / model**: Codex desktop / GPT-6; engineering vsg_evidence (design + runner), layout_review (plot + structural checker); parent executed and independently checked artifacts.
+**What was done**:
+- Added D:\workspace\engineering\vsg-project\matlab\validation_outputs\stage5i\vsg_stage5i_secondary.slx as a separate model with Secondary_Frequency_Control: e=50−omega/(2pi), Ki4pu/(Hz*s), FE100us, enable0.5s, state clamp[-.5,.8]pu with reset while disabled; P_ref=P_set+correction before primary droop. Original297 blocks/parameters/netsets preserved. Added Scope_frequency_Hz and telemetry; defaultStopTime6s.
+- MATLAB sources D:\workspace\engineering\vsg-project\matlab\build_stage5i_secondary.m, run_stage5i_secondary.m, test_stage5i_secondary_limits.m, show_stage5i_results.m, open_stage5i_secondary.m. Python analysis under D:\workspace\engineering\vsg-project\python\analysis: plot_stage5i_secondary.py, verify_stage5i_structure.py, check_stage5i_results.py.
+- Actual secondary subsystem passes10 enable/gain/clamp/unwind checks. Full6s nominal2.5us/refined1.25us runs both pass. Frequency lastsample49.9996122Hz, mean5.6–6s49.9994965Hz; enters50±.005Hz at3.8998s and remains there through6s. Last-second maxerror.0013148Hz. PhaseRMS~9.746V and4.679A; P136.048W. Zero logged gate overlap; deadtime.520us. Final correction.359165pu.
+- Full frequency refinement maximumdifference7.412e-7Hz; finalmeandifference1.004e-8Hz; maxRMS relative V/I2.1223e-5/2.1174e-5. Before-enable frequency matches saved5h within9.89e-9Hz. Structural, final-presentation equivalence, and10 independent saved-data checks pass.
+- Delivered Thai guide D:\workspace\engineering\vsg-project\docs\notes\stage5i_secondary_frequency_th_2026-11-06.md and manifest stage5i_evidence_manifest_2026-11-06.json. Visually inspected frequency comparison/controller/model PNGs under D:\workspace\engineering\vsg-project\docs\figures. Opened model and interactive saved-results Figure in R2018b; log D:\workspace\engineering\vsg-project\matlab\stage5i_open_20261106.log records STAGE5I_MODEL_AND_RESULTS_OPEN_OK.
+**What worked**: Native R2018b SimulationInput and bounded integrator state; manual assertions because no MATLAB MCP/model_test available. Narrow exact normalization of unused default Multibody config additions. Preserved tested input model/hash separately; final changes only annotations/view, independently equivalent.
+**What failed / watch out for**: Initial compile caught double→boolean mismatch at reset NOT; fixed with explicit conversion. Harness initially needed FromWorkspace hold-final mode; fixed. Initial-current and unusedconstant warnings inherited. One reviewer hit usage limit after producing files; parent completed verification. Nominal runner loaded before extra enable/clamp report fields were added; refined records these flags and shows no saturation. No firmware changes, flashing, hardware qualification or full-plant load-removal test. The50–180W command range is not physical protection; original post-step load remains~136W above100Wnominal. Original user MATLAB process26772 and unsaved model preserved.
+**Next steps**: User can Run6s and open Scope_frequency_Hz; secondary_enable0 in Model Workspace restores primary-only operation for a fresh run.
+---
+
+## 2026-11-06 UTC+7 — VSG behavioral validation test recommendations
+**Runner / model**: Codex desktop / GPT-6; engineering read-only review /root/vsg_test_design.
+**What was done**:
+- Reviewed D:\workspace\engineering\vsg-project\docs\notes\stage5i_secondary_frequency_th_2026-11-06.md and project memory; distinguished VSG emulation from a physical synchronous generator and secondary restoration from inertial behavior.
+- Proposed controlled load up/down, inertia and damping sweeps with secondary disabled, steady P-f droop tests, independent terminal-voltage frequency estimation, and a matched synchronous-machine benchmark. Grid synchronization is a separate later model extension.
+- Checked MathWorks primary documentation: https://www.mathworks.com/help/simscape-electrical/ug/design-analyze-gridforming-converter.html . Used conceptual test guidance only; current example requires a newer release than the user's R2018b.
+**What worked**: Existing Stage5i evidence gives a starting point; targeted parameter-response tests can substantiate the specific emulated dynamics.
+**What failed / watch out for**: No new simulations executed or model/firmware changes. Output50Hz, PWM and low THD alone cannot establish synchronous-machine emulation. Stage5i saved frequency is internal omega/(2pi); terminal-frequency verification remains proposed. Source energy/current constraints and matched model assumptions must be stated.
+**Next steps**: Prioritize terminal frequency plus inertia/damping and load-removal comparisons; report measured RoCoF, extrema, settling and equation agreement rather than claiming a universal certification.
+---
+
+
+## 2026-11-06 UTC+7 — Stage5i load increase/removal: P, f, Vrms, Irms delivered
+**Runner / model**: Codex desktop / GPT-6; engineering /root/vsg_test_design produced initialrunner; parent completed memoryfix, execution, analysis, independentchecks and delivery after agent usage limit.
+**What was done**:
+- Created D:\workspace\engineering\vsg-project\matlab\run_stage5i_load_cycle.m and isolated D:\workspace\engineering\vsg-project\matlab\validation_outputs\stage5i_load_cycle\vsg_stage5i_load_cycle.slx. SecondaryON; commandincrease3s/removal7s/end11s; original338blocks/physicalnets preserved. ActualsuccessfulrunMaxStep2.5us, elapsed550.991s. Exacttestedmodelcopy retained; originalStage5i andfirmware untouched.
+- Delivered D:\workspace\engineering\vsg-project\docs\figures\stage5i_load_cycle_nominal_2026-11-06.png and stage5i_load_cycle_rms_zoom_nominal_2026-11-06.png; visuallycheckedboth. TrueoutputP=sum(Vload*Iload), trailing20msmean; phase-to-load-neutralVrms andloadbranchIrms trailing20ms, sampled5us/200kHz, displayed1ms. Frequency isinternalvirtualrotor, notindependentterminalestimate.
+- Steadybefore/high/return: Pload96.812663/135.224888/96.812632W; f50.000436/49.998270/50.001658Hz; perphaseVrms~9.7966/9.7460/9.7966V; Irms~3.3131/4.6788/3.3131A. Windows2.6–3,6.6–7,10.6–11s.
+- IMPORTANT observedtransients: minimumVrms7.154213V(phaseC,20mswindowending3.020s); maximum13.451616V(phaseB,ending7.023s). Increasefnadir49.915930Hz,returnfpeak50.089475Hz; restored50±.005Hz at5.9179/9.8812s (~2.918/2.881saftercommands). Do notreportvoltagetransientqualityaspassed merelybecausefrequency/steadychecks pass.
+- Python scripts D:\workspace\engineering\vsg-project\python\analysis\plot_stage5i_load_cycle.py and check_stage5i_load_cycle.py validate structure,9independentdatachecks,6transientRMSextrema. RMSextremaindependentdifferences<.000017V. Logging5us validatedonexistingStage5idata maxVrmsdifference.0001293V; notafullnewsolverrefinement.
+- MATLABviewer D:\workspace\engineering\vsg-project\matlab\show_stage5i_load_cycle.m validatedand saved stage5i_load_cycle_nominal.fig. Thai report D:\workspace\engineering\vsg-project\docs\notes\stage5i_load_cycle_th_2026-11-06.md; hashmanifest stage5i_load_cycle_manifest_2026-11-06.json. ResultsCSV/MAT/reports inload_cyclefolder.
+**What worked**: Sampledoutputlogging andunusedloglimits, savedataonD, temporarydirectoryDforisolatedprocess. Smallsmokecompilepassedthenfullrun. Chunkedexactpiecewise-linearproductintegralsavoidadaptive-timeweightingbias; independent2usreconstructionchecksconsistent. Verifiedoriginalmodel/runner/testedSLXhashes.
+**What failed / watch out for**: Firstrunfailedwithmemoryallocationerrorsandnoresults; failurelogpreserved. InitialCLIretryhadunquoted-rargument andwasfixedbyjobfile; stoppedonlyourfailedPID23960. ComputerUsewindowbindingfailedwithsame-ownererror; COMactiveobjectunavailable; noUIinputsent. NumPyolderversionlackedtrapezoid; switchedtoSciPytrapezoid. Rawgate/deadtime/DCpulselogsomittedinmemory-boundedrun; nofreshgatescreenclaimed. ExistinginductorIC/unusedconstantwarningsretained. UserreportedC~1GBfree; measured1.44GB; didnotchangeWindowssettingsorcloseuserMATLABPID4084. Highload135Wexceeds100Wnominalhardwaretarget. Noautogaintuning,hardwaretestorfirmwarechange.
+**Next steps**: Reviewvoltage/currentloopandLCtransientsbeforeclaimingoutput-quality/hardware-readiness; furtherinertia/damping/terminal-frequencytestsstillseparate. ExistingPNG/FIGshowstorednominal, notauto-updatedGUIRun.
+---

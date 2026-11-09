@@ -84,3 +84,22 @@ matlab/validation_outputs/*/*
 python/.deps_stage5h/
 /tmp/
 docs/figures/*_INCOMPLETE_EXPORT.png
+
+# Standalone Sites checkout and local browser QA (separate source repository).
+/web/stage5h-explainer/
+/web/stage5h-explainer-qa/
+
+# Simulink build/varcache folder (regenerated on model update).
+matlab/slprj/
+
+# Stage 5i secondary restoration + load cycle: publish small evidence and the
+# current/tested models only; raw .mat runs, .fig, logs, backups stay local.
+!matlab/validation_outputs/stage5i/
+!matlab/validation_outputs/stage5i_load_cycle/
+!matlab/validation_outputs/stage5i/*.json
+!matlab/validation_outputs/stage5i_load_cycle/*.json
+!matlab/validation_outputs/stage5i/vsg_stage5i_secondary.slx
+!matlab/validation_outputs/stage5i/vsg_stage5i_secondary.tested_2026-11-06.slx
+!matlab/validation_outputs/stage5i/stage5i_secondary_test_harness.slx
+!matlab/validation_outputs/stage5i_load_cycle/vsg_stage5i_load_cycle.slx
+!matlab/validation_outputs/stage5i_load_cycle/vsg_stage5i_load_cycle.tested_nominal.slx

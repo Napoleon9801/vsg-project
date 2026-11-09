@@ -1,0 +1,218 @@
+{
+  "source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5h\\vsg_stage5h_mosfet_layout.slx",
+  "target": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i\\vsg_stage5i_secondary.slx",
+  "source_sha256": "0a42232b244cfabc30bee521d7c2f2f699c91bb0af06e625160162d92102540c",
+  "target_sha256": "5d1dc46705d56473ec26d16791155c09a3d916242ef4830d4ed5fde9dbe5bc71",
+  "original_block_count": 297,
+  "target_block_count": 338,
+  "missing_old_sids": [],
+  "changed_old_parameter_sids": [],
+  "changed_old_hierarchy_sids": [],
+  "config_changes": [
+    {
+      "name": "StopTime",
+      "old": "3",
+      "new": "6"
+    }
+  ],
+  "explicitly_normalized_config_additions": [
+    {
+      "parent_class": "SSC.SimscapeCC",
+      "added_defaults": {
+        "MECH.SimMechanicsCC": {
+          "DisabledProps": "[]",
+          "Description": null,
+          "Name": "SimscapeMultibody1G",
+          "WarnOnRedundantConstraints": "on",
+          "WarnOnSingularInitialAssembly": "off",
+          "ShowCutJoints": "off",
+          "VisOnUpdateDiagram": "off",
+          "VisDuringSimulation": "off",
+          "EnableVisSimulationTime": "on",
+          "VisSampleTime": "0",
+          "DisableBodyVisControl": "off",
+          "ShowCG": "on",
+          "ShowCS": "on",
+          "ShowOnlyPortCS": "off",
+          "HighlightModel": "on",
+          "FramesToBeSkipped": "0",
+          "AnimationDelay": "3",
+          "RecordAVI": "off",
+          "CompressAVI": "on",
+          "AviFileName": null,
+          "AutoFitVis": "off",
+          "EnableSelection": "on",
+          "LastVizWinPosition": "[-1 -1 -1 -1]",
+          "CamPosition": "[0 0 0]",
+          "CamTarget": "[0 0 -1]",
+          "CamUpVector": "[0 1 0]",
+          "CamHeight": "-1",
+          "CamViewAngle": "0",
+          "VisBackgroundColor": "[0.9 0.9 0.95]",
+          "DefaultBodyColor": "[1 0 0]",
+          "MDLBodyVisualizationType": "Convex hull from body CS locations",
+          "OVRRIDBodyVisualizationType": "NONE",
+          "VisConfigFile": null
+        },
+        "simmechanics.ConfigurationSet": {
+          "DisabledProps": "[]",
+          "Description": "Simscape Multibody",
+          "Name": "SimscapeMultibody"
+        },
+        "simmechanics.DiagnosticsConfigSet": {
+          "DisabledProps": "[]",
+          "Description": "Diagnostics",
+          "Name": "DiagnosticsConfigSet",
+          "SimMechanicsInvalidVisualProperty": "warning",
+          "SimMechanicsCrossSectionNullEdge": "warning",
+          "SimMechanicsUnconnectedFramePorts": "warning",
+          "SimMechanicsUnconnectedGeometryPorts": "warning",
+          "SimMechanicsRedundantBlock": "warning",
+          "SimMechanicsConflictingReferenceFrames": "warning",
+          "SimMechanicsRigidlyBoundBlock": "error",
+          "SimMechanicsUnsatisfiedHighPriorityTargets": "warning",
+          "SimMechanicsJointTargetOverSpecification": "error"
+        },
+        "simmechanics.ExplorerConfigSet": {
+          "DisabledProps": "[]",
+          "Description": "Explorer",
+          "Name": "ExplorerConfigSet",
+          "SimMechanicsOpenEditorOnUpdate": "on",
+          "InternalSimMechanicsExplorerSettings": null
+        }
+      },
+      "reason": "Exact observed R2018b default unused Multibody configuration materialization.",
+      "no_multibody_block_references": true
+    }
+  ],
+  "new_root_block_names": [
+    "Log_sec_P_ref_pu",
+    "Log_sec_clamp_state",
+    "Log_sec_delta_P_pu",
+    "Log_sec_enabled",
+    "Log_sec_freq_Hz",
+    "Log_sec_freq_error_Hz",
+    "Scope_frequency_Hz",
+    "Sec_Base_From",
+    "Sec_Base_Goto",
+    "Sec_LogFrom_1",
+    "Sec_LogFrom_2",
+    "Sec_LogFrom_3",
+    "Sec_LogFrom_4",
+    "Sec_LogFrom_5",
+    "Sec_LogFrom_6",
+    "Sec_LogTag_1",
+    "Sec_LogTag_2",
+    "Sec_LogTag_3",
+    "Sec_LogTag_4",
+    "Sec_LogTag_5",
+    "Sec_LogTag_6",
+    "Sec_Omega_From",
+    "Sec_Pref_From",
+    "Sec_Pref_Goto",
+    "Secondary_Frequency_Control"
+  ],
+  "removed_root_edges": [
+    [
+      "signal",
+      "1#out:1",
+      "12#in:1"
+    ]
+  ],
+  "added_root_edges": [
+    [
+      "signal",
+      "1#out:1",
+      "389#in:1"
+    ],
+    [
+      "signal",
+      "390#out:1",
+      "371#in:2"
+    ],
+    [
+      "signal",
+      "391#out:1",
+      "371#in:1"
+    ],
+    [
+      "signal",
+      "371#out:1",
+      "392#in:1"
+    ],
+    [
+      "signal",
+      "371#out:1",
+      "395#in:1"
+    ],
+    [
+      "signal",
+      "393#out:1",
+      "12#in:1"
+    ],
+    [
+      "signal",
+      "371#out:2",
+      "394#in:1"
+    ],
+    [
+      "signal",
+      "371#out:2",
+      "398#in:1"
+    ],
+    [
+      "signal",
+      "396#out:1",
+      "397#in:1"
+    ],
+    [
+      "signal",
+      "399#out:1",
+      "400#in:1"
+    ],
+    [
+      "signal",
+      "371#out:3",
+      "401#in:1"
+    ],
+    [
+      "signal",
+      "402#out:1",
+      "403#in:1"
+    ],
+    [
+      "signal",
+      "371#out:4",
+      "404#in:1"
+    ],
+    [
+      "signal",
+      "405#out:1",
+      "406#in:1"
+    ],
+    [
+      "signal",
+      "371#out:5",
+      "407#in:1"
+    ],
+    [
+      "signal",
+      "408#out:1",
+      "409#in:1"
+    ],
+    [
+      "signal",
+      "371#out:6",
+      "410#in:1"
+    ],
+    [
+      "signal",
+      "411#out:1",
+      "412#in:1"
+    ]
+  ],
+  "issues": [],
+  "pass": true,
+  "normalization": "Visual block properties and known default ScopeSpecificationString excluded. StopTime 3 -> 6 allowed. Exact unused Multibody default additions checked against explicit values and reported. Original system zoom/window/SID-watermark changes allowed.",
+  "scope": "Structural preservation and declared secondary routing; does not itself establish stability or runtime equivalence."
+}
