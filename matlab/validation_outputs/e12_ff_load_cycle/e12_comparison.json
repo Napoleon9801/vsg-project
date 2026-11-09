@@ -1,0 +1,65 @@
+{
+  "equivalence_ff0_vs_original_smoke": {
+    "baseline_samples": 20001,
+    "ff0_samples": 20001,
+    "time_axes_identical": true,
+    "max_abs_Vload_diff_V": 0.0003262222659665692,
+    "max_abs_Vload_V": 9.790419910240862,
+    "relative_max_diff": 3.332055917492752e-05,
+    "tolerance": "relative max |dV| < 1e-4 of max |V| (variable-step solver path, not bit-exact)",
+    "pass": true
+  },
+  "baseline": {
+    "V_SS_min_max_V": [
+      9.74552342849097,
+      9.796972374489773
+    ],
+    "V_SS_pass_pm2pct": true,
+    "V_TR_min_after_increase_V": 7.154213311836844,
+    "V_TR_max_after_removal_V": 13.45161554757839,
+    "V_TR_pass_pm10pct": false,
+    "V_REC_s_to_pm2pct_after_increase_removal": [
+      null,
+      0.2370000000000001
+    ],
+    "V_REC_pass_40ms": false,
+    "F_REC_settling_delay_s": [
+      2.9179000000000004,
+      2.8812000000000015
+    ],
+    "F_min_max_Hz": [
+      49.91593037908815,
+      50.089475281009534
+    ],
+    "note": "V_REC measured on the trailing 20 ms RMS, so it includes up to 20 ms of window lag."
+  },
+  "e12_ff": {
+    "V_SS_min_max_V": [
+      9.74376487060994,
+      9.799283999340231
+    ],
+    "V_SS_pass_pm2pct": true,
+    "V_TR_min_after_increase_V": 8.965204593004033,
+    "V_TR_max_after_removal_V": 11.402862943126491,
+    "V_TR_pass_pm10pct": false,
+    "V_REC_s_to_pm2pct_after_increase_removal": [
+      0.121,
+      0.08699999999999974
+    ],
+    "V_REC_pass_40ms": false,
+    "F_REC_settling_delay_s": [
+      2.6886,
+      2.6945000000000014
+    ],
+    "F_min_max_Hz": [
+      49.90609221121195,
+      50.09316561694009
+    ],
+    "note": "V_REC measured on the trailing 20 ms RMS, so it includes up to 20 ms of window lag."
+  },
+  "overlay_figure": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\e12_ff_vs_baseline_2026-11-10.png",
+  "source_reports": {
+    "baseline": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\analysis_nominal.json",
+    "e12_ff": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\e12_ff_load_cycle\\analysis_nominal_ff1.json"
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "model": "E1.2 \u2014 reduced d-axis model of the outer voltage loop under resistive load steps.",
+  "analytic_prediction": {
+    "dip_envelope_Vrms_pred": 6.933013630776673,
+    "rise_envelope_Vrms_pred": 14.135267175152158,
+    "tau_after_step_up_pred_s": 0.12539772826215864,
+    "tau_after_removal_pred_s": 0.08849547000430258
+  },
+  "reduced_model": {
+    "firmware_no_feedforward": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 7.204784657695363,
+        "extremum_instantaneous_envelope_Vrms": 6.961018778148945,
+        "recovery_tau_s": 0.11349699999999999
+      },
+      "removal": {
+        "pre_event_Vrms": 9.740096991019913,
+        "extremum_20ms_Vrms": 13.450158032921912,
+        "extremum_instantaneous_envelope_Vrms": 13.897984542152235,
+        "recovery_tau_s": 0.08519399999999999
+      }
+    },
+    "ideal_load_current_ff_F0.75": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 7.805947639624591,
+        "extremum_instantaneous_envelope_Vrms": 7.175957705575522,
+        "recovery_tau_s": 0.033025
+      },
+      "removal": {
+        "pre_event_Vrms": 9.899454986797588,
+        "extremum_20ms_Vrms": 12.555214817962769,
+        "extremum_instantaneous_envelope_Vrms": 13.656598263200202,
+        "recovery_tau_s": 0.023796999999999957
+      }
+    },
+    "ideal_load_current_ff_F1.0": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 9.487160694790758,
+        "extremum_instantaneous_envelope_Vrms": 7.300514962096766,
+        "recovery_tau_s": 0.004140000000000005
+      },
+      "removal": {
+        "pre_event_Vrms": 9.89949493977102,
+        "extremum_20ms_Vrms": 10.441830408601861,
+        "extremum_instantaneous_envelope_Vrms": 13.413278438860962,
+        "recovery_tau_s": 0.0033690000000000664
+      }
+    },
+    "pi_none": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 7.204784557392348,
+        "extremum_instantaneous_envelope_Vrms": 6.961018266996494,
+        "recovery_tau_s": 0.11349699999999999
+      },
+      "removal": {
+        "pre_event_Vrms": 9.740097002286927,
+        "extremum_20ms_Vrms": 13.450158233089656,
+        "extremum_instantaneous_envelope_Vrms": 13.89798564768842,
+        "recovery_tau_s": 0.08519399999999999
+      },
+      "ripple_pk_pk_last_50ms_V": 0.046097055551486577
+    },
+    "pi_ideal_io_F1": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 9.487152345511225,
+        "extremum_instantaneous_envelope_Vrms": 7.300505601686104,
+        "recovery_tau_s": 0.004140000000000005
+      },
+      "removal": {
+        "pre_event_Vrms": 9.899494939770225,
+        "extremum_20ms_Vrms": 10.441841932824023,
+        "extremum_instantaneous_envelope_Vrms": 13.413295719836393,
+        "recovery_tau_s": 0.0033690000000000664
+      },
+      "ripple_pk_pk_last_50ms_V": 1.9590551403325662e-10
+    },
+    "pi_il_est_F1_lpf200Hz": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 8.652457767536514,
+        "extremum_instantaneous_envelope_Vrms": 6.989946300419616,
+        "recovery_tau_s": 0.011062000000000016
+      },
+      "removal": {
+        "pre_event_Vrms": 9.894726405373337,
+        "extremum_20ms_Vrms": 11.48645903807677,
+        "extremum_instantaneous_envelope_Vrms": 14.00019576266373,
+        "recovery_tau_s": 0.008938000000000001
+      },
+      "ripple_pk_pk_last_50ms_V": 0.02539102409825489
+    },
+    "pi_il_est_F0.75_lpf200Hz": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 7.696982425701768,
+        "extremum_instantaneous_envelope_Vrms": 6.983082479485979,
+        "recovery_tau_s": 0.031448000000000004
+      },
+      "removal": {
+        "pre_event_Vrms": 9.899478233962403,
+        "extremum_20ms_Vrms": 12.732848958140796,
+        "extremum_instantaneous_envelope_Vrms": 14.016359238363693,
+        "recovery_tau_s": 0.02241699999999991
+      },
+      "ripple_pk_pk_last_50ms_V": 2.084266252921907e-07
+    },
+    "pi_il_est_F1_lpf500Hz": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 9.069085586562021,
+        "extremum_instantaneous_envelope_Vrms": 7.023544860211242,
+        "recovery_tau_s": 0.007608999999999977
+      },
+      "removal": {
+        "pre_event_Vrms": 9.899252004936827,
+        "extremum_20ms_Vrms": 10.99366309423966,
+        "extremum_instantaneous_envelope_Vrms": 13.924202948790532,
+        "recovery_tau_s": 0.006179000000000046
+      },
+      "ripple_pk_pk_last_50ms_V": 0.0004233364731760503
+    },
+    "pi_il_est_F0.75_lpf500Hz": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 7.761574843085518,
+        "extremum_instantaneous_envelope_Vrms": 7.009172534309195,
+        "recovery_tau_s": 0.031550999999999996
+      },
+      "removal": {
+        "pre_event_Vrms": 9.899465627635687,
+        "extremum_20ms_Vrms": 12.627086824225803,
+        "extremum_instantaneous_envelope_Vrms": 13.958074374565937,
+        "recovery_tau_s": 0.022452000000000027
+      },
+      "ripple_pk_pk_last_50ms_V": 7.138034963105611e-07
+    },
+    "pi_il_est_F1_lpf1000Hz": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 9.251672005735728,
+        "extremum_instantaneous_envelope_Vrms": 7.066089751953539,
+        "recovery_tau_s": 0.006074999999999997
+      },
+      "removal": {
+        "pre_event_Vrms": 9.899511769710825,
+        "extremum_20ms_Vrms": 10.759458157814784,
+        "extremum_instantaneous_envelope_Vrms": 13.83499046689355,
+        "recovery_tau_s": 0.00492999999999999
+      },
+      "ripple_pk_pk_last_50ms_V": 1.1775404811231738e-05
+    },
+    "pi_il_est_F0.75_lpf1000Hz": {
+      "step_up": {
+        "pre_event_Vrms": 9.899494936611664,
+        "extremum_20ms_Vrms": 7.78374746913223,
+        "extremum_instantaneous_envelope_Vrms": 7.042433153370699,
+        "recovery_tau_s": 0.031909999999999994
+      },
+      "removal": {
+        "pre_event_Vrms": 9.89946053501069,
+        "extremum_20ms_Vrms": 12.591095094861918,
+        "extremum_instantaneous_envelope_Vrms": 13.887127325420124,
+        "recovery_tau_s": 0.022835999999999967
+      },
+      "ripple_pk_pk_last_50ms_V": 9.836898922088722e-07
+    }
+  },
+  "simulink_observed": {
+    "source": "D:\\workspace\\engineering\\vsg-project\\matlab\\validation_outputs\\stage5i_load_cycle\\analysis_nominal.json",
+    "step_up_min_20ms_Vrms_abc": [
+      7.2188,
+      7.187,
+      7.1542
+    ],
+    "removal_max_20ms_Vrms_abc": [
+      13.3063,
+      13.4516,
+      13.1761
+    ],
+    "recovery_tau_from_csv_s": {
+      "step_up": 0.12,
+      "removal": 0.086
+    },
+    "note": "tau read from curves_nominal.csv deficit decay 3.02->3.12 s and 7.026->7.119 s"
+  }
+}

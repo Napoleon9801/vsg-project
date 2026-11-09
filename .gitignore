@@ -103,3 +103,9 @@ matlab/slprj/
 !matlab/validation_outputs/stage5i/stage5i_secondary_test_harness.slx
 !matlab/validation_outputs/stage5i_load_cycle/vsg_stage5i_load_cycle.slx
 !matlab/validation_outputs/stage5i_load_cycle/vsg_stage5i_load_cycle.tested_nominal.slx
+
+# E1.2 load-current feedforward rerun: publish small JSON evidence and the built
+# model only; raw .mat runs, curves, logs and backups stay local.
+!matlab/validation_outputs/e12_ff_load_cycle/
+!matlab/validation_outputs/e12_ff_load_cycle/*.json
+!matlab/validation_outputs/e12_ff_load_cycle/vsg_e12_ff_load_cycle.slx

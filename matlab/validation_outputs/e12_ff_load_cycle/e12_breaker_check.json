@@ -1,0 +1,172 @@
+{
+  "baseline": {
+    "switching_3s": [
+      {
+        "phase": "A",
+        "state_before": "extra_R_in",
+        "switch_time_s": 3.0000025000000003,
+        "delay_ms": 0.002500000000349445,
+        "resolution_ms": 0.004999999999810711,
+        "i_at_switch_A": 4.601204004015245
+      },
+      {
+        "phase": "B",
+        "state_before": "extra_R_in",
+        "switch_time_s": 3.0000025000000003,
+        "delay_ms": 0.002500000000349445,
+        "resolution_ms": 0.004999999999810711,
+        "i_at_switch_A": -1.398215228319514
+      },
+      {
+        "phase": "C",
+        "state_before": "extra_R_in",
+        "switch_time_s": 3.0000025000000003,
+        "delay_ms": 0.002500000000349445,
+        "resolution_ms": 0.004999999999810711,
+        "i_at_switch_A": -3.2029887757064284
+      }
+    ],
+    "sequence_3s": {
+      "pos_seq_rms_min_max_V": [
+        7.174864901348988,
+        9.79579576056028
+      ],
+      "neg_seq_rms_max_V": 0.4426075715829897,
+      "neg_seq_max_time_s": 3.0050000000000034,
+      "zero_seq_rms_max_V": 5.906583776698292e-11,
+      "neg_seq_pre_event_V": 0.0004946562446277211,
+      "phase_rms_min_max_V": [
+        7.145181213106453,
+        9.796961806587367
+      ],
+      "pos_seq_within_pm10pct": false
+    },
+    "switching_7s": [
+      {
+        "phase": "A",
+        "state_before": "bypassed",
+        "switch_time_s": 7.0063475,
+        "delay_ms": 6.3475000000003945,
+        "resolution_ms": 0.5150000000000432,
+        "i_at_switch_A": -0.5009431389680246
+      },
+      {
+        "phase": "B",
+        "state_before": "bypassed",
+        "switch_time_s": 7.0030175,
+        "delay_ms": 3.0175000000003394,
+        "resolution_ms": 0.5150000000000432,
+        "i_at_switch_A": 0.5021120615264746
+      },
+      {
+        "phase": "C",
+        "state_before": "bypassed",
+        "switch_time_s": 7.0097075,
+        "delay_ms": 9.707500000000202,
+        "resolution_ms": 0.5150000000000432,
+        "i_at_switch_A": 0.5009543819622443
+      }
+    ],
+    "sequence_7s": {
+      "pos_seq_rms_min_max_V": [
+        9.745201712856206,
+        13.21683697205032
+      ],
+      "neg_seq_rms_max_V": 0.6928409592233313,
+      "neg_seq_max_time_s": 7.011499999999991,
+      "zero_seq_rms_max_V": 0.39657249998423777,
+      "neg_seq_pre_event_V": 0.0005544355499715734,
+      "phase_rms_min_max_V": [
+        9.736960243386397,
+        13.452144429915164
+      ],
+      "pos_seq_within_pm10pct": false
+    }
+  },
+  "e12_ff": {
+    "switching_3s": [
+      {
+        "phase": "A",
+        "state_before": "extra_R_in",
+        "switch_time_s": 3.0000025000000003,
+        "delay_ms": 0.002500000000349445,
+        "resolution_ms": 0.004999999999810711,
+        "i_at_switch_A": 4.741543324837896
+      },
+      {
+        "phase": "B",
+        "state_before": "extra_R_in",
+        "switch_time_s": 3.0000025000000003,
+        "delay_ms": 0.002500000000349445,
+        "resolution_ms": 0.004999999999810711,
+        "i_at_switch_A": -2.3675777603061867
+      },
+      {
+        "phase": "C",
+        "state_before": "extra_R_in",
+        "switch_time_s": 3.0000025000000003,
+        "delay_ms": 0.002500000000349445,
+        "resolution_ms": 0.004999999999810711,
+        "i_at_switch_A": -2.3739655645653372
+      }
+    ],
+    "sequence_3s": {
+      "pos_seq_rms_min_max_V": [
+        9.171555038103607,
+        10.597126761992998
+      ],
+      "neg_seq_rms_max_V": 0.3717804835492961,
+      "neg_seq_max_time_s": 3.0050000000000034,
+      "zero_seq_rms_max_V": 3.814848301065642e-11,
+      "neg_seq_pre_event_V": 0.004955266858009086,
+      "phase_rms_min_max_V": [
+        8.965234197171599,
+        10.707435988436176
+      ],
+      "pos_seq_within_pm10pct": true
+    },
+    "switching_7s": [
+      {
+        "phase": "A",
+        "state_before": "bypassed",
+        "switch_time_s": 7.0073075000000005,
+        "delay_ms": 7.307500000000466,
+        "resolution_ms": 0.5749999999995481,
+        "i_at_switch_A": -0.5022972374940188
+      },
+      {
+        "phase": "B",
+        "state_before": "bypassed",
+        "switch_time_s": 7.003910000000001,
+        "delay_ms": 3.9100000000011903,
+        "resolution_ms": 0.5499999999996064,
+        "i_at_switch_A": 0.5064865705564618
+      },
+      {
+        "phase": "C",
+        "state_before": "bypassed",
+        "switch_time_s": 7.00038,
+        "delay_ms": 0.3799999999998249,
+        "resolution_ms": 0.4999999999997229,
+        "i_at_switch_A": -0.5085458950183502
+      }
+    ],
+    "sequence_7s": {
+      "pos_seq_rms_min_max_V": [
+        8.93524694130386,
+        10.433170868980381
+      ],
+      "neg_seq_rms_max_V": 0.5421118848825706,
+      "neg_seq_max_time_s": 7.009499999999992,
+      "zero_seq_rms_max_V": 0.400023655207469,
+      "neg_seq_pre_event_V": 0.0014456672836378006,
+      "phase_rms_min_max_V": [
+        8.744598056772142,
+        11.402871319798352
+      ],
+      "pos_seq_within_pm10pct": true
+    }
+  },
+  "dft_leakage_note": "one-cycle 50 Hz DFT; rotor frequency 49.9-50.1 Hz gives < 0.5 % leakage between sequences",
+  "figure": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\e12_breaker_sequence_2026-11-10.png"
+}
