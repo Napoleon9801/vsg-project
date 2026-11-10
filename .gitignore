@@ -115,3 +115,8 @@ matlab/slprj/
 !matlab/validation_outputs/vsg_stiff_source/
 !matlab/validation_outputs/vsg_stiff_source/*.json
 !matlab/validation_outputs/vsg_stiff_source/vsg_stiff_source.slx
+
+# Central-parameter models (apply_vsg_params): generated .slx copies are rebuilt
+# from vsg_params(); publish only the parameter JSON and the equivalence test.
+!matlab/validation_outputs/vsg_params/
+!matlab/validation_outputs/vsg_params/*.json
