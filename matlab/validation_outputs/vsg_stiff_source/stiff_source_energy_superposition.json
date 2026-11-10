@@ -1,0 +1,34 @@
+{
+  "method": "superposition: (ramp - no-ramp) per H, then minus lowest-H response",
+  "dw_total_pu": 0.004,
+  "runs": [
+    {
+      "label": "sweep_x100_H0p05",
+      "H_s": 0.05,
+      "pre_event_|response|_max_W": 4.517053895369827e-05,
+      "response_energy_J": 127.91653717785988
+    },
+    {
+      "label": "sweep_x100_H5",
+      "H_s": 5,
+      "pre_event_|response|_max_W": 4.0219605779157064e-05,
+      "response_energy_J": 131.8007236483521,
+      "extra_energy_vs_ref_J": 3.8841864704921973,
+      "predicted_J": 3.96,
+      "ratio": 0.9808551693162114,
+      "K_term_leak_J": 0.050387731949853146,
+      "ratio_after_removing_K_leak": 0.9935793440510229
+    },
+    {
+      "label": "sweep_x100_H10",
+      "H_s": 10,
+      "pre_event_|response|_max_W": 3.813038205180419e-05,
+      "response_energy_J": 135.90788383936976,
+      "extra_energy_vs_ref_J": 7.991346661509867,
+      "predicted_J": 7.959999999999999,
+      "ratio": 1.0039380228027472,
+      "K_term_leak_J": -0.13502052627916897,
+      "ratio_after_removing_K_leak": 0.9869756451294849
+    }
+  ]
+}

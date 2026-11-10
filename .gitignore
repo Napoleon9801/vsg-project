@@ -109,3 +109,9 @@ matlab/slprj/
 !matlab/validation_outputs/e12_ff_load_cycle/
 !matlab/validation_outputs/e12_ff_load_cycle/*.json
 !matlab/validation_outputs/e12_ff_load_cycle/vsg_e12_ff_load_cycle.slx
+
+# Stiff-source inertia test (simulation-only extension): publish small JSON
+# evidence and the built model; raw .mat runs, logs and backups stay local.
+!matlab/validation_outputs/vsg_stiff_source/
+!matlab/validation_outputs/vsg_stiff_source/*.json
+!matlab/validation_outputs/vsg_stiff_source/vsg_stiff_source.slx

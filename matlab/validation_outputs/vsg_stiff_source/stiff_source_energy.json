@@ -1,0 +1,45 @@
+{
+  "reference": "sweep_x100_H0p05",
+  "H_ref_s": 0.05,
+  "dw_total_pu": 0.004,
+  "S_VA": 100.0,
+  "runs": [
+    {
+      "label": "sweep_x100_H0p05",
+      "H_s": 0.05,
+      "P_vsg_pre_W": 29.985408880680136,
+      "P_vsg_end_W": 99.96723850142243,
+      "f_vsg_end_minus_grid_mHz": 0.7208270921650003,
+      "peak_P_vsg_W": 100.06624965579078,
+      "extra_energy_vs_ref_J_measured": 0.0,
+      "extra_energy_vs_ref_J_predicted_2dH_S_dw": 0.0,
+      "ratio_measured_over_predicted": null,
+      "residual_P_diff_at_end_W": 0.0
+    },
+    {
+      "label": "sweep_x100_H5",
+      "H_s": 5,
+      "P_vsg_pre_W": 29.803794596450267,
+      "P_vsg_end_W": 100.05829227128389,
+      "f_vsg_end_minus_grid_mHz": 0.5157465422891979,
+      "peak_P_vsg_W": 101.58853158244767,
+      "extra_energy_vs_ref_J_measured": 4.336330047173913,
+      "extra_energy_vs_ref_J_predicted_2dH_S_dw": 3.96,
+      "ratio_measured_over_predicted": 1.0950328401954326,
+      "residual_P_diff_at_end_W": 0.2726680540913288
+    },
+    {
+      "label": "sweep_x100_H10",
+      "H_s": 10,
+      "P_vsg_pre_W": 29.697260171434078,
+      "P_vsg_end_W": 99.71196621200856,
+      "f_vsg_end_minus_grid_mHz": 0.44352825136970847,
+      "peak_P_vsg_W": 106.07424607487985,
+      "extra_energy_vs_ref_J_measured": 8.75214046408879,
+      "extra_energy_vs_ref_J_predicted_2dH_S_dw": 7.959999999999999,
+      "ratio_measured_over_predicted": 1.0995151336794964,
+      "residual_P_diff_at_end_W": 0.03287641983216312
+    }
+  ],
+  "figure": "D:\\workspace\\engineering\\vsg-project\\docs\\figures\\vsg_stiff_source_inertia_2026-11-10.png"
+}
