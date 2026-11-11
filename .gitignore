@@ -120,3 +120,10 @@ matlab/slprj/
 # from vsg_params(); publish only the parameter JSON and the equivalence test.
 !matlab/validation_outputs/vsg_params/
 !matlab/validation_outputs/vsg_params/*.json
+
+# Stage 5j (48 V battery bus, 12 Vrms, SVPWM 20 kHz): publish the JSON reports and
+# the nominal model; other case models are rebuilt by run_stage5j_job, raw .mat,
+# plots, logs and backups stay local.
+!matlab/validation_outputs/stage5j/
+!matlab/validation_outputs/stage5j/*.json
+!matlab/validation_outputs/stage5j/vsg_stage5j_nominal.slx
