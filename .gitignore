@@ -127,3 +127,10 @@ matlab/slprj/
 !matlab/validation_outputs/stage5j/
 !matlab/validation_outputs/stage5j/*.json
 !matlab/validation_outputs/stage5j/vsg_stage5j_nominal.slx
+
+# Stage 5k (Stage 5j + step-up transformers to 230 V, assumed transformer data):
+# publish the JSON reports / parameter files and the gain-0.8 model; other case
+# models are rebuilt by run_stage5k_job, raw .mat, plots, logs and backups stay local.
+!matlab/validation_outputs/stage5k/
+!matlab/validation_outputs/stage5k/*.json
+!matlab/validation_outputs/stage5k/vsg_stage5k_tx9_ff08.slx
